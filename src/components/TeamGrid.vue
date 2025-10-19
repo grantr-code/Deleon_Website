@@ -31,7 +31,15 @@
                 <div class="shrink-0">
                   <div class="rounded-full overflow-hidden border border-white/15 bg-gradient-to-br from-white/5 to-white/[.02] flex items-center justify-center text-white/80 transition-[width,height] duration-300"
                        :class="isOpen(gi,i) ? 'h-28 w-28 md:h-36 md:w-36' : 'h-24 w-24 md:h-28 md:w-28'">
-                    <img v-if="m.photo" :src="m.photo" :alt="m.name" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                    <img
+                      v-if="m.photo"
+                      :src="m.photo"
+                      :alt="m.name"
+                      class="h-full w-full object-cover"
+                      :style="m.photoScale ? { transform: `scale(${m.photoScale})`, transformOrigin: 'center' } : { transformOrigin: 'center' }"
+                      loading="lazy"
+                      decoding="async"
+                    />
                     <span v-else class="font-semibold">{{ initials(m.name) }}</span>
                   </div>
                 </div>

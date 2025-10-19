@@ -1,7 +1,7 @@
 export const teamData = {
   groups: [
     {
-      title: 'Leadership',
+      title: 'Founders',
       members: [
         {
           name: 'Chad Pozarycki, PhD',
@@ -14,7 +14,7 @@ export const teamData = {
         },
         {
           name: 'José Andrade',
-          role: 'COO',
+          role: 'President',
           bio: 'Engineer and data scientist, former medical device consultant.',
           photo: '/jose.jpg',
           linkedin: '',
@@ -31,6 +31,16 @@ export const teamData = {
           role: 'Machine Learning Researcher',
           bio: 'Expert in applied math and computational science at LANL.',
           photo: '/antonio.jpg',
+          linkedin: '',
+          x: '',
+          links: [],
+        },
+        {
+          name: 'Nellie Kolon',
+          role: 'Metabolomics Lab Scientist',
+          bio: 'GT Biomedical Engineer; former Eli Lilly.',
+          photo: '/nellie.png',
+          photoScale: 1.08,
           linkedin: '',
           x: '',
           links: [],
