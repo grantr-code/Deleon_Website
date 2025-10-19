@@ -12,7 +12,8 @@
           from="truth"
           to="operating picture"
           :speed="26"
-          :backspaceSpeed="26"
+          :backspaceSpeed="150"
+          :pauseAfterFirst="2000"
           :startDelay="120"
           wrapper-class="text-center text-white text-[clamp(30px,4.8vw,62px)] leading-tight"
         />
