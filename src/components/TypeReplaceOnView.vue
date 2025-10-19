@@ -14,11 +14,14 @@ const props = defineProps({
   speed: { type: Number, default: 28 },
   toSpeed: { type: Number, default: null },
   fromSpeed: { type: Number, default: null },
+  initialSpeed: { type: Number, default: null },
   backspaceSpeed: { type: Number, default: 28 },
   startDelay: { type: Number, default: 0 },
   pauseAfterFirst: { type: Number, default: 800 },
   loop: { type: Boolean, default: false },
   swapInterval: { type: Number, default: 10000 },
+  pauseFrom: { type: Number, default: null },
+  pauseTo: { type: Number, default: null },
   once: { type: Boolean, default: true },
   tag: { type: String, default: 'div' },
   wrapperClass: { type: String, default: '' },
@@ -55,6 +58,11 @@ function start() {
   const useSpeedFrom = () => Math.max(10, (props.fromSpeed ?? props.speed));
   const useSpeedTo = () => Math.max(10, (props.toSpeed ?? props.speed));
   const useBackspace = () => Math.max(10, props.backspaceSpeed);
+  const useInitial = () => Math.max(10, (props.initialSpeed ?? useSpeedFrom()));
+  const getPauseFor = (word) => {
+    if (word === 'from') return Math.max(0, (props.pauseFrom ?? props.pauseAfterFirst ?? props.swapInterval));
+    return Math.max(0, (props.pauseTo ?? props.swapInterval));
+  };
 
   let prefixDone = false;
   let current = 'from';
@@ -104,7 +112,7 @@ function start() {
   }
 
   function scheduleSwap() {
-    const t = setTimeout(() => swap(), Math.max(0, props.swapInterval));
+    const t = setTimeout(() => swap(), getPauseFor(current));
     timeouts.push(t);
   }
 
@@ -124,8 +132,8 @@ function start() {
   const run = () => {
     const initialDelay = Math.max(0, props.startDelay || 0);
     const startFn = () => {
-      typeWord(props.from, useSpeedFrom(), () => {
-        const firstPause = Math.max(0, props.pauseAfterFirst ?? props.swapInterval);
+      typeWord(props.from, useInitial(), () => {
+        const firstPause = getPauseFor('from');
         const t = setTimeout(() => {
           if (props.loop) swap();
           else {
