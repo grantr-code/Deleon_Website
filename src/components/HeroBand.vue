@@ -20,6 +20,7 @@
           :startDelay="160"
           wrapper-class="mt-4 text-center text-white/85 text-[clamp(18px,2.6vw,28px)] leading-tight"
         />
+        <EarlyAccessForm />
       </div>
     </div>
     <!-- Scroll cue (arrow) -->
@@ -39,6 +40,7 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 import TypeOnView from './TypeOnView.vue';
+import EarlyAccessForm from './EarlyAccessForm.vue';
 
 const canvasRef = ref(null);
 let raf = 0;
