@@ -5,13 +5,22 @@
   >
     <canvas ref="canvasRef" class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true"></canvas>
     <div class="absolute inset-0 z-10 flex items-center justify-center px-4">
-      <TypeOnView
-        tag="h1"
-        :text="'The first company testing human biochemistry daily'"
-        :speed="26"
-        :startDelay="120"
-        wrapper-class="text-center text-white text-[clamp(30px,4.8vw,62px)] leading-tight max-w-[1100px]"
-      />
+      <div class="text-center max-w-[1100px]">
+        <TypeOnView
+          tag="h1"
+          :text="'Operate with a common ground truth'"
+          :speed="26"
+          :startDelay="120"
+          wrapper-class="text-center text-white text-[clamp(30px,4.8vw,62px)] leading-tight"
+        />
+        <TypeOnView
+          tag="h2"
+          :text="'Operate with a common operating picture'"
+          :speed="26"
+          :startDelay="160"
+          wrapper-class="mt-4 text-center text-white/85 text-[clamp(18px,2.6vw,28px)] leading-tight"
+        />
+      </div>
     </div>
     <!-- Scroll cue (arrow) -->
     <div class="absolute left-1/2 -translate-x-1/2 bottom-6 z-20 flex flex-col items-center gap-2">

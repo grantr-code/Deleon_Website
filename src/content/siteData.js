@@ -44,7 +44,7 @@ export const siteData = {
           tag: 'Workflow',
           title: 'Operate with a common operating picture',
           description: 'A unified dashboard across performance, health, and operations.',
-          long: 'Track trends, flag risks, and coordinate interventions across organizations—bringing biochemistry into the daily rhythm of planning and care.',
+          long: 'Track trends, flag risks, and coordinate interventions—bringing biochemistry into the daily rhythm of planning and care.',
           effect: 'radar',
         },
       ],
