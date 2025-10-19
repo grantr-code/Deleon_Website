@@ -76,18 +76,20 @@
                     target="_blank"
                     rel="noopener"
                     @click.stop
-                    class="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1.5 text-[12px] leading-none overflow-visible text-brand-text/90 hover:text-white hover:border-white/30"
+                    :aria-label="l.label"
+                    class="inline-flex items-center gap-2 rounded-full border border-white/15 h-9 px-3 text-[12px] leading-none overflow-visible text-brand-text/90 hover:text-white hover:border-white/30"
                   >
-                    <svg
-                      v-if="l.label === 'LinkedIn'"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      class="h-4 w-4 shrink-0"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM7.06 20.45H3.56V9h3.5v11.45zM5.31 7.5a2.03 2.03 0 1 1 0-4.06 2.03 2.03 0 0 1 0 4.06zM20.44 20.45h-3.5v-5.9c0-1.41-.03-3.22-1.96-3.22-1.96 0-2.26 1.53-2.26 3.11v6.01h-3.5V9h3.36v1.57h.05c.47-.89 1.62-1.83 3.34-1.83 3.57 0 4.23 2.35 4.23 5.41v6.3z"/>
-                    </svg>
+                    <span v-if="l.label === 'LinkedIn'" class="inline-flex items-center justify-center h-5 w-5">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        class="block h-4 w-4 shrink-0"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM7.06 20.45H3.56V9h3.5v11.45zM5.31 7.5a2.03 2.03 0 1 1 0-4.06 2.03 2.03 0 0 1 0 4.06zM20.44 20.45h-3.5v-5.9c0-1.41-.03-3.22-1.96-3.22-1.96 0-2.26 1.53-2.26 3.11v6.01h-3.5V9h3.36v1.57h.05c.47-.89 1.62-1.83 3.34-1.83 3.57 0 4.23 2.35 4.23 5.41v6.3z"/>
+                      </svg>
+                    </span>
                     <span v-else-if="l.label === 'X'">X</span>
                     <span v-else>{{ l.label }}</span>
                   </a>
