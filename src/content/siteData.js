@@ -1,6 +1,6 @@
 export const siteData = {
   header: {
-    brandText: 'D E L E O N',
+    brandText: 'DELEON',
     logoSrc: '/BrandAssets/Deleon_Logo_light.svg',
     // Reduced IA: Home, Founders, Why We're Different, Contact/Updates
     nav: [

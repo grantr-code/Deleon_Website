@@ -16,8 +16,10 @@ export default {
         },
       },
       fontFamily: {
-        // Use local Eurostile Round Extended for brand wordmarks and headings
-        brand: ['"Eurostile Round Extended"', '"Eurostile Round"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
+        // Restore sitewide font to Space Grotesk
+        brand: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
+        // Use Eurostile only for the wordmark text
+        logo: ['"Eurostile Round Extended"', '"Eurostile Round"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
       },
     },
   },
