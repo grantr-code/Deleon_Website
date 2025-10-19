@@ -27,7 +27,8 @@
         playsinline
         preload="metadata"
       >
-        <source :src="'/BrandAssets/Video.mov'" type="video/mp4" />
+        <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
+        <source :src="'/BrandAssets/Video.mov'" type="video/quicktime" />
       </video>
     </div>
 

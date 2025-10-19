@@ -57,6 +57,7 @@ import OurPlatforms from './components/OurPlatforms.vue';
 import CapabilitiesList from './components/CapabilitiesList.vue';
 
 const video = {
+  srcMp4: '/BrandAssets/Video_Military.mp4',
   srcMov: '/BrandAssets/Video_Military.mov',
   poster: '/BrandAssets/Deleon_Logo_light.svg',
 };

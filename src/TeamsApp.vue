@@ -102,6 +102,7 @@ import VideoOverlay from './components/VideoOverlay.vue';
 
 const video = {
   // Provide MOV and optionally MP4 when available for wider browser support
+  srcMp4: '/BrandAssets/Video.mp4',
   srcMov: '/BrandAssets/Video.mov',
   poster: '/BrandAssets/Deleon_Logo_light.svg',
 };
