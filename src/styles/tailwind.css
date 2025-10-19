@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global typography tweaks */
+@layer base {
+  /* Modestly increase base font size sitewide */
+  html { font-size: 17px; }
+  @media (min-width: 768px) {
+    html { font-size: 18px; }
+  }
+  /* Use brand font everywhere by default */
+  body { @apply font-brand; }
+}
+
+/* Utility: constrain overall site width by max aspect ratio 16:10 */
+@layer utilities {
+  /* Center a container whose width never exceeds 1.6 × viewport height */
+  .aspect-guard {
+    width: min(100vw, calc(100svh * 1.6));
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Add subtle vertical rails at container edges */
+  .with-rails { position: relative; }
+  .with-rails::before,
+  .with-rails::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.08); /* subtle hairline on dark bg */
+    pointer-events: none;
+    z-index: 5; /* ensure rails render above section backgrounds */
+  }
+  .with-rails::before { left: 0; }
+  .with-rails::after { right: 0; }
+}

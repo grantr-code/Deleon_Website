@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="138" height="252" viewBox="0 0 138 252">
+  <!-- Removed white background to allow transparent background in export -->
+  <circle cx="65.00" cy="203.00" r="8.28" fill="#000000"/>
+  <circle cx="42.00" cy="211.00" r="8.28" fill="#000000"/>
+  <circle cx="19.00" cy="192.00" r="6.46" fill="#000000"/>
+  <circle cx="25.00" cy="57.00" r="13.72" fill="#000000"/>
+  <circle cx="19.00" cy="212.00" r="6.46" fill="#000000"/>
+  <circle cx="102.00" cy="167.00" r="10.10" fill="#000000"/>
+  <circle cx="27.00" cy="96.00" r="13.72" fill="#000000"/>
+  <circle cx="86.00" cy="188.00" r="10.10" fill="#000000"/>
+  <circle cx="101.00" cy="102.00" r="10.10" fill="#000000"/>
+  <circle cx="59.00" cy="64.00" r="11.92" fill="#000000"/>
+  <circle cx="68.00" cy="136.00" r="17.39" fill="#000000"/>
+  <circle cx="28.00" cy="136.00" r="15.62" fill="#000000"/>
+  <circle cx="84.00" cy="80.00" r="11.92" fill="#000000"/>
+  <!-- Green circle: slightly larger than the largest black (r=18.5), horizontally spaced by 40px from cx=68, and vertically aligned at y=136 -->
+  <circle cx="108.00" cy="136.00" r="18.50" fill="#4CC95B"/>
+</svg>
