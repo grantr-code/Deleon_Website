@@ -9,7 +9,7 @@
         <div class="flex items-center justify-between gap-4">
           <a href="/" class="flex items-center gap-3.5" aria-label="Deleon">
             <img :src="data.logoSrc" alt="Deleon logo" class="h-10 md:h-11 w-auto" />
-            <span ref="brandText" class="font-logo font-semibold uppercase tracking-[0.35em] text-[0.95rem] md:text-[1.05rem]">{{ data.brandText }}</span>
+            <span ref="brandText" class="font-logo font-semibold uppercase tracking-[0.35em] text-[0.95rem] md:text-[1.05rem] relative top-[3px]">{{ data.brandText }}</span>
           </a>
           <div class="flex items-center gap-3">
             <!-- Desktop chips (right aligned); auto-collapse to hamburger on overflow -->
@@ -65,7 +65,7 @@
         <div class="flex items-center justify-between gap-4">
           <a href="/" class="flex items-center gap-3.5" aria-label="Deleon">
             <img :src="data.logoSrc" alt="Deleon logo" class="h-10 md:h-11 w-auto" />
-            <span class="font-logo font-semibold uppercase tracking-[0.35em] text-[0.95rem] md:text-[1.05rem]">{{ data.brandText }}</span>
+            <span class="font-logo font-semibold uppercase tracking-[0.35em] text-[0.95rem] md:text-[1.05rem] relative top-[3px]">{{ data.brandText }}</span>
           </a>
           <div class="flex items-center gap-3">
             <!-- Desktop chips (right aligned); auto-collapse to hamburger on overflow -->
