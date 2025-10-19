@@ -1,7 +1,7 @@
 ---
 slug: 2025-10-05-welcome-nellie-kolon
 shortTitle: Welcome Nellie Kolon — Scientist at Deleon
-longTitle: We’re thrilled to welcome Nellie Kolon as one of Deleon’s first team members
+longTitle: We’re Thrilled to Welcome Nellie Kolon as One of Deleon’s First Team Members
 date: 2025-10-05
 tag: Team Update
 author: Deleon Newsroom

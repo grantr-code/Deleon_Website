@@ -1,8 +1,8 @@
 ---
-slug: 2025-09-16-humans-in-space-challenge
-shortTitle: Deleon advances in Humans In Space Challenge
-longTitle: Deleon selected as Second Round Winner in the 2025 Humans In Space Challenge
-date: 2025-09-16
+slug: 2025-10-15-humans-in-space-challenge
+shortTitle: Deleon Advances in Humans in Space Challenge
+longTitle: Deleon Selected as Second Round Winner in the 2025 Humans in Space Challenge
+date: 2025-10-15
 tag: Competition
 author: Deleon Newsroom
 source: Competition

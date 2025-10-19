@@ -1,8 +1,8 @@
 ---
-slug: 2025-09-17-cofounder-andrade
-shortTitle: Co‑founder José Andrade locks in with Deleon
-longTitle: Thanks to Boost VC, co‑founder José Luis R. Andrade locks in with Deleon
-date: 2025-09-17
+slug: 2025-09-21-cofounder-andrade
+shortTitle: Co‑Founder José Andrade Locks In with Deleon
+longTitle: Thanks to Boost VC, Co‑Founder José Luis R. Andrade Locks In with Deleon
+date: 2025-09-21
 tag: Team Update
 author: Deleon Newsroom
 source: Team Update
