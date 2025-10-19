@@ -3,7 +3,34 @@
     class="bg-black text-white relative h-[100svh] min-h-[100svh] overflow-hidden"
     :style="{ marginTop: `-${headerOffset}px` }"
   >
-    <canvas ref="canvasRef" class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true"></canvas>
+    <!-- Background layer: default canvas, effect, or video -->
+    <div class="absolute inset-0">
+      <template v-if="active.kind === 'default'">
+        <canvas ref="canvasRef" class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true"></canvas>
+      </template>
+      <template v-else-if="active.kind === 'effect'">
+        <div class="relative w-full h-full">
+          <component :is="active.component" />
+        </div>
+      </template>
+      <template v-else>
+        <video
+          class="absolute inset-0 w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          :poster="active.poster"
+        >
+          <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
+          <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
+          <source v-if="active.src" :src="active.src" />
+          Your browser does not support the video tag.
+        </video>
+      </template>
+    </div>
+
+    <!-- Hero content overlay -->
     <div class="absolute inset-0 z-10 flex items-center justify-center px-4">
       <div class="text-center max-w-[1100px]">
         <TypeReplaceOnView
@@ -24,6 +51,28 @@
         <EarlyAccessForm />
       </div>
     </div>
+
+    <!-- Small demo control (feature-flagged) -->
+    <div v-if="showSwitcher" class="absolute z-20 top-3 right-3">
+      <div v-if="!collapsed" class="rounded-md border border-white/15 bg-black/50 backdrop-blur-sm shadow-sm p-3 text-[12px]">
+        <div class="flex items-center justify-between gap-3">
+          <span class="uppercase tracking-wider text-white/80">Background</span>
+          <button type="button" class="px-2 py-1 rounded bg-white/10 hover:bg-white/15 text-white/80" @click="collapsed = true" title="Minimize">Hide</button>
+        </div>
+        <div class="mt-2">
+          <label class="block text-white/70 mb-1">Mode</label>
+          <select
+            v-model="selected"
+            class="w-[240px] bg-black/40 border border-white/15 rounded px-2 py-1 text-white/90"
+            @change="persistSelection"
+          >
+            <option v-for="opt in options" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+          </select>
+        </div>
+      </div>
+      <button v-else type="button" class="rounded-md border border-white/15 bg-black/50 backdrop-blur-sm shadow-sm px-2 py-1 text-[12px] text-white/90 hover:bg-white/10" @click="collapsed = false" title="Show background switcher">BG</button>
+    </div>
+
     <!-- Scroll cue (arrow) -->
     <div class="absolute left-1/2 -translate-x-1/2 bottom-6 z-20 flex flex-col items-center gap-2">
       <a href="#our-platforms" aria-label="Scroll to Our Platform" class="pointer-events-auto">
@@ -34,21 +83,70 @@
         </span>
       </a>
     </div>
-    
   </div>
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { onMounted, onBeforeUnmount, ref, computed, watch } from 'vue';
 import TypeReplaceOnView from './TypeReplaceOnView.vue';
 import EarlyAccessForm from './EarlyAccessForm.vue';
+import GridCanvas from './GridCanvas.vue';
+import OrbitsCanvas from './OrbitsCanvas.vue';
+import RadarCanvas from './RadarCanvas.vue';
+
+const props = defineProps({ enableSwitcher: { type: Boolean, default: false } });
 
 const canvasRef = ref(null);
 let raf = 0;
 let isVisible = true;
 const headerOffset = ref(0);
+const selected = ref('default');
+const collapsed = ref(false);
+
+const queryFlag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('bgctl');
+const envFlag = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENABLE_BG_SWITCHER === 'true';
+const showSwitcher = computed(() => props.enableSwitcher || envFlag || queryFlag);
+
+const options = [
+  { value: 'default', label: 'Default (Page Hero)' },
+  { value: 'video:teams', label: 'Video — Teams' },
+  { value: 'video:military', label: 'Video — Military' },
+  { value: 'effect:grid', label: 'Animation — Analysis (Grid)' },
+  { value: 'effect:orbits', label: 'Animation — Insights (Orbits)' },
+  { value: 'effect:radar', label: 'Animation — Command (Radar)' },
+];
+
+const active = computed(() => {
+  const poster = '/BrandAssets/Deleon_Logo_light.svg';
+  switch (selected.value) {
+    case 'video:teams':
+      return { kind: 'video', poster, srcMp4: '/BrandAssets/Video.mp4', srcMov: '/BrandAssets/Video.mov' };
+    case 'video:military':
+      return { kind: 'video', poster, srcMp4: '/BrandAssets/Video_Military.mp4', srcMov: '/BrandAssets/Video_Military.mov' };
+    case 'effect:grid':
+      return { kind: 'effect', component: GridCanvas };
+    case 'effect:orbits':
+      return { kind: 'effect', component: OrbitsCanvas };
+    case 'effect:radar':
+      return { kind: 'effect', component: RadarCanvas };
+    case 'default':
+    default:
+      return { kind: 'default' };
+  }
+});
+
+const isDefaultActive = computed(() => active.value.kind === 'default');
+
+function persistSelection() {
+  try { localStorage.setItem('heroBgMode', selected.value); } catch {}
+}
 
 onMounted(() => {
+  try {
+    const saved = localStorage.getItem('heroBgMode');
+    if (saved) selected.value = saved;
+  } catch {}
+
   const canvas = canvasRef.value;
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -201,7 +299,18 @@ onMounted(() => {
   document.addEventListener('visibilitychange', onVis);
   resize();
   measureHeader();
-  if (prefersReduced) drawStatic(); else raf = requestAnimationFrame(step);
+  if (prefersReduced) drawStatic();
+  else if (isDefaultActive.value) raf = requestAnimationFrame(step);
+
+  // Start/stop animation when switching modes
+  watch(isDefaultActive, (now) => {
+    if (prefersReduced) return;
+    if (now) {
+      if (!raf) raf = requestAnimationFrame(step);
+    } else if (raf) {
+      cancelAnimationFrame(raf); raf = 0;
+    }
+  });
 
   onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize);

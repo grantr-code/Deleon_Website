@@ -2,7 +2,7 @@
   <div class="aspect-guard with-rails">
     <SiteHeader :data="data.header" />
     <main id="main-content" tabindex="-1" class="relative bg-brand-dark text-brand-text">
-      <HeroBand />
+      <HeroBand :enable-switcher="true" />
 
 
       <OurPlatforms
