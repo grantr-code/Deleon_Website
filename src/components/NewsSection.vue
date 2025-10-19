@@ -8,14 +8,14 @@
       </div>
 
       <!-- Card grid -->
-      <div class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-16 items-start">
+      <div class="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-12 items-start">
         <article
           v-for="(post, idx) in visiblePosts"
           :key="idx"
           class="group"
         >
           <!-- Head block with fixed height so images align across cards -->
-          <div class="h-[156px] md:h-[164px] lg:h-[168px] overflow-hidden">
+          <div class="overflow-hidden">
             <!-- Meta row -->
             <div class="flex items-center justify-between border-b border-white/10 pb-3">
               <div class="flex items-center gap-6 text-[11px] uppercase tracking-[0.18em] text-brand-muted">
@@ -32,13 +32,13 @@
             </div>
 
             <!-- Title (clamped so heights match) -->
-            <h3 class="mt-4 text-white text-[clamp(18px,1.6vw,24px)] leading-[1.15] title-clamp" style="--clamp: 3;">
+            <h3 class="mt-3 text-white text-[clamp(18px,1.6vw,24px)] leading-[1.2] title-clamp" style="--clamp: 2;">
               {{ post.title }}
             </h3>
           </div>
 
           <!-- Media -->
-          <a :href="post.href || '#'" class="block mt-5">
+          <a :href="post.href || '#'" class="block mt-4">
             <div class="relative overflow-hidden bg-brand-card border border-white/10 shadow-[0_20px_60px_-18px_rgba(0,0,0,0.6)]">
               <!-- Left accent bar -->
               <div class="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-brand-green"></div>
@@ -69,92 +69,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-
-const props = defineProps({
-  posts: {
-    type: Array,
-    default: () => [
-      {
-        date: '10/15/2025',
-        tag: 'Press',
-        title: 'Deleon secures seed funding to bring metabolomics to every locker room',
-        author: 'Team Deleon',
-        source: 'Newsroom',
-        href: '#',
-        image:
-          'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop',
-      },
-      {
-        date: '10/10/2025',
-        tag: 'Deep Dive',
-        title: 'Inside the Deleon Analyzer: thousands of metabolites in minutes',
-        author: 'Engineering',
-        source: 'Blog',
-        href: '#',
-        image: '/BrandAssets/news/analyzer.svg',
-      },
-      {
-        date: '09/28/2025',
-        tag: 'Results',
-        title: 'Pilot results: 22% fewer soft‑tissue injuries across three pro teams',
-        author: 'Performance Science',
-        source: 'Study',
-        href: '#',
-        image: '/BrandAssets/news/pilot.svg',
-      },
-      {
-        date: '09/18/2025',
-        tag: 'Field Notes',
-        title: 'From sample to decision: how coaches use metabolomic readiness daily',
-        author: 'Coaching Ops',
-        source: '—',
-        href: '#',
-        image:
-          'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1200&auto=format&fit=crop',
-      },
-      {
-        date: '09/08/2025',
-        tag: 'Update',
-        title: 'Edge AI scoring flags travel fatigue within hours',
-        author: 'Engineering',
-        source: 'Product',
-        href: '#',
-        image:
-          'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop',
-      },
-      {
-        date: '08/21/2025',
-        tag: 'Partnership',
-        title: 'Deleon x University Sports Lab announce performance research collaboration',
-        author: 'Newsroom',
-        source: 'Press',
-        href: '#',
-        image:
-          'https://images.unsplash.com/photo-1546484959-f9a53db89de0?q=80&w=1200&auto=format&fit=crop',
-      },
-      {
-        date: '08/14/2025',
-        tag: 'Research',
-        title: 'Personalized fueling plans powered by metabolomic signatures',
-        author: 'Nutrition Science',
-        source: 'Blog',
-        href: '#',
-        image:
-          'https://images.unsplash.com/photo-1505250469679-203ad9ced0cb?q=80&w=1200&auto=format&fit=crop',
-      },
-      {
-        date: '07/30/2025',
-        tag: 'Milestone',
-        title: 'One million metabolite reads processed on Deleon',
-        author: 'Team Deleon',
-        source: '—',
-        href: '#',
-        image:
-          'https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=1200&auto=format&fit=crop',
-      },
-    ],
-  },
-});
+import { getAllArticles } from '../lib/articles';
 
 // Show only one row: determine how many columns are currently active
 // Tailwind default breakpoints: sm(640), md(768), lg(1024), xl(1280)
@@ -166,7 +81,17 @@ function computeCols() {
 onMounted(() => { computeCols(); window.addEventListener('resize', computeCols, { passive: true }); });
 onBeforeUnmount(() => window.removeEventListener('resize', computeCols));
 
-const visiblePosts = computed(() => props.posts.slice(0, cols.value));
+const all = getAllArticles();
+const mapped = computed(() => all.map(a => ({
+  date: a.dateDisplay,
+  tag: a.tag,
+  title: a.shortTitle,
+  author: a.author,
+  source: a.source,
+  href: a.href,
+  image: a.image,
+})));
+const visiblePosts = computed(() => mapped.value.slice(0, cols.value));
 </script>
 
 <style scoped>

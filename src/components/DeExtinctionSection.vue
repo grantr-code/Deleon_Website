@@ -58,7 +58,7 @@
         <div class="col-span-12 md:col-span-7 lg:pr-8 xl:pr-12 2xl:pr-16 md:sticky md:top-24 md:max-w-[640px] xl:max-w-[700px] 2xl:max-w-[720px] w-full">
           <p class="text-white text-[clamp(20px,2.2vw,28px)] leading-[1.22] tracking-[-0.005em]">
             Real‑time biochemistry for people and teams. From a drop of urine to
-            individualized guidance in minutes—for performance, health, and operations.
+            individualized guidance in minutes—for performance, wellness, and operations.
           </p>
 
           <!-- CTA pill -->

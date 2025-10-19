@@ -113,9 +113,9 @@ function drawDiagram(ctx, sim){
   ctx.fillStyle = 'rgba(255,255,255,0.75)';
   ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
   ctx.font = labelFont;
-  const pLabelW = ctx.measureText('Photocathode').width;
+  const pLabelW = ctx.measureText('Detector').width;
   const pLabelX = Math.min(lx + 6, rightX + resW - 6 - pLabelW);
-  ctx.fillText('Photocathode', pLabelX, channelTop + channelH + 26);
+  ctx.fillText('Detector', pLabelX, channelTop + channelH + 26);
 }
 
 function drawChart(ctx, sim, signal){

@@ -6,17 +6,17 @@
         <div class="border-t border-white/10"></div>
         <div class="mt-4 flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
           <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
-          <span>For Teams</span>
+          <span>For Athletes</span>
         </div>
         <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">Pro, Olympic, and Collegiate Performance</h1>
         <p class="mt-4 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
-          Real-time metabolomics to guide training, fueling, and recovery—so athletes adapt faster, reduce risk, and deliver when it matters.
+          Get personalized biochemical data on training load and understand trends in your urine metabolome related to recovery time and injury risk. Be the first among your friends to use cutting‑edge technology—originally developed for astronauts.
         </p>
       </section>
 
       <VideoOverlay
         heading="Metabolomics for Elite Performance"
-        :overlay-text="'Turn a daily, 2‑minute test into precise recommendations for readiness, fueling, hydration, and recovery—tailored to each athlete, every day.'"
+        :overlay-text="'Personalized biochemical data on training load with daily trends in your urine metabolome tied to recovery time and injury risk—powered by space‑grade tech.'"
         :video="video"
       />
 
@@ -56,9 +56,9 @@
                 </p>
               </div>
               <div class="rounded-lg border border-white/10 p-4 bg-white/5">
-                <h3 class="text-white font-semibold">Illness & Risk Flags</h3>
+                <h3 class="text-white font-semibold">Injury Risk Signals</h3>
                 <p class="mt-2 text-brand-muted">
-                  Catch early signs of immune stress and energy imbalance to reduce soft‑tissue risk.
+                  Spot early biochemical patterns tied to injury risk and energy imbalance.
                 </p>
               </div>
               <div class="rounded-lg border border-white/10 p-4 bg-white/5">
@@ -83,7 +83,7 @@
                 <li>• A 2‑minute test after weigh‑in or pre‑session</li>
                 <li>• Instant recommendations for staff and athlete (mobile + dashboard)</li>
                 <li>• Color‑coded flags for readiness, fueling, hydration, and recovery</li>
-                <li>• Trends across microcycles, travel, and return‑to‑play phases</li>
+                <li>• Trends in recovery time and injury risk across microcycles</li>
               </ul>
             </div>
           </div>

@@ -8,15 +8,15 @@
           <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
           <span>Defense</span>
         </div>
-        <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">For Military Health Operations</h1>
+        <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">For Military Wellness Operations</h1>
         <p class="mt-4 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
-          Understand force health in real time. Surface metabolic strain and emerging health threats before they degrade readiness.
+          Understand force wellness in real time. Surface metabolic strain and emerging risks before they degrade readiness.
         </p>
       </section>
 
       <VideoOverlay
         heading="Operational Metabolomics"
-        :overlay-text="'A 2‑minute test translates into readiness, hydration, and recovery guidance—plus anomaly detection that can flag emerging health threats across units.'"
+        :overlay-text="'A 2‑minute test translates into readiness, hydration, and recovery guidance—plus anomaly detection that can flag emerging risks across units.'"
         :video="video"
       />
 
@@ -89,7 +89,7 @@ const milPlatforms = {
       name: 'Operations',
       chip: 'Ops Center',
       tag: 'Workflow',
-      title: 'A common operating picture for force health',
+      title: 'A common operating picture for force wellness',
       description: 'Trends, risk flags, and anomaly detection across units.',
       long: 'Dashboards show trends, highlight emerging illness clusters and heat risk, and surface outliers for intervention. Works in low‑connectivity environments with sync when available.',
       effect: 'radar',

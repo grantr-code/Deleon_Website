@@ -1,7 +1,7 @@
 <template>
   <div id="updates" class="mt-8">
     <form @submit.prevent="onSubmit" class="mx-auto max-w-xl">
-      <div class="flex items-stretch gap-2">
+      <div class="flex flex-col sm:flex-row items-stretch gap-2 sm:gap-3">
         <label for="early-email" class="sr-only">Email address</label>
         <input
           id="early-email"
@@ -15,7 +15,7 @@
         <button
           type="submit"
           :disabled="submitting || success"
-          class="rounded-full bg-brand-green text-black font-semibold px-5 py-3 whitespace-nowrap hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
+          class="rounded-full bg-brand-green text-black font-semibold px-5 py-3 whitespace-nowrap hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed w-full sm:w-auto"
         >
           <span v-if="!success && !submitting">Get early access</span>
           <span v-else-if="submitting">Sending…</span>

@@ -14,7 +14,7 @@ export const siteData = {
     { type: 'hero' },
     {
       type: 'platforms',
-      headline: 'Turn human biochemistry tested daily into real‑time decisions—for performance, health, and operations.',
+      headline: 'Turn human biochemistry tested daily into real‑time decisions—for performance, wellness, and operations.',
       emphasis: 'tested daily',
       items: [
         {
@@ -40,7 +40,7 @@ export const siteData = {
           chip: 'Operations Dashboard',
           tag: 'Workflow',
           title: 'Operate with a common operating picture',
-          description: 'A unified dashboard across performance, health, and operations.',
+          description: 'A unified dashboard across performance, wellness, and operations.',
           long: 'Track trends, flag risks, and coordinate interventions—bringing biochemistry into the daily rhythm of planning and care.',
           effect: 'radar',
         },
@@ -67,17 +67,19 @@ export const siteData = {
       {
         title: 'Resources',
         links: [
+          { label: 'News', href: '/news.html' },
           { label: 'Science', href: '/science.html' },
         ],
       },
       {
         title: 'Company',
         links: [
+          { label: 'Founders', href: '/team.html' },
           { label: 'Contact', href: 'mailto:chad@deleon-omics.com,jose@deleon-omics.com' },
         ],
       },
     ],
-    regions: ['Engineered in Atlanta, GA'],
+    regions: ['Engineered in Atlanta, GA 🇺🇸'],
     social: [
       { label: 'LinkedIn', href: '#' },
       { label: 'X', href: '#' },

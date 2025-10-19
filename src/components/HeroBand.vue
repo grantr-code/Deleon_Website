@@ -33,8 +33,8 @@
     </div>
 
     <!-- Hero content overlay -->
-    <div class="absolute inset-0 z-10 flex items-center justify-center px-4" :class="preferDarkText ? 'text-black' : 'text-white'">
-      <div class="text-center max-w-[1100px]">
+    <div class="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-28" :class="preferDarkText ? 'text-black' : 'text-white'">
+      <div class="text-center max-w-[1100px] w-full mx-auto">
         <TypeReplaceOnView
           tag="h1"
           prefix="Operate with a common "

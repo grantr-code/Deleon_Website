@@ -19,16 +19,19 @@
       <hr class="my-10 border-neutral-800" />
 
       <!-- Lower grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20">
+      <!-- Stack on small screens; split 3/9 on large -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-10 pb-12 lg:pb-20">
         <!-- Left column: meta + locale + social -->
         <div class="lg:col-span-3">
-          <div class="w-56 lg:w-full">
+          <div class="w-full">
             <p class="text-sm text-brand-muted">{{ data.copyright }}</p>
             <hr class="my-6 border-neutral-800" />
-            <div class="flex gap-3 text-sm">
+
+            <div class="flex flex-wrap gap-3 text-sm">
               <span v-for="(r, i) in data.regions" :key="i" class="tracking-wide text-brand-muted">{{ r }}</span>
             </div>
             <hr class="my-6 border-neutral-800" />
+            <!-- Keep the divider above and below regions; remove only the one below social -->
             <div class="flex flex-col gap-3">
               <a
                 v-for="s in data.social"
@@ -41,26 +44,25 @@
                 {{ s.label }}
               </a>
             </div>
-            <hr class="my-6 border-neutral-800" />
           </div>
         </div>
 
         <!-- Right columns: link lists -->
-        <div class="lg:col-span-9">
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
+        <div class="lg:col-span-9 min-w-0">
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             <div v-for="col in filteredColumns" :key="col.title">
-              <div class="text-[11px] uppercase tracking-wider text-brand-muted font-semibold mb-3">{{ col.title }}</div>
-              <ul class="space-y-3">
+              <div class="text-[11px] uppercase tracking-wider text-brand-muted font-semibold mb-2 sm:mb-3">{{ col.title }}</div>
+              <ul class="space-y-2 sm:space-y-3">
                 <li v-for="item in col.links" :key="item.label">
-                  <a :href="item.href" class="text-sm text-brand-text/80 hover:text-brand-text">{{ item.label }}</a>
+                  <a :href="item.href" class="break-words text-sm text-brand-text/80 hover:text-brand-text">{{ item.label }}</a>
                 </li>
               </ul>
             </div>
           </div>
 
-          <!-- Partnerships: shown below Solutions / Resources / Company columns -->
-          <div class="mt-10 border-t border-neutral-800 pt-6">
-            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <!-- Partnerships / Disclaimer: placed inside right column to sit directly under site map -->
+          <div class="mt-3 sm:mt-4 border-t border-neutral-800 pt-4">
+            <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
               <a href="https://www.pravida.com/" target="_blank" rel="noopener" class="inline-flex">
                 <img
                   src="/Pravida.png"
@@ -75,7 +77,7 @@
                 We partner with Pravida for clinical services.
               </p>
             </div>
-            <p class="mt-4 text-[12px] leading-relaxed text-brand-muted text-center sm:text-left">
+            <p class="mt-2 sm:mt-3 text-[12px] leading-relaxed text-brand-muted text-center sm:text-left">
               Wellness information only. Data for research use only.
             </p>
           </div>
