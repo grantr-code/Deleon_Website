@@ -95,7 +95,9 @@ import OrbitsCanvas from './OrbitsCanvas.vue';
 import RadarCanvas from './RadarCanvas.vue';
 import TestFlowField from './TestFlowField.vue';
 import TestPulseGrid from './TestPulseGrid.vue';
-import TestMatrixRain from './TestMatrixRain.vue';
+import TestChemLattice from './TestChemLattice.vue';
+import TestMoleculeOrbits from './TestMoleculeOrbits.vue';
+import TestBrownian from './TestBrownian.vue';
 
 const props = defineProps({ enableSwitcher: { type: Boolean, default: false } });
 
@@ -119,7 +121,9 @@ const options = [
   { value: 'effect:radar', label: 'Animation — Command (Radar)' },
   { value: 'test:flow', label: 'TEST — Flow Field' },
   { value: 'test:pulse', label: 'TEST — Pulse Grid' },
-  { value: 'test:matrix', label: 'TEST — Matrix Rain' },
+  { value: 'test:chem', label: 'TEST — Chem Lattice' },
+  { value: 'test:mol', label: 'TEST — Molecule Orbits' },
+  { value: 'test:diffuse', label: 'TEST — Brownian Diffusion' },
 ];
 
 const active = computed(() => {
@@ -139,8 +143,12 @@ const active = computed(() => {
       return { kind: 'effect', component: TestFlowField };
     case 'test:pulse':
       return { kind: 'effect', component: TestPulseGrid };
-    case 'test:matrix':
-      return { kind: 'effect', component: TestMatrixRain };
+    case 'test:chem':
+      return { kind: 'effect', component: TestChemLattice };
+    case 'test:mol':
+      return { kind: 'effect', component: TestMoleculeOrbits };
+    case 'test:diffuse':
+      return { kind: 'effect', component: TestBrownian };
     case 'default':
     default:
       return { kind: 'default' };
