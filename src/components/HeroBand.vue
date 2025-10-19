@@ -15,7 +15,7 @@
           :fromSpeed="220"
           :toSpeed="220"
           :backspaceSpeed="150"
-          :pauseFrom="5000"
+          :pauseFrom="3000"
           :pauseTo="10000"
           :loop="true"
           :startDelay="120"
