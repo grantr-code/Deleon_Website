@@ -12,6 +12,7 @@ const props = defineProps({
   from: { type: String, required: true },
   to: { type: String, required: true },
   speed: { type: Number, default: 28 },
+  toSpeed: { type: Number, default: null },
   backspaceSpeed: { type: Number, default: 28 },
   startDelay: { type: Number, default: 0 },
   pauseAfterFirst: { type: Number, default: 800 },
@@ -68,7 +69,7 @@ function start() {
                   clearInterval(timer);
                   showCaret.value = false;
                 }
-              }, Math.max(10, props.speed));
+              }, Math.max(10, (props.toSpeed ?? props.speed)));
               return;
             }
             output.value = props.prefix + props.from.slice(0, j);
@@ -99,4 +100,3 @@ onBeforeUnmount(() => {
 .caret { margin-left: 2px; opacity: 0.7; animation: blink 1s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 </style>
-

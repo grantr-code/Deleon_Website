@@ -12,6 +12,7 @@
           from="truth"
           to="operating picture"
           :speed="26"
+          :toSpeed="220"
           :backspaceSpeed="150"
           :pauseAfterFirst="2000"
           :startDelay="120"
