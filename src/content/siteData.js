@@ -21,7 +21,7 @@ export const siteData = {
           name: 'Analysis',
           chip: 'Edge Testing',
           tag: 'Portable Device',
-          title: 'Measure thousands of metabolites in minutes',
+          title: 'Measure key metabolites in minutes',
           description: 'Portable, on‑site biochemical testing with results in minutes.',
           long: 'Deleon’s compact analyzer captures metabolomic signals from a drop of urine and returns actionable markers in minutes—no lab queue, no shipping. Built for clinics, teams, and field operations.',
           effect: 'grid',
