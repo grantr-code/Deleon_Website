@@ -64,7 +64,6 @@
           :startDelay="120"
           :wrapper-class="headingClass"
         />
-        <EarlyAccessForm :theme="preferDarkText ? 'light' : 'dark'" />
       </div>
     </div>
 
@@ -125,7 +124,6 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref, computed, watch, inject } from 'vue';
 import TypeReplaceOnView from './TypeReplaceOnView.vue';
-import EarlyAccessForm from './EarlyAccessForm.vue';
 import GridCanvas from './GridCanvas.vue';
 import OrbitsCanvas from './OrbitsCanvas.vue';
 import RadarCanvas from './RadarCanvas.vue';

@@ -17,11 +17,13 @@
     </main>
     <SiteFooter :data="data.footer" />
   </div>
+  <!-- Global Early Access Drawer -->
+  <EarlyAccessDrawer />
   
 </template>
 
 <script setup>
-import { computed, provide, ref, watch } from 'vue';
+import { computed, provide, ref, watch, onMounted } from 'vue';
 import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
@@ -29,6 +31,8 @@ import HeroBand from './components/HeroBand.vue';
 import OurPlatforms from './components/OurPlatforms.vue';
 import DeExtinctionSection from './components/DeExtinctionSection.vue';
 import { useSiteTheme } from './composables/useSiteTheme';
+import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
+import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 
 const platforms = computed(() => data.sections.find(s => s.type === 'platforms'));
 
@@ -45,6 +49,14 @@ provide('siteTheme', siteTheme);
 watch(siteTheme, (val) => {
   headerTheme.value = val === 'light' ? 'light' : 'dark';
 }, { immediate: true });
+
+// Open Early Access panel if URL hash requests it
+const { open: openEarly } = useEarlyAccessPanel();
+onMounted(() => {
+  if (typeof window !== 'undefined' && window.location.hash === '#updates') {
+    openEarly();
+  }
+});
 </script>
 
 <style>

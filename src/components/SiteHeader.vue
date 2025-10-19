@@ -22,6 +22,7 @@
                   <a
                     :href="item.href"
                     :class="chipClass + ' whitespace-nowrap'"
+                    @click.prevent="handleNavClick(item)"
                   >
                     {{ item.label }}
                   </a>
@@ -59,7 +60,7 @@
                 <a
                   :href="item.href"
                   :class="mobileLinkClass"
-                  @click="isOpen = false"
+                  @click.prevent="handleNavClick(item, true)"
                 >
                   {{ item.label }}
                 </a>
@@ -87,6 +88,7 @@
                   <a
                     :href="item.href"
                     :class="chipClass + ' whitespace-nowrap'"
+                    @click.prevent="handleNavClick(item)"
                   >
                     {{ item.label }}
                   </a>
@@ -124,7 +126,7 @@
                 <a
                   :href="item.href"
                   :class="mobileLinkClass"
-                  @click="isOpen = false"
+                  @click.prevent="handleNavClick(item, true)"
                 >
                   {{ item.label }}
                 </a>
@@ -139,6 +141,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick, computed, inject } from 'vue';
+import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -160,6 +163,20 @@ const chipClass = computed(() => isLightHeader.value
   : 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60');
 
 const isOpen = ref(false);
+const { open: openEarlyAccess } = useEarlyAccessPanel();
+
+function handleNavClick(item, fromMobile = false) {
+  const href = item?.href || '';
+  const isUpdates = href.includes('#updates') || /updates/i.test(item?.label || '');
+  if (isUpdates) {
+    openEarlyAccess();
+    if (fromMobile) isOpen.value = false;
+    return;
+  }
+  // For all other items, follow link normally
+  if (fromMobile) isOpen.value = false;
+  if (typeof window !== 'undefined') window.location.href = href;
+}
 
 // Mobile dropdown styling
 const mobilePanelClass = computed(() => isLightHeader.value

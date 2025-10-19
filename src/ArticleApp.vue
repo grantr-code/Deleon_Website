@@ -56,15 +56,18 @@
     </main>
     <SiteFooter :data="data.footer" />
   </div>
+  <EarlyAccessDrawer />
 </template>
 
 <script setup>
-import { computed, ref, provide, watch } from 'vue';
+import { computed, ref, provide, watch, onMounted } from 'vue';
 import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import { getAllArticles, getArticleBySlug } from './lib/articles';
 import { useSiteTheme } from './composables/useSiteTheme';
+import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
+import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 
 function getSlug() {
   const params = new URLSearchParams(window.location.search);
@@ -85,6 +88,9 @@ const headerTheme = ref('dark');
 provide('headerTheme', headerTheme);
 const { theme: siteTheme } = useSiteTheme();
 watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
+
+const { open: openEarly } = useEarlyAccessPanel();
+onMounted(() => { if (typeof window !== 'undefined' && window.location.hash === '#updates') openEarly(); });
 </script>
 
 <style scoped>

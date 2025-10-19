@@ -10,6 +10,7 @@
           :href="cta.href"
           class="group rounded-xl p-8 md:p-10 flex items-center justify-between border transition-colors"
           :class="cta.theme === 'dark' ? 'bg-black text-brand-text border-neutral-800 hover:bg-neutral-950' : 'bg-brand-card text-brand-text border-neutral-800 hover:bg-[rgb(28,28,28)]'"
+          @click.prevent="handleCtaClick(cta)"
         >
           <span class="text-2xl md:text-4xl font-medium tracking-tight">{{ cta.label }}</span>
           <span class="ml-4 shrink-0 text-2xl md:text-3xl transition-transform group-hover:translate-x-1">→</span>
@@ -88,6 +89,8 @@
 </template>
 
 <script setup>
+import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
+
 const props = defineProps({
   data: { type: Object, required: true },
 });
@@ -99,4 +102,10 @@ const filteredColumns = (props.data.columns || [])
     links: (col.links || []).filter(l => l && l.href && l.href !== '#'),
   }))
   .filter(col => col.links.length > 0);
+
+const { open } = useEarlyAccessPanel();
+function handleCtaClick(cta) {
+  // Always open the contact drawer for top CTAs per requirement
+  open();
+}
 </script>

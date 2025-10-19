@@ -118,6 +118,7 @@
 
     <SiteFooter :data="data.footer" />
   </div>
+  <EarlyAccessDrawer />
 </template>
 
 <script setup>
@@ -125,4 +126,10 @@ import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import ScienceInfographic from './components/ScienceInfographic.vue';
+import { onMounted } from 'vue';
+import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
+import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
+
+const { open: openEarly } = useEarlyAccessPanel();
+onMounted(() => { if (typeof window !== 'undefined' && window.location.hash === '#updates') openEarly(); });
 </script>
