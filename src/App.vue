@@ -1,10 +1,13 @@
 <template>
-  <div class="aspect-guard with-rails">
+  <!-- Header + full-bleed hero (no side margins) -->
+  <div class="w-screen">
     <SiteHeader :data="data.header" />
+    <HeroBand :enable-switcher="true" />
+  </div>
+
+  <!-- Constrained content area (16:10 ratio) -->
+  <div class="aspect-guard">
     <main id="main-content" tabindex="-1" class="relative bg-brand-dark text-brand-text">
-      <HeroBand :enable-switcher="true" />
-
-
       <OurPlatforms
         v-if="platforms"
         :headline="platforms.headline"
@@ -17,6 +20,7 @@
     </main>
     <SiteFooter :data="data.footer" />
   </div>
+
   <!-- Global Early Access Drawer -->
   <EarlyAccessDrawer />
   

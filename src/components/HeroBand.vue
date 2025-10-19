@@ -1,12 +1,18 @@
 <template>
   <div
-    class="bg-black text-white relative h-[100svh] min-h-[100svh] overflow-hidden"
+    ref="rootEl"
+    class="bg-black text-white relative h-screen min-h-screen h-[100svh] min-h-[100svh] overflow-hidden"
     :style="{ marginTop: `-${headerOffset}px` }"
   >
     <!-- Background layer: default canvas, effect, or video -->
     <div class="absolute inset-0">
       <template v-if="active.kind === 'default'">
-        <canvas ref="canvasRef" class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true"></canvas>
+        <canvas
+          ref="canvasRef"
+          class="absolute inset-0 w-full h-full pointer-events-none"
+          :style="canvasPerfStyle"
+          aria-hidden="true"
+        ></canvas>
       </template>
       <template v-else-if="active.kind === 'effect'">
         <div class="relative w-full h-full">
@@ -151,6 +157,7 @@ import { useSiteTheme } from '../composables/useSiteTheme';
 
 const props = defineProps({ enableSwitcher: { type: Boolean, default: false } });
 
+const rootEl = ref(null);
 const canvasRef = ref(null);
 let raf = 0;
 let isVisible = true;
@@ -287,7 +294,7 @@ onMounted(() => {
   }
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    const containerRect = canvas.parentElement?.getBoundingClientRect();
+    const containerRect = (rootEl.value ?? canvas.parentElement)?.getBoundingClientRect();
     const rect = containerRect || canvas.getBoundingClientRect();
     width = Math.max(1, Math.floor(rect.width));
     height = Math.max(1, Math.floor(rect.height || (window.innerHeight * 0.6)));
@@ -404,6 +411,17 @@ onMounted(() => {
   }
 
   const onResize = () => { resize(); measureHeader(); if (prefersReduced) drawStatic(); };
+  // Observe hero container and header for size changes (font load, mobile UI bars)
+  let ro = null; let ho = null;
+  if (typeof ResizeObserver !== 'undefined') {
+    ro = new ResizeObserver(() => { resize(); if (prefersReduced) drawStatic(); });
+    if (rootEl.value) ro.observe(rootEl.value);
+    const header = document.getElementById('site-header');
+    if (header) {
+      ho = new ResizeObserver(() => { measureHeader(); });
+      ho.observe(header);
+    }
+  }
   const onVis = () => {
     if (document.visibilityState === 'hidden') { isVisible = false; }
     else { isVisible = true; }
@@ -428,6 +446,8 @@ onMounted(() => {
   onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize);
     document.removeEventListener('visibilitychange', onVis);
+    if (ro) { try { ro.disconnect(); } catch {} }
+    if (ho) { try { ho.disconnect(); } catch {} }
     if (raf) cancelAnimationFrame(raf);
   });
 });
@@ -522,4 +542,11 @@ function applySiteFont() {
   // elements with class `font-logo` keep their explicit Eurostile face.
   document.body.style.fontFamily = stack;
 }
+
+// Promote canvas to its own layer on mobile to avoid first-paint flicker
+const canvasPerfStyle = computed(() => ({
+  willChange: 'transform, opacity',
+  transform: 'translateZ(0)',
+  backfaceVisibility: 'hidden'
+}));
 </script>

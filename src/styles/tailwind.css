@@ -36,13 +36,13 @@
   .with-rails { position: relative; }
   .with-rails::before,
   .with-rails::after {
-    content: '';
+    content: none; /* disable vertical rails */
     position: absolute;
     top: 0; bottom: 0;
-    width: 1px;
-    background: rgba(255,255,255,0.08); /* subtle hairline on dark bg */
+    width: 0;
+    background: transparent;
     pointer-events: none;
-    z-index: 5; /* ensure rails render above section backgrounds */
+    z-index: 5;
   }
   .with-rails::before { left: 0; }
   .with-rails::after { right: 0; }

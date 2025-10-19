@@ -14,9 +14,9 @@
       :style="gridLinesStyle"
     ></div>
 
-    <!-- Right-aligned video with only a left border (site hairline style) -->
+    <!-- Right-aligned video (no left border) -->
     <div
-      class="relative md:absolute md:top-0 md:right-0 z-10 md:overflow-hidden md:border-l border-white/10 bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]"
+      class="relative md:absolute md:top-0 md:right-0 z-10 md:overflow-hidden bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]"
       :style="squareStyle"
     >
       <!-- Thematic left accent to match cards elsewhere -->
