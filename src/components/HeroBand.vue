@@ -6,19 +6,15 @@
     <canvas ref="canvasRef" class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true"></canvas>
     <div class="absolute inset-0 z-10 flex items-center justify-center px-4">
       <div class="text-center max-w-[1100px]">
-        <TypeOnView
+        <TypeReplaceOnView
           tag="h1"
-          :text="'Operate with a common ground truth'"
+          prefix="Operate with a common ground "
+          from="truth"
+          to="operating picture"
           :speed="26"
+          :backspaceSpeed="26"
           :startDelay="120"
           wrapper-class="text-center text-white text-[clamp(30px,4.8vw,62px)] leading-tight"
-        />
-        <TypeOnView
-          tag="h2"
-          :text="'Operate with a common operating picture'"
-          :speed="26"
-          :startDelay="160"
-          wrapper-class="mt-4 text-center text-white/85 text-[clamp(18px,2.6vw,28px)] leading-tight"
         />
         <EarlyAccessForm />
       </div>
@@ -39,7 +35,7 @@
 
 <script setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue';
-import TypeOnView from './TypeOnView.vue';
+import TypeReplaceOnView from './TypeReplaceOnView.vue';
 import EarlyAccessForm from './EarlyAccessForm.vue';
 
 const canvasRef = ref(null);
