@@ -13,9 +13,12 @@ const props = defineProps({
   to: { type: String, required: true },
   speed: { type: Number, default: 28 },
   toSpeed: { type: Number, default: null },
+  fromSpeed: { type: Number, default: null },
   backspaceSpeed: { type: Number, default: 28 },
   startDelay: { type: Number, default: 0 },
   pauseAfterFirst: { type: Number, default: 800 },
+  loop: { type: Boolean, default: false },
+  swapInterval: { type: Number, default: 10000 },
   once: { type: Boolean, default: true },
   tag: { type: String, default: 'div' },
   wrapperClass: { type: String, default: '' },
@@ -27,6 +30,13 @@ const showCaret = ref(false);
 let typed = false;
 let timer = null;
 let observer = null;
+let timeouts = [];
+
+function clearTimers() {
+  if (timer) { clearInterval(timer); timer = null; }
+  for (const t of timeouts) clearTimeout(t);
+  timeouts = [];
+}
 
 function start() {
   if (typed && props.once) return;
@@ -42,44 +52,100 @@ function start() {
   showCaret.value = true;
   typed = true;
 
-  const run = () => {
-    const initial = props.prefix + props.from;
-    let i = 0;
+  const useSpeedFrom = () => Math.max(10, (props.fromSpeed ?? props.speed));
+  const useSpeedTo = () => Math.max(10, (props.toSpeed ?? props.speed));
+  const useBackspace = () => Math.max(10, props.backspaceSpeed);
 
-    // Stage 1: type prefix + from
+  let prefixDone = false;
+  let current = 'from';
+
+  function typeWord(word, speed, cb) {
+    clearInterval(timer);
+    showCaret.value = true;
+    if (!prefixDone) {
+      const target = props.prefix + word;
+      let i = 0;
+      timer = setInterval(() => {
+        output.value = target.slice(0, i);
+        i++;
+        if (i > target.length) {
+          clearInterval(timer);
+          prefixDone = true;
+          showCaret.value = false;
+          cb && cb();
+        }
+      }, Math.max(10, speed));
+    } else {
+      let k = 0;
+      timer = setInterval(() => {
+        output.value = props.prefix + word.slice(0, k);
+        k++;
+        if (k > word.length) {
+          clearInterval(timer);
+          showCaret.value = false;
+          cb && cb();
+        }
+      }, Math.max(10, speed));
+    }
+  }
+
+  function backspaceWord(word, cb) {
+    clearInterval(timer);
+    showCaret.value = true;
+    let j = word.length;
     timer = setInterval(() => {
-      output.value = initial.slice(0, i);
-      i++;
-      if (i > initial.length) {
+      output.value = props.prefix + word.slice(0, j);
+      j--;
+      if (j < 0) {
         clearInterval(timer);
-        // Stage 2: pause, then backspace `from`
-        setTimeout(() => {
-          let j = props.from.length;
-          timer = setInterval(() => {
-            j--;
-            if (j < 0) {
-              clearInterval(timer);
-              // Stage 3: type replacement `to`
-              let k = 0;
-              const finalPrefix = props.prefix; // already typed and kept
-              timer = setInterval(() => {
-                k++;
-                output.value = finalPrefix + props.to.slice(0, k);
-                if (k >= props.to.length) {
-                  clearInterval(timer);
-                  showCaret.value = false;
-                }
-              }, Math.max(10, (props.toSpeed ?? props.speed)));
-              return;
-            }
-            output.value = props.prefix + props.from.slice(0, j);
-          }, Math.max(10, props.backspaceSpeed));
-        }, Math.max(0, props.pauseAfterFirst));
+        cb && cb();
       }
-    }, Math.max(10, props.speed));
+    }, useBackspace());
+  }
+
+  function scheduleSwap() {
+    const t = setTimeout(() => swap(), Math.max(0, props.swapInterval));
+    timeouts.push(t);
+  }
+
+  function swap() {
+    const next = current === 'from' ? 'to' : 'from';
+    const back = current === 'from' ? props.from : props.to;
+    const word = next === 'from' ? props.from : props.to;
+    const spd = next === 'from' ? useSpeedFrom() : useSpeedTo();
+    backspaceWord(back, () => {
+      typeWord(word, spd, () => {
+        current = next;
+        if (props.loop) scheduleSwap();
+      });
+    });
+  }
+
+  const run = () => {
+    const initialDelay = Math.max(0, props.startDelay || 0);
+    const startFn = () => {
+      typeWord(props.from, useSpeedFrom(), () => {
+        const firstPause = Math.max(0, props.pauseAfterFirst ?? props.swapInterval);
+        const t = setTimeout(() => {
+          if (props.loop) swap();
+          else {
+            backspaceWord(props.from, () => {
+              typeWord(props.to, useSpeedTo());
+            });
+          }
+        }, firstPause);
+        timeouts.push(t);
+      });
+    };
+    if (initialDelay) {
+      const t = setTimeout(startFn, initialDelay);
+      timeouts.push(t);
+    } else {
+      startFn();
+    }
   };
 
-  if (props.startDelay) setTimeout(run, props.startDelay); else run();
+  run();
 }
 
 onMounted(() => {
@@ -91,7 +157,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  if (timer) clearInterval(timer);
+  clearTimers();
   if (observer) observer.disconnect();
 });
 </script>
