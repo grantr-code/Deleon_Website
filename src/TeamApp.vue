@@ -21,12 +21,18 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, provide, watch } from 'vue';
 import { siteData as data } from './content/siteData';
 import { teamData } from './content/teamData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import TeamGrid from './components/TeamGrid.vue';
+import { useSiteTheme } from './composables/useSiteTheme';
 
 const groups = computed(() => teamData.groups || []);
+
+const headerTheme = ref('dark');
+provide('headerTheme', headerTheme);
+const { theme: siteTheme } = useSiteTheme();
+watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 </script>

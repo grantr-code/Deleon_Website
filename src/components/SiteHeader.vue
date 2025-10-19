@@ -131,7 +131,12 @@ const props = defineProps({
 // Theme injection for header colors/logo
 const injectedTheme = inject('headerTheme', ref('dark'));
 const isLightHeader = computed(() => injectedTheme?.value === 'light');
-const themedLogoSrc = computed(() => isLightHeader.value ? '/BrandAssets/Deleon_Logo.svg' : props.data.logoSrc);
+
+// NOTE: file naming: "Deleon_Logo_light.svg" is the WHITE logo for DARK headers.
+// In Light mode we use the normal (black) SVG.
+const themedLogoSrc = computed(() =>
+  isLightHeader.value ? '/BrandAssets/Deleon_Logo.svg' : props.data.logoSrc
+);
 const chipClass = computed(() => isLightHeader.value
   ? 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-black hover:bg-brand-green/15 hover:border-brand-green/60'
   : 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60');

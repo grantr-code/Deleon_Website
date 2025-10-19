@@ -59,11 +59,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, provide, watch } from 'vue';
 import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import { getAllArticles, getArticleBySlug } from './lib/articles';
+import { useSiteTheme } from './composables/useSiteTheme';
 
 function getSlug() {
   const params = new URLSearchParams(window.location.search);
@@ -79,6 +80,11 @@ if (!initial) {
 }
 
 const article = computed(() => initial);
+
+const headerTheme = ref('dark');
+provide('headerTheme', headerTheme);
+const { theme: siteTheme } = useSiteTheme();
+watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 </script>
 
 <style scoped>

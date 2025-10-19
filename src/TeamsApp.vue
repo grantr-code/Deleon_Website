@@ -99,6 +99,8 @@ import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import VideoOverlay from './components/VideoOverlay.vue';
+import { ref, provide, watch } from 'vue';
+import { useSiteTheme } from './composables/useSiteTheme';
 
 const video = {
   // Provide MOV and optionally MP4 when available for wider browser support
@@ -106,4 +108,10 @@ const video = {
   srcMov: '/BrandAssets/Video.mov',
   poster: '/BrandAssets/Deleon_Logo_light.svg',
 };
+
+// Provide header theme and keep it in sync with site theme
+const headerTheme = ref('dark');
+provide('headerTheme', headerTheme);
+const { theme: siteTheme } = useSiteTheme();
+watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 </script>

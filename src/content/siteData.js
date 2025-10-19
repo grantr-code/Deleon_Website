@@ -1,6 +1,7 @@
 export const siteData = {
   header: {
     brandText: 'DELEON',
+    // White logo (named "*_light") is for DARK theme by design.
     logoSrc: '/BrandAssets/Deleon_Logo_light.svg',
     // Reduced IA: Home, Founders, Why We're Different, Contact/Updates
     nav: [
@@ -48,6 +49,7 @@ export const siteData = {
     },
   ],
   footer: {
+    // White logo (named "*_light") is for DARK theme by design.
     logoSrc: '/BrandAssets/Deleon_Logo_light.svg',
     copyright: '© 2025 Deleon Technologies Inc. All rights reserved.',
     // Top call-to-action tiles modeled after Palantir

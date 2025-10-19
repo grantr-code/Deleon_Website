@@ -82,8 +82,15 @@
 import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
+import { ref, provide, watch } from 'vue';
+import { useSiteTheme } from './composables/useSiteTheme';
 
 const date = new Date().toLocaleDateString('en-US');
+
+const headerTheme = ref('dark');
+provide('headerTheme', headerTheme);
+const { theme: siteTheme } = useSiteTheme();
+watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 </script>
 
 <style scoped>

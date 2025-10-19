@@ -64,6 +64,8 @@ import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import { getAllArticles } from './lib/articles';
+import { ref, provide, watch } from 'vue';
+import { useSiteTheme } from './composables/useSiteTheme';
 
 const all = getAllArticles();
 
@@ -94,6 +96,11 @@ const pagedPosts = computed(() => {
 
 function nextPage() { if (page.value < totalPages.value) page.value += 1; }
 function prevPage() { if (page.value > 1) page.value -= 1; }
+
+const headerTheme = ref('dark');
+provide('headerTheme', headerTheme);
+const { theme: siteTheme } = useSiteTheme();
+watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 </script>
 
 <style scoped>

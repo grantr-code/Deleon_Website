@@ -45,3 +45,6 @@
   .with-rails::before { left: 0; }
   .with-rails::after { right: 0; }
 }
+
+/* Light Mode BETA */
+@import './theme.css';

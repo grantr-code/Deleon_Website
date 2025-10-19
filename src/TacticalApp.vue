@@ -55,6 +55,8 @@ import SiteFooter from './components/SiteFooter.vue';
 import VideoOverlay from './components/VideoOverlay.vue';
 import OurPlatforms from './components/OurPlatforms.vue';
 import CapabilitiesList from './components/CapabilitiesList.vue';
+import { ref, provide, watch } from 'vue';
+import { useSiteTheme } from './composables/useSiteTheme';
 
 const video = {
   srcMp4: '/BrandAssets/Video_Military.mp4',
@@ -105,4 +107,9 @@ const capabilityItems = [
   { title: 'Nutrition Under Load', text: 'Optimize fueling under rations to sustain output across days in field conditions.' },
   { title: 'Anomaly Detection', text: 'Surface unusual signatures that may signal environmental or novel threats across units.' },
 ];
+
+const headerTheme = ref('dark');
+provide('headerTheme', headerTheme);
+const { theme: siteTheme } = useSiteTheme();
+watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 </script>
