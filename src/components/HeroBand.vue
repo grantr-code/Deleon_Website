@@ -56,7 +56,7 @@
     <div v-if="showSwitcher" class="fixed z-30 bottom-3 right-3">
       <div v-if="!collapsed" class="rounded-md border border-white/15 bg-black/50 backdrop-blur-sm shadow-sm p-3 text-[12px]">
         <div class="flex items-center justify-between gap-3">
-          <span class="uppercase tracking-wider text-white/80">Background</span>
+          <span class="uppercase tracking-wider text-white/80">BACKGROUND TESTER (NON-RELEASE)</span>
           <button type="button" class="px-2 py-1 rounded bg-white/10 hover:bg-white/15 text-white/80" @click="collapsed = true" title="Minimize">Hide</button>
         </div>
         <div class="mt-2">
@@ -93,6 +93,9 @@ import EarlyAccessForm from './EarlyAccessForm.vue';
 import GridCanvas from './GridCanvas.vue';
 import OrbitsCanvas from './OrbitsCanvas.vue';
 import RadarCanvas from './RadarCanvas.vue';
+import TestFlowField from './TestFlowField.vue';
+import TestPulseGrid from './TestPulseGrid.vue';
+import TestMatrixRain from './TestMatrixRain.vue';
 
 const props = defineProps({ enableSwitcher: { type: Boolean, default: false } });
 
@@ -114,6 +117,9 @@ const options = [
   { value: 'effect:grid', label: 'Animation — Analysis (Grid)' },
   { value: 'effect:orbits', label: 'Animation — Insights (Orbits)' },
   { value: 'effect:radar', label: 'Animation — Command (Radar)' },
+  { value: 'test:flow', label: 'TEST — Flow Field' },
+  { value: 'test:pulse', label: 'TEST — Pulse Grid' },
+  { value: 'test:matrix', label: 'TEST — Matrix Rain' },
 ];
 
 const active = computed(() => {
@@ -129,6 +135,12 @@ const active = computed(() => {
       return { kind: 'effect', component: OrbitsCanvas };
     case 'effect:radar':
       return { kind: 'effect', component: RadarCanvas };
+    case 'test:flow':
+      return { kind: 'effect', component: TestFlowField };
+    case 'test:pulse':
+      return { kind: 'effect', component: TestPulseGrid };
+    case 'test:matrix':
+      return { kind: 'effect', component: TestMatrixRain };
     case 'default':
     default:
       return { kind: 'default' };
