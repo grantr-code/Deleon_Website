@@ -16,10 +16,10 @@ export default {
         },
       },
       fontFamily: {
-        brand: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
+        // Use local Eurostile Round Extended for brand wordmarks and headings
+        brand: ['"Eurostile Round Extended"', '"Eurostile Round"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
       },
     },
   },
   plugins: [],
 };
-

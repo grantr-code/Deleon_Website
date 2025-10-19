@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 160" width="900" height="160" role="img" aria-label="Deleon wordmark">
+  <defs>
+    <style>
+      @font-face {
+        font-family: 'Eurostile Round Extended';
+        src: url('/BrandAssets/fonts/eurostile-round-extended-medium.otf') format('opentype');
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+      .wordmark { font-family: 'Eurostile Round Extended', 'Eurostile Round', system-ui, -apple-system, sans-serif; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; }
+    </style>
+  </defs>
+  <rect width="100%" height="100%" fill="none"/>
+  <g transform="translate(24,118)">
+    <text class="wordmark" x="0" y="0" font-size="96" fill="#FFFFFF">DELEON</text>
+  </g>
+</svg>
+
