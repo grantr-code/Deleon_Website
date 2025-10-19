@@ -1,7 +1,5 @@
 Deleon — Vue + Tailwind (Vite)
 
-This is a Vue 3, multi‑page Vite site. The design and Tailwind classes are preserved; content is object‑based and rendered via reusable components.
-
 What’s Included
 - `index.html` — Home entry (mounts `src/main.js`/`App.vue`)
 - `teams.html`, `tactical.html`, `science.html`, `press.html`, `news.html`, `article.html` — additional entries
