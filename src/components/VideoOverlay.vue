@@ -51,6 +51,22 @@
                 </option>
               </select>
             </div>
+
+            <!-- Font tester (non-release) -->
+            <div class="mt-3">
+              <label class="block text-white/70 mb-1">Font (TEST)</label>
+              <select
+                v-model="siteFont"
+                class="w-[240px] bg-black/40 border border-white/15 rounded px-2 py-1 text-white/90"
+                title="Temporarily switch site font (logo unaffected)"
+                @change="applySiteFont"
+              >
+                <option value="default">Default (Space Grotesk)</option>
+                <option value="inter">Inter</option>
+                <option value="plex">IBM Plex Sans</option>
+                <option value="source">Source Sans 3</option>
+              </select>
+            </div>
           </div>
           <button
             v-else
@@ -146,6 +162,7 @@ const options = [
 const selected = ref('default');
 const reloadNeeded = ref(false);
 const collapsed = ref(false);
+const siteFont = ref('default');
 
 // Video loading/playing state
 const videoRef = ref(null);
@@ -195,6 +212,14 @@ onMounted(() => {
     const saved = localStorage.getItem('heroBgMode');
     if (saved) selected.value = saved;
   } catch {}
+  // Restore tester font
+  try {
+    const savedFont = localStorage.getItem('testerSiteFont');
+    if (savedFont) {
+      siteFont.value = savedFont;
+      applySiteFont();
+    }
+  } catch {}
 });
 
 function persistSelection() {
@@ -237,4 +262,38 @@ const active = computed(() => {
 });
 
 // No logo placeholder; canvas shows a first frame until playing
+
+// --- Font test support (non-release) ---
+function ensureFontLink(key) {
+  if (typeof document === 'undefined') return;
+  const links = {
+    inter: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+    plex: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap',
+    source: 'https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap',
+  };
+  const id = `tester-font-${key}`;
+  if (!links[key]) return;
+  if (!document.getElementById(id)) {
+    const link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = links[key];
+    document.head.appendChild(link);
+  }
+}
+
+function applySiteFont() {
+  if (typeof document === 'undefined') return;
+  const stacks = {
+    default: '"Space Grotesk", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
+    inter: 'Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
+    plex: '"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
+    source: '"Source Sans 3", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
+  };
+  const key = siteFont.value || 'default';
+  if (key !== 'default') ensureFontLink(key);
+  const stack = stacks[key] || stacks.default;
+  try { localStorage.setItem('testerSiteFont', key); } catch {}
+  document.body.style.fontFamily = stack;
+}
 </script>

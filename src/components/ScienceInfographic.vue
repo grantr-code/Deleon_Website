@@ -15,6 +15,54 @@ const canvas = ref(null);
 function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 function gaussian(x, mu, sigma) { const d = (x - mu) / sigma; return Math.exp(-0.5 * d * d); }
 
+function isLightTheme() {
+  try {
+    return typeof document !== 'undefined' && document.documentElement.classList.contains('theme-light');
+  } catch { return false; }
+}
+
+function getPalette() {
+  const light = isLightTheme();
+  if (light) {
+    return {
+      stroke: 'rgba(0,0,0,0.50)',
+      fluid: 'rgba(80, 150, 200, 0.22)',
+      label: 'rgba(0,0,0,0.85)',
+      sublabel: 'rgba(0,0,0,0.65)',
+      axis: 'rgba(0,0,0,0.55)',
+      chartBg: 'rgba(0,0,0,0.03)',
+      chartBorder: 'rgba(0,0,0,0.12)',
+      chartText: 'rgba(0,0,0,0.70)',
+      dataIn: 'rgba(0,0,0,0.55)',
+      connector: 'rgba(0,0,0,0.30)',
+      node: 'rgba(0,0,0,0.85)',
+      nnLabel: 'rgba(0,0,0,0.85)',
+      arrow: (a=0.5) => `rgba(0,0,0,${a})`,
+      bulb: 'rgba(255,200,90,0.90)',
+      beam: 'rgba(0,0,0,0.70)',
+      signMark: 'black',
+    };
+  }
+  return {
+    stroke: 'rgba(255,255,255,0.5)',
+    fluid: 'rgba(150, 220, 240, 0.35)',
+    label: 'rgba(255,255,255,0.90)',
+    sublabel: 'rgba(255,255,255,0.70)',
+    axis: 'rgba(255,255,255,0.35)',
+    chartBg: 'rgba(255,255,255,0.05)',
+    chartBorder: 'rgba(255,255,255,0.2)',
+    chartText: 'rgba(255,255,255,0.70)',
+    dataIn: 'rgba(255,255,255,0.65)',
+    connector: 'rgba(255,255,255,0.30)',
+    node: 'rgba(255,255,255,0.90)',
+    nnLabel: 'rgba(255,255,255,0.85)',
+    arrow: (a=0.5) => `rgba(255,255,255,${a})`,
+    bulb: 'rgba(255,200,90,0.95)',
+    beam: 'rgba(255,255,255,0.70)',
+    signMark: 'white',
+  };
+}
+
 function createSim(w, h) {
   const pad = 24;
   const channelTop = 74;
@@ -68,10 +116,10 @@ function reset(sim){
   let i=0; for(const a of sim.analytes){ a.x = sim.channelL + 4 + i*6; a.active = true; i++; }
 }
 
-function drawDiagram(ctx, sim){
+function drawDiagram(ctx, sim, pal){
   const { pad, channelTop, channelH, legW, resW, resH, leftX, rightX, channelL, channelR } = sim;
-  const fluid = 'rgba(150, 220, 240, 0.35)';
-  const stroke = 'rgba(255,255,255,0.5)';
+  const fluid = pal.fluid;
+  const stroke = pal.stroke;
   const labelFont = '12px Space Grotesk, system-ui, -apple-system, sans-serif';
   // Left reservoir
   ctx.fillStyle = fluid; ctx.fillRect(leftX, channelTop - 40, resW, resH + 40);
@@ -90,7 +138,7 @@ function drawDiagram(ctx, sim){
 
   // Labels: Cathode/Anode/Title
   ctx.font = labelFont;
-  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.fillStyle = pal.label;
   ctx.textBaseline = 'alphabetic';
   ctx.textAlign = 'left';
   // Title sits inside the left reservoir, a bit below its top edge
@@ -105,12 +153,12 @@ function drawDiagram(ctx, sim){
 
   // Light source + detection window
   const lx = sim.detectorX; const ly = channelTop - 22;
-  ctx.strokeStyle = 'rgba(255,200,90,0.9)'; ctx.lineWidth = 1.5;
+  ctx.strokeStyle = pal.bulb; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx, channelTop); ctx.stroke();
   // bulb
-  ctx.fillStyle = 'rgba(255,200,90,0.95)'; ctx.beginPath(); ctx.arc(lx, ly-10, 6, 0, Math.PI*2); ctx.fill();
-  ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(lx, channelTop-10); ctx.lineTo(lx, channelTop+channelH+10); ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,0.75)';
+  ctx.fillStyle = pal.bulb; ctx.beginPath(); ctx.arc(lx, ly-10, 6, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = pal.beam; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(lx, channelTop-10); ctx.lineTo(lx, channelTop+channelH+10); ctx.stroke();
+  ctx.fillStyle = pal.sublabel;
   ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
   ctx.font = labelFont;
   const pLabelW = ctx.measureText('Detector').width;
@@ -118,15 +166,15 @@ function drawDiagram(ctx, sim){
   ctx.fillText('Detector', pLabelX, channelTop + channelH + 26);
 }
 
-function drawChart(ctx, sim, signal){
-  const r = sim.chartRect; const bg = 'rgba(255,255,255,0.05)';
+function drawChart(ctx, sim, signal, pal){
+  const r = sim.chartRect; const bg = pal.chartBg;
   ctx.fillStyle = bg; ctx.fillRect(r.x, r.y, r.w, r.h);
-  ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.strokeRect(r.x, r.y, r.w, r.h);
+  ctx.strokeStyle = pal.chartBorder; ctx.strokeRect(r.x, r.y, r.w, r.h);
   // axes
-  ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1;
+  ctx.strokeStyle = pal.axis; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(r.x + 28, r.y + 10); ctx.lineTo(r.x + 28, r.y + r.h - 20); ctx.lineTo(r.x + r.w - 10, r.y + r.h - 20); ctx.stroke();
   ctx.font = '11px Space Grotesk, system-ui, -apple-system, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fillStyle = pal.chartText;
   ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
   ctx.save(); ctx.translate(r.x + 12, r.y + r.h/2); ctx.rotate(-Math.PI/2); ctx.fillText('Abs (a.u.)', 0, 0); ctx.restore();
   ctx.textAlign = 'right'; ctx.fillText('Time (s)', r.x + r.w - 14, r.y + r.h - 6);
@@ -144,13 +192,13 @@ function drawChart(ctx, sim, signal){
   ctx.strokeStyle = 'rgba(76,201,91,0.95)'; ctx.lineWidth = 2; ctx.stroke();
 
   // Data In label centered above the chart
-  ctx.fillStyle = 'rgba(255,255,255,0.65)';
+  ctx.fillStyle = pal.dataIn;
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   ctx.fillText('Data In', r.x + r.w / 2, r.y - 10);
   ctx.textAlign = 'left';
 }
 
-function drawNormalizerAndNN(ctx, sim, feats, pulsesActive){
+function drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal){
   // Input layer placement depends on layout mode
   const r = sim.chartRect;
   const inputCount = 5; // fixed per request
@@ -159,7 +207,7 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive){
   const centerY = side ? Math.round(r.y + r.h / 2) : Math.round(r.y + r.h + 100);
 
   // connectors from chart to inputs
-  ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1;
+  ctx.strokeStyle = pal.connector; ctx.lineWidth = 1;
   if (side) {
     // short stubs from chart border to each input
     for (let i = 0; i < inputCount; i++) {
@@ -195,14 +243,14 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive){
     }
   }
   // nodes
-  for(const n of nodes){ ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.beginPath(); ctx.arc(n.x, n.y, 3, 0, Math.PI*2); ctx.fill(); }
+  for(const n of nodes){ ctx.fillStyle = pal.node; ctx.beginPath(); ctx.arc(n.x, n.y, 3, 0, Math.PI*2); ctx.fill(); }
 
   // Neural Network label above top-most nodes to avoid overlap
   const netLeft = layerX[0];
   const netRight = layerX[layerX.length - 1];
   const topMostY = centerY - (Math.max(...layers) - 1) / 2 * 24;
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = '12px Space Grotesk, system-ui, -apple-system, sans-serif';
+  ctx.fillStyle = pal.nnLabel; ctx.font = '12px Space Grotesk, system-ui, -apple-system, sans-serif';
   ctx.fillText('Neural Network', (netLeft + netRight) / 2, topMostY - 10);
   // animated pulses across first two layers using global time t
   const t = draw.state?.t || 0;
@@ -243,7 +291,7 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive){
   const outNodeTop = nodes.find(n=>n.li===layers.length-1 && n.i===0);
   const outNodeBottom = nodes.find(n=>n.li===layers.length-1 && n.i===layers[layers.length-1]-1);
   const outNode = outNodeTop && outNodeBottom ? { x: lastX, y: (outNodeTop.y + outNodeBottom.y)/2 } : { x: lastX, y: centerY };
-  arrow(ctx, outNode.x + 6, outNode.y, appX - 12, appY + appH/2, 0.7);
+  arrow(ctx, outNode.x + 6, outNode.y, appX - 12, appY + appH/2, 0.7, pal);
 
   // app card with icon
   ctx.save();
@@ -257,17 +305,17 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive){
   ctx.fillText('D', ix + isz/2, iy + isz/2 + 1);
   // label
   ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = textFont1;
+  ctx.fillStyle = pal.label; ctx.font = textFont1;
   ctx.fillText('Deleon App', ix + isz + gap, iy + 20);
-  ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.font = textFont2;
+  ctx.fillStyle = pal.sublabel; ctx.font = textFont2;
   ctx.fillText('Personal guidance', ix + isz + gap, iy + 36);
   ctx.restore();
 }
 
-function arrow(ctx, x1, y1, x2, y2, alpha=0.5){
-  ctx.save(); ctx.strokeStyle = `rgba(255,255,255,${alpha})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+function arrow(ctx, x1, y1, x2, y2, alpha=0.5, pal){
+  ctx.save(); ctx.strokeStyle = pal.arrow(alpha); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
   const ang = Math.atan2(y2-y1,x2-x1); const ax=x2-Math.cos(ang)*6, ay=y2-Math.sin(ang)*6;
-  ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(ax - Math.sin(ang)*3, ay + Math.cos(ang)*3); ctx.lineTo(ax + Math.sin(ang)*3, ay - Math.cos(ang)*3); ctx.closePath(); ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.fill(); ctx.restore();
+  ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(ax - Math.sin(ang)*3, ay + Math.cos(ang)*3); ctx.lineTo(ax + Math.sin(ang)*3, ay - Math.cos(ang)*3); ctx.closePath(); ctx.fillStyle = pal.arrow(alpha); ctx.fill(); ctx.restore();
 }
 
 function roundRect(ctx, x, y, w, h, r){
@@ -286,16 +334,17 @@ function roundRect(ctx, x, y, w, h, r){
 }
 
 function draw(ctx, sim, dt){
+  const pal = getPalette();
   const w = sim.w, h = sim.h;
   ctx.clearRect(0,0,w,h);
   draw.state = { t: (draw.state?.t || 0) + dt };
 
   // Canvas is self-labeled inside the diagram — no page title
-  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.fillStyle = pal.label;
   ctx.font = '16px Space Grotesk, system-ui, -apple-system, sans-serif';
 
   // Diagram
-  drawDiagram(ctx, sim);
+  drawDiagram(ctx, sim, pal);
 
   // Bands inside channel (discs with different velocities)
   let signal = 0;
@@ -308,7 +357,7 @@ function draw(ctx, sim, dt){
     if (a.x >= sim.channelL - 40 && a.x <= sim.channelR + 40){
       ctx.fillStyle = a.color; ctx.beginPath(); ctx.arc(cx, cy, a.r, 0, Math.PI*2); ctx.fill();
       // tiny sign mark
-      ctx.fillStyle = 'white'; ctx.font = '11px Space Grotesk, system-ui, -apple-system'; ctx.textAlign='center'; ctx.fillText('•', cx, cy+3);
+      ctx.fillStyle = pal.signMark; ctx.font = '11px Space Grotesk, system-ui, -apple-system'; ctx.textAlign='center'; ctx.fillText('•', cx, cy+3);
     }
     // simple detector response
     const resp = a.amp * gaussian(a.x, sim.detectorX, 22);
@@ -319,14 +368,14 @@ function draw(ctx, sim, dt){
 
   // Update chart buffer
   sim.signal.push(signal); if(sim.signal.length>420) sim.signal.shift();
-  drawChart(ctx, sim, sim.signal);
+  drawChart(ctx, sim, sim.signal, pal);
 
   // Feature vector from bands (static per mix)
   const feats = sim.analytes.map(a=>a.amp);
   // Only animate NN pulses when current chart sample exceeds baseline
   const lastSample = sim.signal[sim.signal.length - 1] || 0;
   const pulsesActive = lastSample > 0.02;
-  drawNormalizerAndNN(ctx, sim, feats, pulsesActive);
+  drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal);
 }
 
 function mount(canvasEl){
