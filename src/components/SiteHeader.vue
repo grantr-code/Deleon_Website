@@ -1,36 +1,36 @@
 <template>
   <header
     id="site-header"
-    :class="['text-white relative z-40 pt-8', compact ? 'pb-6 lg:pb-16' : 'pb-12 lg:pb-52']"
+    :class="[(isLightHeader ? 'text-black' : 'text-white'), 'relative z-40 pt-8', compact ? 'pb-6 lg:pb-16' : 'pb-12 lg:pb-52']"
   >
     <div :class="subpage ? 'max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24' : 'max-w-[1280px] mx-auto px-4'">
       <!-- Subpage variant: left-aligned brand + chip-style nav in same row -->
       <div v-if="subpage">
         <div class="flex items-center justify-between gap-4">
           <a href="/" class="flex items-center gap-3.5" aria-label="Deleon">
-            <img :src="data.logoSrc" alt="Deleon logo" class="h-10 md:h-11 w-auto" />
+            <img :src="themedLogoSrc" alt="Deleon logo" class="h-10 md:h-11 w-auto" />
             <span ref="brandText" class="font-logo font-light uppercase tracking-[0.15em] text-[1.10rem] md:text-[1.25rem] relative top-[5px]">{{ data.brandText }}</span>
           </a>
           <div class="flex items-center gap-3">
             <!-- Desktop chips (right aligned); auto-collapse to hamburger on overflow -->
-            <ul
-              ref="chipsUl"
-              class="hidden lg:flex flex-nowrap gap-2 items-center justify-end"
-              v-show="!shouldCollapse"
-            >
-              <li v-for="item in data.nav" :key="item.label">
-                <a
-                  :href="item.href"
-                  class="px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60 whitespace-nowrap"
-                >
-                  {{ item.label }}
-                </a>
-              </li>
-            </ul>
+              <ul
+                ref="chipsUl"
+                class="hidden lg:flex flex-nowrap gap-2 items-center justify-end"
+                v-show="!shouldCollapse"
+              >
+                <li v-for="item in data.nav" :key="item.label">
+                  <a
+                    :href="item.href"
+                    :class="chipClass + ' whitespace-nowrap'"
+                  >
+                    {{ item.label }}
+                  </a>
+                </li>
+              </ul>
             <!-- Mobile menu toggle -->
             <button
               type="button"
-              :class="['p-2 rounded-md border border-white/20 hover:bg-white/10 transition', isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
+              :class="[(isLightHeader ? 'p-2 rounded-md border border-black/20 hover:bg-black/5 transition' : 'p-2 rounded-md border border-white/20 hover:bg-white/10 transition'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
               :aria-expanded="isOpen ? 'true' : 'false'"
               aria-controls="primary-nav"
               @click="isOpen = !isOpen"
@@ -51,7 +51,7 @@
             <li v-for="item in data.nav" :key="item.label">
               <a
                 :href="item.href"
-                class="px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60"
+                :class="chipClass"
               >
                 {{ item.label }}
               </a>
@@ -64,29 +64,29 @@
       <div v-else>
         <div class="flex items-center justify-between gap-4">
           <a href="/" class="flex items-center gap-3.5" aria-label="Deleon">
-            <img :src="data.logoSrc" alt="Deleon logo" class="h-10 md:h-11 w-auto" />
+            <img :src="themedLogoSrc" alt="Deleon logo" class="h-10 md:h-11 w-auto" />
             <span class="font-logo font-light uppercase tracking-[0.15em] text-[1.10rem] md:text-[1.25rem] relative top-[5px]">{{ data.brandText }}</span>
           </a>
           <div class="flex items-center gap-3">
             <!-- Desktop chips (right aligned); auto-collapse to hamburger on overflow -->
-            <ul
-              ref="chipsUl"
-              class="hidden lg:flex flex-nowrap gap-2 items-center justify-end"
-              v-show="!shouldCollapse"
-            >
-              <li v-for="item in data.nav" :key="item.label">
-                <a
-                  :href="item.href"
-                  class="px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60 whitespace-nowrap"
-                >
-                  {{ item.label }}
-                </a>
-              </li>
-            </ul>
+              <ul
+                ref="chipsUl"
+                class="hidden lg:flex flex-nowrap gap-2 items-center justify-end"
+                v-show="!shouldCollapse"
+              >
+                <li v-for="item in data.nav" :key="item.label">
+                  <a
+                    :href="item.href"
+                    :class="chipClass + ' whitespace-nowrap'"
+                  >
+                    {{ item.label }}
+                  </a>
+                </li>
+              </ul>
             <!-- Mobile menu toggle -->
             <button
               type="button"
-              :class="['p-2 rounded-md border border-white/20 hover:bg-white/10 transition lg:hidden', isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
+              :class="[(isLightHeader ? 'p-2 rounded-md border border-black/20 hover:bg-black/5 transition lg:hidden' : 'p-2 rounded-md border border-white/20 hover:bg-white/10 transition lg:hidden'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
               :aria-expanded="isOpen ? 'true' : 'false'"
               aria-controls="primary-nav"
               @click="isOpen = !isOpen"
@@ -107,7 +107,7 @@
             <li v-for="item in data.nav" :key="item.label">
               <a
                 :href="item.href"
-                class="px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60"
+                :class="chipClass"
               >
                 {{ item.label }}
               </a>
@@ -120,13 +120,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick, computed, inject } from 'vue';
 
-defineProps({
+const props = defineProps({
   data: { type: Object, required: true },
   compact: { type: Boolean, default: false },
   subpage: { type: Boolean, default: false },
 });
+
+// Theme injection for header colors/logo
+const injectedTheme = inject('headerTheme', ref('dark'));
+const isLightHeader = computed(() => injectedTheme?.value === 'light');
+const themedLogoSrc = computed(() => isLightHeader.value ? '/BrandAssets/Deleon_Logo.svg' : props.data.logoSrc);
+const chipClass = computed(() => isLightHeader.value
+  ? 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-black hover:bg-brand-green/15 hover:border-brand-green/60'
+  : 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60');
 
 const isOpen = ref(false);
 

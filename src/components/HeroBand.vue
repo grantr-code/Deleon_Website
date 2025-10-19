@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref, computed, watch } from 'vue';
+import { onMounted, onBeforeUnmount, ref, computed, watch, inject } from 'vue';
 import TypeReplaceOnView from './TypeReplaceOnView.vue';
 import EarlyAccessForm from './EarlyAccessForm.vue';
 import GridCanvas from './GridCanvas.vue';
@@ -158,6 +158,16 @@ const active = computed(() => {
 const isDefaultActive = computed(() => active.value.kind === 'default');
 const preferDarkText = computed(() => selected.value === 'test:diffuse');
 const headingClass = computed(() => `text-center ${preferDarkText.value ? 'text-black' : 'text-white'} text-[clamp(30px,4.8vw,62px)] leading-tight`);
+
+// Inform the header to switch logo/text to dark-on-light when Brownian is active
+const headerTheme = inject('headerTheme', null);
+watch(preferDarkText, (v) => {
+  if (headerTheme && typeof headerTheme === 'object') headerTheme.value = v ? 'light' : 'dark';
+}, { immediate: true });
+
+onBeforeUnmount(() => {
+  if (headerTheme && typeof headerTheme === 'object') headerTheme.value = 'dark';
+});
 
 function persistSelection() {
   try { localStorage.setItem('heroBgMode', selected.value); } catch {}
