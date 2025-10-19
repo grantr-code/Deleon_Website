@@ -1,6 +1,6 @@
 const THEME_KEY = 'site-theme';
 
-function apply(val) {
+function applyTheme(val) {
   const root = document.documentElement;
   if (val === 'light') root.classList.add('theme-light');
   else root.classList.remove('theme-light');
@@ -8,9 +8,9 @@ function apply(val) {
 
 try {
   const val = localStorage.getItem(THEME_KEY) || 'dark';
-  apply(val);
+  applyTheme(val);
 } catch {}
 
 window.addEventListener('storage', (e) => {
-  if (e.key === THEME_KEY) apply(e.newValue);
+  if (e.key === THEME_KEY) applyTheme(e.newValue);
 });

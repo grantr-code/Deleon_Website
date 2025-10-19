@@ -42,7 +42,7 @@
           <span v-else>Sent! ✅</span>
         </button>
         <p v-if="error" class="text-sm text-red-300">{{ error }}</p>
-        <p v-if="success && messageBack" class="text-sm text-emerald-300">{{ messageBack }}</p>
+        <p v-if="success && successMessage" class="text-sm text-emerald-300">{{ successMessage }}</p>
       </div>
     </div>
   </form>
@@ -62,7 +62,7 @@ const updates = ref(true);
 const submitting = ref(false);
 const success = ref(false);
 const error = ref('');
-const messageBack = ref('');
+const successMessage = ref('');
 
 function track(event, props = {}) {
   try {
@@ -83,7 +83,7 @@ const { close: closeDrawer } = useEarlyAccessPanel();
 
 async function onSubmit() {
   error.value = '';
-  messageBack.value = '';
+  successMessage.value = '';
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
   if (!name.value || !isEmail || !message.value) {
     error.value = 'Please fill name, a valid email, and your message.';
@@ -119,7 +119,7 @@ async function onSubmit() {
     }
     // Keep UI simple: mark as success
     success.value = true;
-    messageBack.value = 'Your email draft should be open. If not, please email chad@deleon-omics.com and jose@deleon-omics.com directly.';
+    successMessage.value = 'Your email draft should be open. If not, please email chad@deleon-omics.com and jose@deleon-omics.com directly.';
   } catch (e) {
     console.error('mailto launch failed', e);
     error.value = 'Could not open your email client. Please email chad@deleon-omics.com and jose@deleon-omics.com directly.';
