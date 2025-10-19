@@ -14,7 +14,7 @@
         <!-- Small demo control (feature-flagged) -->
         <div
           v-if="showSwitcher"
-          class="absolute z-30 top-3 right-3"
+          class="fixed z-30 bottom-3 right-3"
           aria-live="polite"
         >
           <div

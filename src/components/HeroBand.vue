@@ -53,7 +53,7 @@
     </div>
 
     <!-- Small demo control (feature-flagged) -->
-    <div v-if="showSwitcher" class="absolute z-20 top-3 right-3">
+    <div v-if="showSwitcher" class="fixed z-30 bottom-3 right-3">
       <div v-if="!collapsed" class="rounded-md border border-white/15 bg-black/50 backdrop-blur-sm shadow-sm p-3 text-[12px]">
         <div class="flex items-center justify-between gap-3">
           <span class="uppercase tracking-wider text-white/80">Background</span>
