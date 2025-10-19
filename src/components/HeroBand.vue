@@ -8,8 +8,8 @@
       <div class="text-center max-w-[1100px]">
         <TypeReplaceOnView
           tag="h1"
-          prefix="Operate with a common ground "
-          from="truth"
+          prefix="Operate with a common "
+          from="ground truth"
           to="operating picture"
           :initialSpeed="26"
           :fromSpeed="220"
