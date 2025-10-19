@@ -59,6 +59,7 @@
           <span class="uppercase tracking-wider text-white/80">BACKGROUND TESTER (NON-RELEASE)</span>
           <button type="button" class="px-2 py-1 rounded bg-white/10 hover:bg-white/15 text-white/80" @click="collapsed = true" title="Minimize">Hide</button>
         </div>
+        <p class="mt-1 text-[11px] uppercase tracking-wide text-yellow-300/80">RELOAD REQUIRED</p>
         <div class="mt-2">
           <label class="block text-white/70 mb-1">Mode</label>
           <select

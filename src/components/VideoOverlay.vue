@@ -32,6 +32,7 @@
                 Hide
               </button>
             </div>
+            <p class="mt-1 text-[11px] uppercase tracking-wide text-yellow-300/80">RELOAD REQUIRED</p>
             <div class="mt-2">
               <label class="block text-white/70 mb-1">Mode</label>
               <select
