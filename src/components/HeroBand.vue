@@ -31,7 +31,7 @@
     </div>
 
     <!-- Hero content overlay -->
-    <div class="absolute inset-0 z-10 flex items-center justify-center px-4">
+    <div class="absolute inset-0 z-10 flex items-center justify-center px-4" :class="preferDarkText ? 'text-black' : 'text-white'">
       <div class="text-center max-w-[1100px]">
         <TypeReplaceOnView
           tag="h1"
@@ -46,9 +46,9 @@
           :pauseTo="10000"
           :loop="true"
           :startDelay="120"
-          wrapper-class="text-center text-white text-[clamp(30px,4.8vw,62px)] leading-tight"
+          :wrapper-class="headingClass"
         />
-        <EarlyAccessForm />
+        <EarlyAccessForm :theme="preferDarkText ? 'light' : 'dark'" />
       </div>
     </div>
 
@@ -156,6 +156,8 @@ const active = computed(() => {
 });
 
 const isDefaultActive = computed(() => active.value.kind === 'default');
+const preferDarkText = computed(() => selected.value === 'test:diffuse');
+const headingClass = computed(() => `text-center ${preferDarkText.value ? 'text-black' : 'text-white'} text-[clamp(30px,4.8vw,62px)] leading-tight`);
 
 function persistSelection() {
   try { localStorage.setItem('heroBgMode', selected.value); } catch {}

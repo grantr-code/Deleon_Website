@@ -10,7 +10,7 @@
           :disabled="submitting || success"
           required
           placeholder="you@company.com"
-          class="flex-1 rounded-full bg-white/5 border border-white/15 px-5 py-3 text-base text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-brand-green/60"
+          :class="inputClass"
         />
         <button
           type="submit"
@@ -29,7 +29,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+
+const props = defineProps({ theme: { type: String, default: 'dark' } });
 
 const email = ref('');
 const submitting = ref(false);
@@ -54,6 +56,14 @@ function track(event, props = {}) {
     // no-op
   }
 }
+
+const inputClass = computed(() => {
+  const base = 'flex-1 rounded-full px-5 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-brand-green/60';
+  if (props.theme === 'light') {
+    return `${base} bg-black/5 border border-black/20 text-black placeholder-black/50`;
+  }
+  return `${base} bg-white/5 border border-white/15 text-white placeholder-white/40`;
+});
 
 async function onSubmit() {
   error.value = '';
@@ -86,4 +96,3 @@ async function onSubmit() {
   }
 }
 </script>
-
