@@ -58,20 +58,10 @@ export const siteData = {
     // Footer right-side link columns
     columns: [
       {
-        title: 'Offerings',
-        links: [
-          { label: 'Analysis', href: '/#our-platforms' },
-          { label: 'Insights', href: '/#our-platforms' },
-          { label: 'Command', href: '/#our-platforms' },
-        ],
-      },
-      {
         title: 'Solutions',
         links: [
-          { label: 'Pro Teams', href: '/teams.html' },
-          { label: 'Olympic Teams', href: '/teams.html' },
-          { label: 'Collegiate', href: '/teams.html' },
-          { label: 'Tactical & Military', href: '/tactical.html' },
+          { label: 'For Athletes', href: '/teams.html' },
+          { label: 'For Military', href: '/tactical.html' },
         ],
       },
       {
@@ -91,7 +81,6 @@ export const siteData = {
     social: [
       { label: 'LinkedIn', href: '#' },
       { label: 'X', href: '#' },
-      { label: 'YouTube', href: '#' },
     ],
   },
 };

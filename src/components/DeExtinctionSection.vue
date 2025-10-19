@@ -19,6 +19,12 @@
       class="absolute top-0 right-0 z-10 overflow-hidden border-l-2 border-white/10 bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]"
       :style="squareStyle"
     >
+      <!-- First-frame canvas backdrop -->
+      <canvas
+        ref="posterCanvas"
+        class="absolute inset-0 block w-full h-full pointer-events-none"
+        :style="{ opacity: isPlaying ? 0 : 1, transition: 'opacity 200ms ease' }"
+      ></canvas>
       <video
         ref="videoRef"
         class="absolute inset-0 h-full w-full object-cover"
@@ -26,10 +32,15 @@
         loop
         playsinline
         preload="metadata"
+        :style="{ opacity: isPlaying ? 1 : 0, transition: 'opacity 300ms ease' }"
+        @loadeddata="onLoadedData"
+        @canplay="onCanPlay"
+        @playing="onPlaying"
       >
         <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
         <source :src="'/BrandAssets/Video.mov'" type="video/quicktime" />
       </video>
+      <!-- Loader removed: only static thumbnail canvas until playing -->
     </div>
 
     <!-- Horizontal divider aligned to the bottom of the video -->
@@ -104,6 +115,8 @@ const topoStyle = computed(() => ({
 // Keep a ref on the section (not required for sizing now but harmless)
 const sectionRef = ref(null);
 const videoRef = ref(null);
+const posterCanvas = ref(null);
+const isPlaying = ref(false);
 
 // Track viewport to size video with both height and width
 const vw = ref(typeof window !== 'undefined' ? window.innerWidth : 1200);
@@ -155,6 +168,38 @@ const videoBottomLineStyle = computed(() => ({ top: videoHeightPx.value + 'px' }
 
 // Make the section’s min-height match the video height to remove excess gap
 const sectionStyle = computed(() => ({ minHeight: videoHeightPx.value + 'px' }));
+
+// No logo placeholder; canvas shows a first frame until playing
+
+function drawFirstFrame() {
+  const vid = videoRef.value;
+  const cvs = posterCanvas.value;
+  if (!vid || !cvs) return;
+  const w = Math.floor(videoWidthPx.value);
+  const h = Math.floor(videoHeightPx.value);
+  if (!w || !h || !vid.videoWidth || !vid.videoHeight) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cvs.width = Math.floor(w * dpr);
+  cvs.height = Math.floor(h * dpr);
+  const ctx = cvs.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const vw = vid.videoWidth, vh = vid.videoHeight;
+  const scale = Math.max(w / vw, h / vh);
+  const sw = w / scale;
+  const sh = h / scale;
+  const sx = (vw - sw) / 2;
+  const sy = (vh - sh) / 2;
+  try {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(vid, sx, sy, sw, sh, 0, 0, w, h);
+  } catch {}
+}
+
+function onLoadedData() { drawFirstFrame(); }
+function onCanPlay() { drawFirstFrame(); }
+function onPlaying() { isPlaying.value = true; }
 </script>
 
 <style scoped>

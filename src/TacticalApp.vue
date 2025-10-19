@@ -8,7 +8,7 @@
           <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
           <span>Defense</span>
         </div>
-        <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">Tactical & Military Health Operations</h1>
+        <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">For Military Health Operations</h1>
         <p class="mt-4 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
           Understand force health in real time. Surface metabolic strain and emerging health threats before they degrade readiness.
         </p>

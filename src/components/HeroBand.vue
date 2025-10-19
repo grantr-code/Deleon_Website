@@ -14,19 +14,21 @@
         </div>
       </template>
       <template v-else>
-        <video
-          class="absolute inset-0 w-full h-full object-cover"
-          autoplay
-          muted
-          loop
-          playsinline
-          :poster="active.poster"
-        >
-          <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
-          <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
-          <source v-if="active.src" :src="active.src" />
-          Your browser does not support the video tag.
-        </video>
+        <div class="absolute inset-0" :style="videoPosterStyle">
+          <video
+            class="absolute inset-0 w-full h-full object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+            :poster="active.poster"
+          >
+            <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
+            <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
+            <source v-if="active.src" :src="active.src" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </template>
     </div>
 
@@ -59,7 +61,13 @@
           <span class="uppercase tracking-wider text-white/80">BACKGROUND TESTER (NON-RELEASE)</span>
           <button type="button" class="px-2 py-1 rounded bg-white/10 hover:bg-white/15 text-white/80" @click="collapsed = true" title="Minimize">Hide</button>
         </div>
-        <p class="mt-1 text-[11px] uppercase tracking-wide text-yellow-300/80">RELOAD REQUIRED</p>
+        <p
+          v-if="reloadNeeded"
+          class="mt-1 text-[11px] uppercase tracking-wide text-yellow-300/80"
+          title="Reload required"
+        >
+          RELOAD REQUIRED
+        </p>
         <div class="mt-2">
           <label class="block text-white/70 mb-1">Mode</label>
           <select
@@ -97,7 +105,6 @@ import RadarCanvas from './RadarCanvas.vue';
 import TestFlowField from './TestFlowField.vue';
 import TestPulseGrid from './TestPulseGrid.vue';
 import TestChemLattice from './TestChemLattice.vue';
-import TestMoleculeOrbits from './TestMoleculeOrbits.vue';
 import TestBrownian from './TestBrownian.vue';
 
 const props = defineProps({ enableSwitcher: { type: Boolean, default: false } });
@@ -107,6 +114,7 @@ let raf = 0;
 let isVisible = true;
 const headerOffset = ref(0);
 const selected = ref('default');
+const reloadNeeded = ref(false);
 const collapsed = ref(false);
 
 const queryFlag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('bgctl');
@@ -123,7 +131,6 @@ const options = [
   { value: 'test:flow', label: 'TEST — Flow Field' },
   { value: 'test:pulse', label: 'TEST — Pulse Grid' },
   { value: 'test:chem', label: 'TEST — Chem Lattice' },
-  { value: 'test:mol', label: 'TEST — Molecule Orbits' },
   { value: 'test:diffuse', label: 'TEST — Brownian Diffusion' },
 ];
 
@@ -146,8 +153,6 @@ const active = computed(() => {
       return { kind: 'effect', component: TestPulseGrid };
     case 'test:chem':
       return { kind: 'effect', component: TestChemLattice };
-    case 'test:mol':
-      return { kind: 'effect', component: TestMoleculeOrbits };
     case 'test:diffuse':
       return { kind: 'effect', component: TestBrownian };
     case 'default':
@@ -155,6 +160,15 @@ const active = computed(() => {
       return { kind: 'default' };
   }
 });
+
+// Poster background style so the logo is centered/contained while loading
+const videoPosterStyle = computed(() => ({
+  backgroundImage: active.value && active.value.poster ? `url(${active.value.poster})` : 'none',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'contain',
+  backgroundColor: '#000',
+}));
 
 const isDefaultActive = computed(() => active.value.kind === 'default');
 const preferDarkText = computed(() => selected.value === 'test:diffuse');
@@ -171,7 +185,14 @@ onBeforeUnmount(() => {
 });
 
 function persistSelection() {
-  try { localStorage.setItem('heroBgMode', selected.value); } catch {}
+  try {
+    const prev = localStorage.getItem('heroBgMode');
+    localStorage.setItem('heroBgMode', selected.value);
+    reloadNeeded.value = prev !== null && prev !== selected.value;
+  } catch {
+    // If storage fails, still indicate reload after a manual change
+    reloadNeeded.value = true;
+  }
 }
 
 onMounted(() => {

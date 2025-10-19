@@ -32,7 +32,13 @@
                 Hide
               </button>
             </div>
-            <p class="mt-1 text-[11px] uppercase tracking-wide text-yellow-300/80">RELOAD REQUIRED</p>
+            <p
+              v-if="reloadNeeded"
+              class="mt-1 text-[11px] uppercase tracking-wide text-yellow-300/80"
+              title="Reload required"
+            >
+              RELOAD REQUIRED
+            </p>
             <div class="mt-2">
               <label class="block text-white/70 mb-1">Mode</label>
               <select
@@ -58,21 +64,36 @@
         </div>
 
         <!-- Background area: video or canvas effect -->
-        <figure class="rounded-[10px] overflow-hidden relative">
+        <figure
+          ref="figureRef"
+          class="rounded-[10px] overflow-hidden relative bg-black"
+        >
           <template v-if="active.kind === 'video'">
+            <!-- First-frame canvas backdrop -->
+            <canvas
+              ref="posterCanvas"
+              class="absolute inset-0 block w-full h-full pointer-events-none"
+              :style="{ opacity: isPlaying ? 0 : 1, transition: 'opacity 200ms ease' }"
+            ></canvas>
+            <!-- Video element -->
             <video
+              ref="videoRef"
               class="block w-full h-[56svh] sm:h-[62svh] md:h-[68svh] lg:h-[72svh] object-cover"
               autoplay
               muted
               loop
               playsinline
-              :poster="active.poster"
+              :style="{ opacity: isPlaying ? 1 : 0, transition: 'opacity 300ms ease' }"
+              @loadeddata="onLoadedData"
+              @canplay="onCanPlay"
+              @playing="onPlaying"
             >
               <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
               <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
               <source v-if="active.src" :src="active.src" />
               Your browser does not support the video tag.
             </video>
+            <!-- Loader removed: only static thumbnail canvas until playing -->
           </template>
           <template v-else>
             <div class="relative block w-full h-[56svh] sm:h-[62svh] md:h-[68svh] lg:h-[72svh] bg-black/40">
@@ -86,14 +107,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
 import GridCanvas from './GridCanvas.vue';
 import OrbitsCanvas from './OrbitsCanvas.vue';
 import RadarCanvas from './RadarCanvas.vue';
 import TestFlowField from './TestFlowField.vue';
 import TestPulseGrid from './TestPulseGrid.vue';
 import TestChemLattice from './TestChemLattice.vue';
-import TestMoleculeOrbits from './TestMoleculeOrbits.vue';
 import TestBrownian from './TestBrownian.vue';
 
 const props = defineProps({
@@ -119,12 +139,55 @@ const options = [
   { value: 'test:flow', label: 'TEST — Flow Field' },
   { value: 'test:pulse', label: 'TEST — Pulse Grid' },
   { value: 'test:chem', label: 'TEST — Chem Lattice' },
-  { value: 'test:mol', label: 'TEST — Molecule Orbits' },
   { value: 'test:diffuse', label: 'TEST — Brownian Diffusion' },
 ];
 
 const selected = ref('default');
+const reloadNeeded = ref(false);
 const collapsed = ref(false);
+
+// Video loading/playing state
+const videoRef = ref(null);
+const posterCanvas = ref(null);
+const figureRef = ref(null);
+const isPlaying = ref(false);
+
+function drawFirstFrame() {
+  const vid = videoRef.value;
+  const cvs = posterCanvas.value;
+  const fig = figureRef.value;
+  if (!vid || !cvs || !fig) return;
+  const w = fig.clientWidth || 0;
+  const h = fig.clientHeight || 0;
+  if (!w || !h || !vid.videoWidth || !vid.videoHeight) return;
+  // Size canvas to container CSS pixels
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cvs.width = Math.floor(w * dpr);
+  cvs.height = Math.floor(h * dpr);
+  const ctx = cvs.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // Compute object-cover crop for drawImage
+  const vw = vid.videoWidth, vh = vid.videoHeight;
+  const scale = Math.max(w / vw, h / vh);
+  const sw = w / scale;
+  const sh = h / scale;
+  const sx = (vw - sw) / 2;
+  const sy = (vh - sh) / 2;
+  try {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(vid, sx, sy, sw, sh, 0, 0, w, h);
+  } catch {}
+}
+
+function onLoadedData() { drawFirstFrame(); }
+function onCanPlay() { drawFirstFrame(); }
+function onPlaying() { isPlaying.value = true; }
+
+function onResize() { if (!isPlaying.value) drawFirstFrame(); }
+onMounted(() => window.addEventListener('resize', onResize, { passive: true }));
+onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 
 onMounted(() => {
   try {
@@ -134,7 +197,13 @@ onMounted(() => {
 });
 
 function persistSelection() {
-  try { localStorage.setItem('heroBgMode', selected.value); } catch {}
+  try {
+    const prev = localStorage.getItem('heroBgMode');
+    localStorage.setItem('heroBgMode', selected.value);
+    reloadNeeded.value = prev !== null && prev !== selected.value;
+  } catch {
+    reloadNeeded.value = true;
+  }
 }
 
 // Map the selected mode into an active rendering config
@@ -158,8 +227,6 @@ const active = computed(() => {
       return { kind: 'effect', component: TestPulseGrid };
     case 'test:chem':
       return { kind: 'effect', component: TestChemLattice };
-    case 'test:mol':
-      return { kind: 'effect', component: TestMoleculeOrbits };
     case 'test:diffuse':
       return { kind: 'effect', component: TestBrownian };
     case 'default':
@@ -167,4 +234,6 @@ const active = computed(() => {
       return vDefault;
   }
 });
+
+// No logo placeholder; canvas shows a first frame until playing
 </script>
