@@ -26,7 +26,7 @@
             <p class="text-sm text-brand-muted">{{ data.copyright }}</p>
             <hr class="my-6 border-neutral-800" />
             <div class="flex gap-3 text-sm">
-              <span v-for="(r, i) in data.regions" :key="i" class="uppercase tracking-wide text-brand-muted">{{ r }}</span>
+              <span v-for="(r, i) in data.regions" :key="i" class="tracking-wide text-brand-muted">{{ r }}</span>
             </div>
             <hr class="my-6 border-neutral-800" />
             <div class="flex flex-col gap-3">
@@ -41,6 +41,7 @@
                 {{ s.label }}
               </a>
             </div>
+            <hr class="my-6 border-neutral-800" />
           </div>
         </div>
 
@@ -55,6 +56,28 @@
                 </li>
               </ul>
             </div>
+          </div>
+
+          <!-- Partnerships: shown below Solutions / Resources / Company columns -->
+          <div class="mt-10 border-t border-neutral-800 pt-6">
+            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <a href="https://www.pravida.com/" target="_blank" rel="noopener" class="inline-flex">
+                <img
+                  src="/Pravida.png"
+                  alt="Pravida logo"
+                  class="h-8 sm:h-10 w-auto object-contain opacity-95 hover:opacity-100 transition-opacity"
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
+                />
+              </a>
+              <p class="text-sm text-brand-text/80 text-center sm:text-left">
+                We partner with Pravida for clinical services.
+              </p>
+            </div>
+            <p class="mt-4 text-[12px] leading-relaxed text-brand-muted text-center sm:text-left">
+              Wellness information only. Data for research use only.
+            </p>
           </div>
         </div>
       </div>
