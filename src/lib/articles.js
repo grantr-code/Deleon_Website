@@ -57,7 +57,12 @@ const allArticles = Object.entries(rawModules).map(([path, raw]) => {
   const { data: fm, content } = parseFrontMatter(raw || '');
   const slug = fm.slug || slugFromPath(path);
   const html = marked.parse(content || '');
+  // Normalize date and compute a numeric timestamp for reliable sorting
   const date = fm.date || new Date().toISOString().slice(0, 10);
+  const time = (() => {
+    const t = Date.parse(date);
+    return Number.isFinite(t) ? t : Date.now();
+  })();
   const dateDisplay = fm.dateDisplay || toDisplayDate(date);
 
   return {
@@ -67,6 +72,7 @@ const allArticles = Object.entries(rawModules).map(([path, raw]) => {
     longTitle: fm.longTitle || fm.title || fm.shortTitle || slug,
     // Meta
     date,
+    time,
     dateDisplay,
     tag: fm.tag || 'News',
     author: fm.author || 'Deleon Newsroom',
@@ -79,7 +85,7 @@ const allArticles = Object.entries(rawModules).map(([path, raw]) => {
     // Link target used across the site
     href: `/article.html?slug=${encodeURIComponent(slug)}`,
   };
-}).sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+}).sort((a, b) => (a.time < b.time ? 1 : a.time > b.time ? -1 : 0));
 
 export function getAllArticles() {
   return allArticles;
