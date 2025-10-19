@@ -78,6 +78,19 @@
             <option v-for="opt in options" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
           </select>
         </div>
+
+        <!-- Site-wide theme BETA -->
+        <div class="mt-3">
+          <label class="block text-white/70 mb-1">Site theme (BETA)</label>
+          <select
+            v-model="siteTheme"
+            class="w-[240px] bg-black/40 border border-white/15 rounded px-2 py-1 text-white/90"
+            title="Switch site-wide theme"
+          >
+            <option value="dark">Dark (Default)</option>
+            <option value="light">Light (Beta)</option>
+          </select>
+        </div>
       </div>
       <button v-else type="button" class="rounded-md border border-white/15 bg-black/50 backdrop-blur-sm shadow-sm px-2 py-1 text-[12px] text-white/90 hover:bg-white/10" @click="collapsed = false" title="Show background switcher">BG</button>
     </div>
@@ -106,6 +119,7 @@ import TestFlowField from './TestFlowField.vue';
 import TestPulseGrid from './TestPulseGrid.vue';
 import TestChemLattice from './TestChemLattice.vue';
 import TestBrownian from './TestBrownian.vue';
+import { useSiteTheme } from '../composables/useSiteTheme';
 
 const props = defineProps({ enableSwitcher: { type: Boolean, default: false } });
 
@@ -116,6 +130,8 @@ const headerOffset = ref(0);
 const selected = ref('default');
 const reloadNeeded = ref(false);
 const collapsed = ref(false);
+
+const { theme: siteTheme } = useSiteTheme();
 
 const queryFlag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('bgctl');
 const envFlag = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENABLE_BG_SWITCHER === 'true';
