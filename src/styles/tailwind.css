@@ -1,3 +1,5 @@
+@import './theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -46,5 +48,4 @@
   .with-rails::after { right: 0; }
 }
 
-/* Light Mode BETA */
-@import './theme.css';
+/* Light Mode BETA import moved to top to satisfy PostCSS */

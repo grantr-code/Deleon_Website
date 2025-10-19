@@ -38,7 +38,8 @@ const platforms = computed(() => data.sections.find(s => s.type === 'platforms')
 
 // Provide a shared header theme so the hero can request a light header
 // for bright backgrounds (e.g., Brownian Diffusion test background)
-const headerTheme = ref('dark');
+const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'dark';
+const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
 provide('headerTheme', headerTheme);
 
 // Site-wide theme (BETA)

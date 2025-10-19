@@ -204,12 +204,17 @@ const headingClass = computed(() => `text-center ${preferDarkText.value ? 'text-
 
 // Inform the header to switch logo/text to dark-on-light when Brownian is active
 const headerTheme = inject('headerTheme', null);
-watch(preferDarkText, (v) => {
-  if (headerTheme && typeof headerTheme === 'object') headerTheme.value = v ? 'light' : 'dark';
+// Ensure hero never forces a dark header when site theme is light.
+// Logic: if site is light OR hero prefers dark text, use light header; else dark.
+watch([preferDarkText, siteTheme], ([prefersDarkText, currentSiteTheme]) => {
+  if (!headerTheme || typeof headerTheme !== 'object') return;
+  const next = (currentSiteTheme === 'light' || prefersDarkText) ? 'light' : 'dark';
+  headerTheme.value = next;
 }, { immediate: true });
 
 onBeforeUnmount(() => {
-  if (headerTheme && typeof headerTheme === 'object') headerTheme.value = 'dark';
+  if (!headerTheme || typeof headerTheme !== 'object') return;
+  headerTheme.value = siteTheme.value === 'light' ? 'light' : 'dark';
 });
 
 function persistSelection() {

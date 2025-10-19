@@ -100,7 +100,8 @@ const pagedPosts = computed(() => {
 function nextPage() { if (page.value < totalPages.value) page.value += 1; }
 function prevPage() { if (page.value > 1) page.value -= 1; }
 
-const headerTheme = ref('dark');
+const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'dark';
+const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
 provide('headerTheme', headerTheme);
 const { theme: siteTheme } = useSiteTheme();
 watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });

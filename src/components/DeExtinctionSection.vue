@@ -16,9 +16,11 @@
 
     <!-- Right-aligned video with only a left border (site hairline style) -->
     <div
-      class="relative md:absolute md:top-0 md:right-0 z-10 md:overflow-hidden md:border-l-2 border-white/10 bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]"
+      class="relative md:absolute md:top-0 md:right-0 z-10 md:overflow-hidden md:border-l border-white/10 bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]"
       :style="squareStyle"
     >
+      <!-- Thematic left accent to match cards elsewhere -->
+      <div class="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-brand-green" aria-hidden="true"></div>
       <!-- First-frame canvas backdrop -->
       <canvas
         ref="posterCanvas"

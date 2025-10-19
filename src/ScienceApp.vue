@@ -126,9 +126,17 @@ import { siteData as data } from './content/siteData';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
 import ScienceInfographic from './components/ScienceInfographic.vue';
-import { onMounted } from 'vue';
+import { onMounted, ref, provide, watch } from 'vue';
 import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
 import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
+import { useSiteTheme } from './composables/useSiteTheme';
+
+// Keep header colors/logo in sync with the global site theme (light/dark)
+const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'dark';
+const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
+provide('headerTheme', headerTheme);
+const { theme: siteTheme } = useSiteTheme();
+watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 
 const { open: openEarly } = useEarlyAccessPanel();
 onMounted(() => { if (typeof window !== 'undefined' && window.location.hash === '#updates') openEarly(); });

@@ -1,23 +1,23 @@
 export const teamData = {
   groups: [
     {
-      title: 'Founders',
+      title: 'Team',
       members: [
         {
           name: 'Chad Pozarycki, PhD',
           role: 'CEO',
           bio: 'Analytical chemist, former Mars rover researcher at NASA.',
           photo: '/chad.png',
-          linkedin: '',
+          linkedin: 'https://www.linkedin.com/in/chad-pozarycki',
           x: '',
           links: [],
         },
         {
           name: 'José Andrade',
-          role: 'President',
+          role: 'COO',
           bio: 'Engineer and data scientist, former medical device consultant.',
           photo: '/jose.jpg',
-          linkedin: '',
+          linkedin: 'https://www.linkedin.com/in/jose-luis-r-andrade',
           x: '',
           links: [],
         },
@@ -31,7 +31,7 @@ export const teamData = {
           role: 'Machine Learning Researcher',
           bio: 'Expert in applied math and computational science at LANL.',
           photo: '/antonio.jpg',
-          linkedin: '',
+          linkedin: 'https://www.linkedin.com/in/antonio-varagnolo-431287207',
           x: '',
           links: [],
         },
@@ -41,7 +41,7 @@ export const teamData = {
           bio: 'GT Biomedical Engineer; former Eli Lilly.',
           photo: '/nellie.png',
           photoScale: 1.08,
-          linkedin: '',
+          linkedin: 'https://www.linkedin.com/in/nellie-kolon-8b4b3613a',
           x: '',
           links: [],
         },

@@ -27,7 +27,39 @@
                     {{ item.label }}
                   </a>
                 </li>
+                <!-- Theme toggle (desktop) -->
+                <li>
+                  <button
+                    type="button"
+                    :class="themeBtnClass"
+                    @click="toggleTheme()"
+                    :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
+                    title="Toggle theme"
+                  >
+                    <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                      <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                      <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
+                    </svg>
+                  </button>
+                </li>
               </ul>
+            <!-- Theme toggle (mobile) -->
+            <button
+              type="button"
+              :class="themeBtnClass + ' lg:hidden'"
+              @click="toggleTheme()"
+              :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
+              title="Toggle theme"
+            >
+              <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
+              </svg>
+            </button>
             <!-- Mobile menu toggle -->
             <button
               type="button"
@@ -93,7 +125,39 @@
                     {{ item.label }}
                   </a>
                 </li>
+                <!-- Theme toggle (desktop) -->
+                <li>
+                  <button
+                    type="button"
+                    :class="themeBtnClass"
+                    @click="toggleTheme()"
+                    :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
+                    title="Toggle theme"
+                  >
+                    <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                      <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                      <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
+                    </svg>
+                  </button>
+                </li>
               </ul>
+            <!-- Theme toggle (mobile) -->
+            <button
+              type="button"
+              :class="themeBtnClass + ' lg:hidden'"
+              @click="toggleTheme()"
+              :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
+              title="Toggle theme"
+            >
+              <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
+              </svg>
+            </button>
             <!-- Mobile menu toggle -->
             <button
               type="button"
@@ -142,6 +206,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick, computed, inject } from 'vue';
 import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
+import { useSiteTheme } from '../composables/useSiteTheme';
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -185,6 +250,13 @@ const mobilePanelClass = computed(() => isLightHeader.value
 const mobileLinkClass = computed(() => isLightHeader.value
   ? 'block w-full text-base px-3 py-2 rounded-md text-black hover:bg-black/10 transition'
   : 'block w-full text-base px-3 py-2 rounded-md text-white hover:bg-white/10 transition');
+
+// Theme toggle support (sun/moon button)
+const { theme: siteTheme, toggleTheme } = useSiteTheme();
+const isLight = computed(() => siteTheme.value === 'light');
+const themeBtnClass = computed(() => isLightHeader.value
+  ? 'inline-flex items-center justify-center h-8 w-8 md:h-9 md:w-9 rounded-full border bg-brand-green/10 border-brand-green/40 text-black hover:bg-brand-green/15 hover:border-brand-green/60 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white'
+  : 'inline-flex items-center justify-center h-8 w-8 md:h-9 md:w-9 rounded-full border bg-white/10 border-white/20 text-white hover:bg-white/15 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black');
 
 // Auto-collapse chips into hamburger when they overflow available width (on lg+)
 const chipsUl = ref(null);

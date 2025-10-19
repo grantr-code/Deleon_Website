@@ -4,7 +4,7 @@ export const siteData = {
     logoSrc: '/BrandAssets/Deleon_Logo_light.svg',
     nav: [
       { label: 'Home', href: '/' },
-      { label: 'Founders', href: '/team.html' },
+      { label: 'Team', href: '/team.html' },
       { label: "Why We’re Different", href: '/science.html' },
       { label: 'Contact/Updates', href: '/#updates' },
     ],
@@ -72,7 +72,7 @@ export const siteData = {
       {
         title: 'Company',
         links: [
-          { label: 'Founders', href: '/team.html' },
+          { label: 'Team', href: '/team.html' },
           { label: 'Contact', href: 'mailto:chad@deleon-omics.com,jose@deleon-omics.com' },
         ],
       },

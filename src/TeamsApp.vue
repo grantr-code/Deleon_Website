@@ -113,7 +113,8 @@ const video = {
 };
 
 // Provide header theme and keep it in sync with site theme
-const headerTheme = ref('dark');
+const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'dark';
+const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
 provide('headerTheme', headerTheme);
 const { theme: siteTheme } = useSiteTheme();
 watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
