@@ -217,7 +217,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Morph the green dot into an arrow on hover (desktop) */
+
 .group-nav .nav-icon {
   position: relative;
   width: 16px;   /* reserve final width so layout doesn't shift */

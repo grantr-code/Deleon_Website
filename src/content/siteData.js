@@ -1,9 +1,7 @@
 export const siteData = {
   header: {
     brandText: 'DELEON',
-    // White logo (named "*_light") is for DARK theme by design.
     logoSrc: '/BrandAssets/Deleon_Logo_light.svg',
-    // Reduced IA: Home, Founders, Why We're Different, Contact/Updates
     nav: [
       { label: 'Home', href: '/' },
       { label: 'Founders', href: '/team.html' },
@@ -52,12 +50,10 @@ export const siteData = {
     // White logo (named "*_light") is for DARK theme by design.
     logoSrc: '/BrandAssets/Deleon_Logo_light.svg',
     copyright: '© 2025 Deleon Technologies Inc. All rights reserved.',
-    // Top call-to-action tiles modeled after Palantir
     ctas: [
       { label: 'Request a Demo', href: 'mailto:chad@deleon-omics.com,jose@deleon-omics.com?subject=Request%20a%20Deleon%20Demo', theme: 'light' },
       { label: 'Join the Pilot', href: 'mailto:chad@deleon-omics.com,jose@deleon-omics.com?subject=Join%20the%20Pilot', theme: 'dark' },
     ],
-    // Footer right-side link columns
     columns: [
       {
         title: 'Solutions',

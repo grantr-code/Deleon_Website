@@ -10,13 +10,13 @@
     <!-- Full‑width subtle grid guide lines -->
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute inset-0 opacity-30 z-0"
+      class="pointer-events-none absolute inset-0 opacity-30 z-0 hidden md:block"
       :style="gridLinesStyle"
     ></div>
 
     <!-- Right-aligned video with only a left border (site hairline style) -->
     <div
-      class="absolute top-0 right-0 z-10 overflow-hidden border-l-2 border-white/10 bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]"
+      class="relative md:absolute md:top-0 md:right-0 z-10 md:overflow-hidden md:border-l-2 border-white/10 bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]"
       :style="squareStyle"
     >
       <!-- First-frame canvas backdrop -->
@@ -43,9 +43,12 @@
       <!-- Loader removed: only static thumbnail canvas until playing -->
     </div>
 
+    <!-- Mobile-only divider directly under the video to bound the section -->
+    <div class="md:hidden border-t border-white/10"></div>
+
     <!-- Horizontal divider aligned to the bottom of the video -->
     <div
-      class="pointer-events-none absolute left-0 right-0 border-t border-white/10 z-10"
+      class="pointer-events-none absolute left-0 right-0 border-t border-white/10 z-10 hidden md:block"
       :style="videoBottomLineStyle"
       aria-hidden="true"
     ></div>
@@ -53,17 +56,17 @@
     <!-- Content wrapper (wide) -->
     <div class="relative z-20 mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-0 md:pt-14 pb-0 md:pb-0 max-w-none">
       <!-- Two-column layout: copy left, media right -->
-      <div class="grid grid-cols-12 gap-x-6 md:gap-x-8 items-center md:items-start" :style="{ minHeight: videoHeightPx + 'px' }">
+      <div class="grid grid-cols-12 gap-x-6 md:gap-x-8 items-center md:items-start" :style="isMobile ? {} : { minHeight: videoHeightPx + 'px' }">
         <!-- Left copy block (sticky so it doesn't move while scrolling) -->
         <div class="col-span-12 md:col-span-7 lg:pr-8 xl:pr-12 2xl:pr-16 md:sticky md:top-24 md:max-w-[640px] xl:max-w-[700px] 2xl:max-w-[720px] w-full">
-          <p class="text-white text-[clamp(20px,2.2vw,28px)] leading-[1.22] tracking-[-0.005em]">
+          <p class="text-white text-[clamp(18px,2.2vw,28px)] leading-[1.28] tracking-[-0.005em]">
             Real‑time biochemistry for people and teams. From a drop of urine to
             individualized guidance in minutes—for performance, wellness, and operations.
           </p>
 
           <!-- CTA pill -->
-          <div class="mt-8 md:mt-10">
-            <a href="mailto:chad@deleon-omics.com,jose@deleon-omics.com" class="group inline-flex items-center gap-6 rounded-full border border-white/20 px-6 sm:px-7 py-4 sm:py-5 bg-white/[.02] hover:bg-white/[.05] hover:border-brand-green/60 transition-colors">
+          <div class="mt-6 md:mt-10">
+            <a href="mailto:chad@deleon-omics.com,jose@deleon-omics.com" class="group inline-flex md:inline-flex w-full md:w-auto items-center justify-between md:justify-start gap-4 md:gap-6 rounded-full border border-white/20 px-5 sm:px-7 py-4 sm:py-5 bg-white/[.02] hover:bg-white/[.05] hover:border-brand-green/60 transition-colors">
               <span class="text-left">
                 <span class="block text-sm text-brand-muted">See Deleon in action</span>
                 <span class="block text-[clamp(16px,1.3vw,18px)] text-white">Request a demo</span>
@@ -74,7 +77,7 @@
             </a>
           </div>
           <!-- Bottom left caption like the reference mark -->
-          <div class="mt-6 md:mt-8 flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
+          <div class="mt-5 md:mt-8 flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
             <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
             <span>For Teams, Clinics, and Labs</span>
           </div>
@@ -159,7 +162,7 @@ const videoWidthPx = computed(() => isMobile.value ? vw.value : Math.max(0.70 * 
 const videoHeightPx = computed(() => videoWidthPx.value * 0.60);
 
 const squareStyle = computed(() => ({
-  width: videoWidthPx.value + 'px',
+  width: (isMobile.value ? '100%' : videoWidthPx.value + 'px'),
   height: videoHeightPx.value + 'px',
 }));
 
@@ -167,7 +170,7 @@ const squareStyle = computed(() => ({
 const videoBottomLineStyle = computed(() => ({ top: videoHeightPx.value + 'px' }));
 
 // Make the section’s min-height match the video height to remove excess gap
-const sectionStyle = computed(() => ({ minHeight: videoHeightPx.value + 'px' }));
+const sectionStyle = computed(() => ({ minHeight: isMobile.value ? 'auto' : videoHeightPx.value + 'px' }));
 
 // No logo placeholder; canvas shows a first frame until playing
 
