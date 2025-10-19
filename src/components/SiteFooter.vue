@@ -26,7 +26,7 @@
             <p class="text-sm text-brand-muted">{{ data.copyright }}</p>
             <hr class="my-6 border-neutral-800" />
             <div class="flex gap-3 text-sm">
-              <a v-for="(r, i) in data.regions" :key="i" href="#" class="uppercase tracking-wide text-brand-muted hover:text-brand-text">{{ r }}</a>
+              <span v-for="(r, i) in data.regions" :key="i" class="uppercase tracking-wide text-brand-muted">{{ r }}</span>
             </div>
             <hr class="my-6 border-neutral-800" />
             <div class="flex flex-col gap-3">
@@ -47,7 +47,7 @@
         <!-- Right columns: link lists -->
         <div class="lg:col-span-9">
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
-            <div v-for="col in data.columns" :key="col.title">
+            <div v-for="col in filteredColumns" :key="col.title">
               <div class="text-[11px] uppercase tracking-wider text-brand-muted font-semibold mb-3">{{ col.title }}</div>
               <ul class="space-y-3">
                 <li v-for="item in col.links" :key="item.label">
@@ -63,7 +63,15 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   data: { type: Object, required: true },
 });
+
+// Remove empty/dead links (href '#') and drop empty columns
+const filteredColumns = (props.data.columns || [])
+  .map(col => ({
+    title: col.title,
+    links: (col.links || []).filter(l => l && l.href && l.href !== '#'),
+  }))
+  .filter(col => col.links.length > 0);
 </script>

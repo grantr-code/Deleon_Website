@@ -60,11 +60,9 @@ export const siteData = {
       {
         title: 'Offerings',
         links: [
-          { label: 'Analysis', href: '#' },
-          { label: 'Insights', href: '#' },
-          { label: 'Command', href: '#' },
-          { label: 'Data & Security', href: '#' },
-          { label: 'API Docs', href: '#' },
+          { label: 'Analysis', href: '/#our-platforms' },
+          { label: 'Insights', href: '/#our-platforms' },
+          { label: 'Command', href: '/#our-platforms' },
         ],
       },
       {
@@ -74,27 +72,17 @@ export const siteData = {
           { label: 'Olympic Teams', href: '/teams.html' },
           { label: 'Collegiate', href: '/teams.html' },
           { label: 'Tactical & Military', href: '/tactical.html' },
-          { label: 'Sports Labs', href: '#' },
-          { label: 'Clinics', href: '#' },
         ],
       },
       {
         title: 'Resources',
         links: [
-          { label: 'Case Studies', href: '#' },
           { label: 'Science', href: '/science.html' },
-          { label: 'Blog', href: '#' },
-          { label: 'Support', href: '#' },
-          { label: 'Press Kit', href: '#' },
         ],
       },
       {
         title: 'Company',
         links: [
-          { label: 'About', href: '#' },
-          { label: 'Careers', href: '#' },
-          { label: 'Privacy Policy', href: '#' },
-          { label: 'Terms of Use', href: '#' },
           { label: 'Contact', href: 'mailto:chad@deleon-omics.com,jose@deleon-omics.com' },
         ],
       },
