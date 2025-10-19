@@ -61,35 +61,55 @@
       </div>
 
       <!-- Default (homepage) header variant -->
-      <div v-else class="grid grid-cols-12 gap-5">
-        <div class="col-span-12 lg:col-span-4 flex items-center justify-between">
+      <div v-else>
+        <div class="flex items-center justify-between gap-4">
           <a href="/" class="flex items-center gap-3.5" aria-label="Deleon">
             <img :src="data.logoSrc" alt="Deleon logo" class="h-10 md:h-11 w-auto" />
             <span class="font-brand font-semibold uppercase tracking-[0.35em] text-[0.95rem] md:text-[1.05rem]">{{ data.brandText }}</span>
           </a>
-          <!-- Mobile menu toggle -->
-          <button
-            type="button"
-            class="lg:hidden p-2 rounded-md border border-white/20 hover:bg-white/10 transition"
-            :aria-expanded="isOpen ? 'true' : 'false'"
-            aria-controls="primary-nav"
-            @click="isOpen = !isOpen"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
-            </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <div class="flex items-center gap-3">
+            <!-- Desktop chips (right aligned); auto-collapse to hamburger on overflow -->
+            <ul
+              ref="chipsUl"
+              class="hidden lg:flex flex-nowrap gap-2 items-center justify-end"
+              v-show="!shouldCollapse"
+            >
+              <li v-for="item in data.nav" :key="item.label">
+                <a
+                  :href="item.href"
+                  class="px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60 whitespace-nowrap"
+                >
+                  {{ item.label }}
+                </a>
+              </li>
+            </ul>
+            <!-- Mobile menu toggle -->
+            <button
+              type="button"
+              :class="['p-2 rounded-md border border-white/20 hover:bg-white/10 transition lg:hidden', isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
+              :aria-expanded="isOpen ? 'true' : 'false'"
+              aria-controls="primary-nav"
+              @click="isOpen = !isOpen"
+            >
+              <span class="sr-only">Toggle navigation</span>
+              <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <nav :class="['col-span-12 lg:col-start-9 lg:col-span-4 lg:flex lg:justify-end mt-4 pt-4 pb-4 border-t border-white/10 lg:mt-0 lg:pt-0 lg:pb-0 lg:border-none', isOpen ? 'block' : 'hidden']" id="primary-nav" style="position: relative; z-index: 50;">
-          <ul class="space-y-2 lg:space-y-0">
+        <!-- Mobile chips revealed by toggle -->
+        <nav :id="'primary-nav'" :class="['mt-4', isOpen ? 'block' : 'hidden']">
+          <ul class="flex flex-wrap gap-2 items-center">
             <li v-for="item in data.nav" :key="item.label">
-              <a :href="item.href" class="group-nav flex items-center justify-start gap-x-2 whitespace-nowrap">
-                <span class="nav-icon" aria-hidden="true"></span>
-                <span class="nav-label">{{ item.label }}</span>
+              <a
+                :href="item.href"
+                class="px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60"
+              >
+                {{ item.label }}
               </a>
             </li>
           </ul>

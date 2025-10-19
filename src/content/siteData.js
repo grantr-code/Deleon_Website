@@ -2,15 +2,12 @@ export const siteData = {
   header: {
     brandText: 'D E L E O N',
     logoSrc: '/BrandAssets/Deleon_Logo_light.svg',
+    // Reduced IA: Home, Founders, Why We're Different, Contact/Updates
     nav: [
       { label: 'Home', href: '/' },
-      { label: 'Our Team', href: '/team.html' },
-      { label: 'For Teams', href: '/teams.html' },
-      { label: 'Defense', href: '/tactical.html' },
-      { label: 'Science', href: '/science.html' },
-      { label: 'Request Demo', href: 'mailto:chad@deleon-omics.com,jose@deleon-omics.com?subject=Request%20a%20Deleon%20Demo' },
-      { label: 'Contact', href: 'mailto:chad@deleon-omics.com,jose@deleon-omics.com' },
-      { label: 'Sign in', href: 'https://deleon-full-stack.vercel.app/' },
+      { label: 'Founders', href: '/team.html' },
+      { label: "Why We’re Different", href: '/science.html' },
+      { label: 'Contact/Updates', href: '/#updates' },
     ],
   },
   sections: [
