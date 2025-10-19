@@ -15,16 +15,29 @@
       </template>
       <template v-else>
         <div class="absolute inset-0" :style="videoPosterStyle">
+          <!-- First-frame thumbnail canvas (fades out when video plays) -->
+          <canvas
+            ref="posterCanvas"
+            class="absolute inset-0 w-full h-full pointer-events-none"
+            :style="{ opacity: isVideoPlaying ? 0 : 1, transition: 'opacity 200ms ease' }"
+            aria-hidden="true"
+          ></canvas>
+          <!-- Video element (fades in when playing) -->
           <video
+            ref="videoRef"
             class="absolute inset-0 w-full h-full object-cover"
             autoplay
             muted
             loop
             playsinline
-            :poster="active.poster"
+            :style="{ opacity: isVideoPlaying ? 1 : 0, transition: 'opacity 300ms ease' }"
+            @loadeddata="onVideoLoadedData"
+            @canplay="onVideoCanPlay"
+            @playing="onVideoPlaying"
           >
-            <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
+            <!-- Prefer MOV first; MP4 as fallback -->
             <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
+            <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
             <source v-if="active.src" :src="active.src" />
             Your browser does not support the video tag.
           </video>
@@ -37,9 +50,10 @@
       <div class="text-center max-w-[1100px] w-full mx-auto">
         <TypeReplaceOnView
           tag="h1"
-          prefix="Operate with a common "
-          from="ground truth"
-          to="operating picture"
+          prefix="Analyze your "
+          :words="['biochemistry', 'training potential', 'wellness', 'nutrition']"
+          suffix=" every single day"
+          word-tag="em"
           :initialSpeed="26"
           :fromSpeed="220"
           :toSpeed="220"
@@ -130,6 +144,9 @@ const headerOffset = ref(0);
 const selected = ref('default');
 const reloadNeeded = ref(false);
 const collapsed = ref(false);
+const videoRef = ref(null);
+const posterCanvas = ref(null);
+const isVideoPlaying = ref(false);
 
 const { theme: siteTheme } = useSiteTheme();
 
@@ -151,7 +168,7 @@ const options = [
 ];
 
 const active = computed(() => {
-  const poster = '/BrandAssets/Deleon_Logo_light.svg';
+  const poster = null; // No logo; use first-frame canvas as thumbnail
   switch (selected.value) {
     case 'video:teams':
       return { kind: 'video', poster, srcMp4: '/BrandAssets/Video.mp4', srcMov: '/BrandAssets/Video.mov' };
@@ -179,10 +196,7 @@ const active = computed(() => {
 
 // Poster background style so the logo is centered/contained while loading
 const videoPosterStyle = computed(() => ({
-  backgroundImage: active.value && active.value.poster ? `url(${active.value.poster})` : 'none',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'contain',
+  // Solid background; thumbnail is drawn to canvas instead of static logo
   backgroundColor: '#000',
 }));
 
@@ -387,5 +401,60 @@ onMounted(() => {
     document.removeEventListener('visibilitychange', onVis);
     if (raf) cancelAnimationFrame(raf);
   });
+});
+
+// Draw a first-frame thumbnail onto the hero canvas until the video is playing
+function drawFirstFrame() {
+  const vid = videoRef.value;
+  const cvs = posterCanvas.value;
+  if (!vid || !cvs) return;
+  // Measure the canvas container (full hero area)
+  const rect = cvs.getBoundingClientRect();
+  const w = Math.floor(rect.width);
+  const h = Math.floor(rect.height || window.innerHeight);
+  if (!w || !h || !vid.videoWidth || !vid.videoHeight) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cvs.width = Math.floor(w * dpr);
+  cvs.height = Math.floor(h * dpr);
+  const ctx = cvs.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // Compute object-cover crop
+  const vw = vid.videoWidth, vh = vid.videoHeight;
+  const scale = Math.max(w / vw, h / vh);
+  const sw = w / scale;
+  const sh = h / scale;
+  const sx = (vw - sw) / 2;
+  const sy = (vh - sh) / 2;
+  try {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(vid, sx, sy, sw, sh, 0, 0, w, h);
+  } catch {}
+}
+
+function onVideoLoadedData() { if (!isVideoPlaying.value) drawFirstFrame(); }
+function onVideoCanPlay() { if (!isVideoPlaying.value) drawFirstFrame(); }
+function onVideoPlaying() { isVideoPlaying.value = true; }
+
+// Keep thumbnail in sync on resize until video fades in
+const onHeroResize = () => { if (!isVideoPlaying.value && active.value.kind === 'video') drawFirstFrame(); };
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', onHeroResize, { passive: true });
+}
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', onHeroResize);
+  }
+});
+
+// Reset state when switching modes
+watch(() => active.value.kind, (k) => {
+  if (k === 'video') {
+    isVideoPlaying.value = false;
+    // Draw as soon as metadata is ready via event handlers
+  } else {
+    isVideoPlaying.value = false;
+  }
 });
 </script>

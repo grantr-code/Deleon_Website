@@ -30,9 +30,10 @@
             <!-- Mobile menu toggle -->
             <button
               type="button"
-              :class="[(isLightHeader ? 'p-2 rounded-md border border-black/20 hover:bg-black/5 transition' : 'p-2 rounded-md border border-white/20 hover:bg-white/10 transition'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
+              :class="[(isLightHeader ? 'p-2.5 rounded-full border border-black/20 hover:bg-black/5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white' : 'p-2.5 rounded-full border border-white/20 hover:bg-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
               :aria-expanded="isOpen ? 'true' : 'false'"
               aria-controls="primary-nav"
+              aria-label="Toggle navigation"
               @click="isOpen = !isOpen"
             >
               <span class="sr-only">Toggle navigation</span>
@@ -45,18 +46,26 @@
             </button>
           </div>
         </div>
-        <!-- Mobile chips revealed by toggle -->
-        <nav :id="'primary-nav'" :class="['mt-4', isOpen ? 'block' : 'hidden']">
-          <ul class="flex flex-wrap gap-2 items-center">
-            <li v-for="item in data.nav" :key="item.label">
-              <a
-                :href="item.href"
-                :class="chipClass"
-              >
-                {{ item.label }}
-              </a>
-            </li>
-          </ul>
+        <!-- Mobile menu panel -->
+        <nav
+          :id="'primary-nav'"
+          role="navigation"
+          aria-label="Primary"
+          :class="['mt-3', (isLg && !shouldCollapse) ? 'hidden' : (isOpen ? 'block' : 'hidden')]"
+        >
+          <div :class="mobilePanelClass">
+            <ul class="flex flex-col gap-1">
+              <li v-for="item in data.nav" :key="item.label">
+                <a
+                  :href="item.href"
+                  :class="mobileLinkClass"
+                  @click="isOpen = false"
+                >
+                  {{ item.label }}
+                </a>
+              </li>
+            </ul>
+          </div>
         </nav>
       </div>
 
@@ -86,9 +95,10 @@
             <!-- Mobile menu toggle -->
             <button
               type="button"
-              :class="[(isLightHeader ? 'p-2 rounded-md border border-black/20 hover:bg-black/5 transition lg:hidden' : 'p-2 rounded-md border border-white/20 hover:bg-white/10 transition lg:hidden'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
+              :class="[(isLightHeader ? 'p-2.5 rounded-full border border-black/20 hover:bg-black/5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white lg:hidden' : 'p-2.5 rounded-full border border-white/20 hover:bg-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:hidden'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
               :aria-expanded="isOpen ? 'true' : 'false'"
               aria-controls="primary-nav"
+              aria-label="Toggle navigation"
               @click="isOpen = !isOpen"
             >
               <span class="sr-only">Toggle navigation</span>
@@ -101,18 +111,26 @@
             </button>
           </div>
         </div>
-        <!-- Mobile chips revealed by toggle -->
-        <nav :id="'primary-nav'" :class="['mt-4', isOpen ? 'block' : 'hidden']">
-          <ul class="flex flex-wrap gap-2 items-center">
-            <li v-for="item in data.nav" :key="item.label">
-              <a
-                :href="item.href"
-                :class="chipClass"
-              >
-                {{ item.label }}
-              </a>
-            </li>
-          </ul>
+        <!-- Mobile menu panel -->
+        <nav
+          :id="'primary-nav'"
+          role="navigation"
+          aria-label="Primary"
+          :class="['mt-3', (isLg && !shouldCollapse) ? 'hidden' : (isOpen ? 'block' : 'hidden')]"
+        >
+          <div :class="mobilePanelClass">
+            <ul class="flex flex-col gap-1">
+              <li v-for="item in data.nav" :key="item.label">
+                <a
+                  :href="item.href"
+                  :class="mobileLinkClass"
+                  @click="isOpen = false"
+                >
+                  {{ item.label }}
+                </a>
+              </li>
+            </ul>
+          </div>
         </nav>
       </div>
     </div>
@@ -142,6 +160,14 @@ const chipClass = computed(() => isLightHeader.value
   : 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60');
 
 const isOpen = ref(false);
+
+// Mobile dropdown styling
+const mobilePanelClass = computed(() => isLightHeader.value
+  ? 'w-full rounded-lg border border-black/10 bg-black/5 backdrop-blur-sm p-2 shadow-sm'
+  : 'w-full rounded-lg border border-white/10 bg-white/8 backdrop-blur-sm p-2 shadow-sm');
+const mobileLinkClass = computed(() => isLightHeader.value
+  ? 'block w-full text-base px-3 py-2 rounded-md text-black hover:bg-black/10 transition'
+  : 'block w-full text-base px-3 py-2 rounded-md text-white hover:bg-white/10 transition');
 
 // Auto-collapse chips into hamburger when they overflow available width (on lg+)
 const chipsUl = ref(null);

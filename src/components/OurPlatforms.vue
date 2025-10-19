@@ -168,8 +168,8 @@
         >
           <!-- Hover preview (reuses slide content) with bounded overlay text -->
           <div
-            class="absolute top-1/2 -translate-y-1/2 w-[480px] xl:w-[560px] aspect-[16/9] rounded-md overflow-hidden border border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]"
-            :style="{ left: fullPreviewLeft }"
+            class="absolute inset-y-0 rounded-none overflow-hidden border-x border-y-0 border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]"
+            :style="{ left: fullPreviewLeft, width: previewW + 'px' }"
             aria-hidden="true"
           >
             <!-- Animated preview fades in on hover only -->
@@ -181,12 +181,12 @@
             </div>
             <!-- Default short description (visible), replaced by long text on hover -->
             <div class="absolute inset-0 z-10 flex flex-col justify-center p-5 sm:p-6 xl:p-8 transition-opacity duration-300 pointer-events-none group-hover:opacity-0">
-              <p class="text-brand-muted max-w-none">{{ p.description }}</p>
+              <p class="text-brand-muted max-w-none text-[clamp(12px,1.0vw,16px)] leading-relaxed">{{ p.description }}</p>
               <div class="text-brand-muted text-sm mt-2">/{{ formatIndex(i) }}</div>
             </div>
             <!-- Long description on hover (clipped to box) -->
             <div class="absolute inset-0 z-10 flex flex-col justify-center p-5 sm:p-6 xl:p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <p class="text-brand-muted max-w-none">{{ p.long || p.description }}</p>
+              <p class="text-brand-muted max-w-none text-[clamp(12px,0.95vw,16px)] leading-relaxed">{{ p.long || p.description }}</p>
               <div class="text-brand-muted text-sm mt-2 opacity-0">/{{ formatIndex(i) }}</div>
             </div>
           </div>
@@ -292,30 +292,32 @@ const fullInset = computed(() => {
   return '0px';
 });
 // Unified side padding so preview boxes match big-text right spacing
-const sidePad = computed(() => 'clamp(32px, 5vw, 80px)');
-// Preview width matches the hover preview element (xl -> 560px, else 480px)
-const previewW = computed(() => (viewport.value.w >= 1280 ? 560 : 480));
+// Use a slightly smaller pad on sub-1200px widths to improve fit.
+const sidePad = computed(() => (viewport.value.w < 1200 ? 'clamp(20px, 4vw, 60px)' : 'clamp(32px, 5vw, 80px)'));
+// Preview width scales with viewport to avoid crowding on narrower screens
+// Min 280px, max 560px, ~32% of viewport width.
+const previewW = computed(() => {
+  const w = viewport.value.w || 0;
+  const base = Math.round(w * 0.32);
+  return Math.max(280, Math.min(560, base));
+});
 // Content left padding reserves space for the preview so text never overlaps it
 const fullContentPadLeft = computed(() => `calc(${fullInset.value} + ${sidePad.value} + ${previewW.value}px + 1.25rem)`);
 const fullRowStyle = computed(() => ({ paddingLeft: fullContentPadLeft.value, paddingRight: `calc(${fullInset.value} + ${sidePad.value})` }));
 const fullPreviewLeft = computed(() => `calc(${fullInset.value} + ${sidePad.value})`);
 
 function computeMode() {
-  const MOBILE_MAX = 767; // common mobile cutoff
-  const MIN_FULL = 1440;  // common desktop/larger laptop width
-  const el = containerRef.value;
-  // Use a virtual content width so mode logic is stable even if the
-  // container spans the full window. This mirrors our intended max grid.
-  const containerWRaw = el ? el.clientWidth : 0;
-  const containerW = Math.min(containerWRaw, 1280);
+  const MOBILE_MAX = 767; // mobile cutoff
   const viewportW = window.innerWidth || document.documentElement.clientWidth || 0;
   const viewportH = window.innerHeight || document.documentElement.clientHeight || 0;
   viewport.value = { w: viewportW, h: viewportH };
-  const fullThreshold = Math.max(MIN_FULL, containerW + 200); // +100px each side
 
-  if (viewportW <= MOBILE_MAX) mode.value = 'mobile';
-  else if (viewportW >= fullThreshold) mode.value = 'full';
-  else mode.value = 'slideshow';
+  // Requested behavior: slideshow only on mobile; otherwise use widescreen
+  if (viewportW <= MOBILE_MAX) {
+    mode.value = 'mobile';
+  } else {
+    mode.value = 'full';
+  }
 
   // Aspect: wide but short screens (e.g., 21:9 or small height)
   const ratio = viewportW / Math.max(1, viewportH);

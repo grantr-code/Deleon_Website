@@ -37,8 +37,9 @@
         @canplay="onCanPlay"
         @playing="onPlaying"
       >
-        <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
+        <!-- Prefer MOV first; MP4 as fallback -->
         <source :src="'/BrandAssets/Video.mov'" type="video/quicktime" />
+        <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
       </video>
       <!-- Loader removed: only static thumbnail canvas until playing -->
     </div>
@@ -54,7 +55,7 @@
     ></div>
 
     <!-- Content wrapper (wide) -->
-    <div class="relative z-20 mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-0 md:pt-14 pb-0 md:pb-0 max-w-none">
+    <div class="relative z-20 mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-0 md:pt-14 pb-0 md:pb-0 max-w-none mt-6 md:mt-0">
       <!-- Two-column layout: copy left, media right -->
       <div class="grid grid-cols-12 gap-x-6 md:gap-x-8 items-center md:items-start" :style="isMobile ? {} : { minHeight: videoHeightPx + 'px' }">
         <!-- Left copy block (sticky so it doesn't move while scrolling) -->

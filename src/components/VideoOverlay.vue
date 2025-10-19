@@ -88,8 +88,9 @@
               @canplay="onCanPlay"
               @playing="onPlaying"
             >
-              <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
+              <!-- Prefer MOV first; MP4 as fallback -->
               <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
+              <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
               <source v-if="active.src" :src="active.src" />
               Your browser does not support the video tag.
             </video>

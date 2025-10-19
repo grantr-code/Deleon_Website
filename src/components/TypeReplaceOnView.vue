@@ -1,7 +1,11 @@
 <template>
   <component :is="tag" ref="root" :class="[wrapperClass]" aria-live="polite">
-    <span>{{ output }}</span><span v-if="showCaret" class="caret" aria-hidden="true">▌</span>
+    <span>{{ prefixOutput }}</span>
+    <component :is="wordTag" :class="wordClass">{{ wordOutput }}</component>
+    <span v-if="showCaret" class="caret" aria-hidden="true">▌</span>
+    <span>{{ suffix }}</span>
   </component>
+  
 </template>
 
 <script setup>
@@ -9,13 +13,20 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
   prefix: { type: String, required: true },
-  from: { type: String, required: true },
-  to: { type: String, required: true },
+  // Optional suffix rendered after the typed word (not typed)
+  suffix: { type: String, default: '' },
+  // Two-word legacy API
+  from: { type: String, default: '' },
+  to: { type: String, default: '' },
+  // Multi-word API (if provided, cycles through these instead of from/to)
+  words: { type: Array, default: null },
+  // Typing speeds
   speed: { type: Number, default: 28 },
   toSpeed: { type: Number, default: null },
   fromSpeed: { type: Number, default: null },
   initialSpeed: { type: Number, default: null },
   backspaceSpeed: { type: Number, default: 28 },
+  // Timing
   startDelay: { type: Number, default: 0 },
   pauseAfterFirst: { type: Number, default: 800 },
   loop: { type: Boolean, default: false },
@@ -23,17 +34,23 @@ const props = defineProps({
   pauseFrom: { type: Number, default: null },
   pauseTo: { type: Number, default: null },
   once: { type: Boolean, default: true },
+  // Markup
   tag: { type: String, default: 'div' },
   wrapperClass: { type: String, default: '' },
+  wordTag: { type: String, default: 'span' },
+  wordClass: { type: String, default: '' },
 });
 
 const root = ref(null);
-const output = ref('');
+const prefixOutput = ref('');
+const wordOutput = ref('');
 const showCaret = ref(false);
 let typed = false;
 let timer = null;
 let observer = null;
 let timeouts = [];
+let wordList = [];
+let wordIndex = 0;
 
 function clearTimers() {
   if (timer) { clearInterval(timer); timer = null; }
@@ -44,14 +61,23 @@ function clearTimers() {
 function start() {
   if (typed && props.once) return;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Resolve word list: prefer multi-word API when present
+  wordList = Array.isArray(props.words) && props.words.length > 0
+    ? props.words.slice()
+    : [props.from, props.to].filter(Boolean);
+  if (wordList.length === 0) wordList = [''];
+  wordIndex = 0;
+
   if (prefersReduced) {
-    output.value = props.prefix + props.to;
+    prefixOutput.value = props.prefix;
+    wordOutput.value = wordList[wordIndex] || '';
     showCaret.value = false;
     typed = true;
     return;
   }
 
-  output.value = '';
+  prefixOutput.value = '';
+  wordOutput.value = '';
   showCaret.value = true;
   typed = true;
 
@@ -59,13 +85,20 @@ function start() {
   const useSpeedTo = () => Math.max(10, (props.toSpeed ?? props.speed));
   const useBackspace = () => Math.max(10, props.backspaceSpeed);
   const useInitial = () => Math.max(10, (props.initialSpeed ?? useSpeedFrom()));
-  const getPauseFor = (word) => {
-    if (word === 'from') return Math.max(0, (props.pauseFrom ?? props.pauseAfterFirst ?? props.swapInterval));
+  const getPauseForIndex = (idx) => {
+    // For multi-word mode: allow pauseFrom for first item, pauseTo for others, else swapInterval
+    if (Array.isArray(props.words) && props.words?.length) {
+      if (idx === 0 && props.pauseFrom != null) return Math.max(0, props.pauseFrom);
+      if (props.pauseTo != null) return Math.max(0, props.pauseTo);
+      return Math.max(0, props.swapInterval);
+    }
+    // Legacy two-word mode
+    if (idx === 0) return Math.max(0, (props.pauseFrom ?? props.pauseAfterFirst ?? props.swapInterval));
     return Math.max(0, (props.pauseTo ?? props.swapInterval));
   };
 
   let prefixDone = false;
-  let current = 'from';
+  let current = 'from'; // legacy sentinel used only for non-array
 
   function typeWord(word, speed, cb) {
     clearInterval(timer);
@@ -74,7 +107,11 @@ function start() {
       const target = props.prefix + word;
       let i = 0;
       timer = setInterval(() => {
-        output.value = target.slice(0, i);
+        const partial = target.slice(0, i);
+        // Split into prefix/word portions for display
+        const prefLen = Math.min(props.prefix.length, partial.length);
+        prefixOutput.value = partial.slice(0, prefLen);
+        wordOutput.value = partial.slice(prefLen);
         i++;
         if (i > target.length) {
           clearInterval(timer);
@@ -86,7 +123,8 @@ function start() {
     } else {
       let k = 0;
       timer = setInterval(() => {
-        output.value = props.prefix + word.slice(0, k);
+        prefixOutput.value = props.prefix;
+        wordOutput.value = word.slice(0, k);
         k++;
         if (k > word.length) {
           clearInterval(timer);
@@ -102,7 +140,8 @@ function start() {
     showCaret.value = true;
     let j = word.length;
     timer = setInterval(() => {
-      output.value = props.prefix + word.slice(0, j);
+      prefixOutput.value = props.prefix;
+      wordOutput.value = word.slice(0, j);
       j--;
       if (j < 0) {
         clearInterval(timer);
@@ -112,33 +151,50 @@ function start() {
   }
 
   function scheduleSwap() {
-    const t = setTimeout(() => swap(), getPauseFor(current));
+    const t = setTimeout(() => swap(), getPauseForIndex(wordIndex));
     timeouts.push(t);
   }
 
   function swap() {
-    const next = current === 'from' ? 'to' : 'from';
-    const back = current === 'from' ? props.from : props.to;
-    const word = next === 'from' ? props.from : props.to;
-    const spd = next === 'from' ? useSpeedFrom() : useSpeedTo();
-    backspaceWord(back, () => {
-      typeWord(word, spd, () => {
-        current = next;
-        if (props.loop) scheduleSwap();
+    // Determine next word based on mode
+    if (Array.isArray(props.words) && props.words?.length) {
+      const currentWord = wordList[wordIndex] ?? '';
+      const nextIndex = (wordIndex + 1) % wordList.length;
+      const nextWord = wordList[nextIndex] ?? '';
+      const spd = useSpeedTo();
+      backspaceWord(currentWord, () => {
+        typeWord(nextWord, spd, () => {
+          wordIndex = nextIndex;
+          if (props.loop) scheduleSwap();
+        });
       });
-    });
+    } else {
+      // Legacy two-word toggle
+      const next = current === 'from' ? 'to' : 'from';
+      const back = current === 'from' ? props.from : props.to;
+      const word = next === 'from' ? props.from : props.to;
+      const spd = next === 'from' ? useSpeedFrom() : useSpeedTo();
+      backspaceWord(back, () => {
+        typeWord(word, spd, () => {
+          current = next;
+          if (props.loop) scheduleSwap();
+        });
+      });
+    }
   }
 
   const run = () => {
     const initialDelay = Math.max(0, props.startDelay || 0);
     const startFn = () => {
-      typeWord(props.from, useInitial(), () => {
-        const firstPause = getPauseFor('from');
+      const firstWord = wordList[0] ?? '';
+      typeWord(firstWord, useInitial(), () => {
+        const firstPause = getPauseForIndex(0);
         const t = setTimeout(() => {
           if (props.loop) swap();
-          else {
-            backspaceWord(props.from, () => {
-              typeWord(props.to, useSpeedTo());
+          else if (wordList.length > 1) {
+            backspaceWord(firstWord, () => {
+              const secondWord = wordList[1] ?? '';
+              typeWord(secondWord, useSpeedTo());
             });
           }
         }, firstPause);
