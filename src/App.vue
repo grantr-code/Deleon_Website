@@ -1,8 +1,8 @@
 <template>
   <!-- Header + full-bleed hero (no side margins) -->
   <div class="w-screen">
-    <SiteHeader :data="data.header" />
-    <HeroBand :enable-switcher="true" />
+    <SiteHeader :data="data.header" :overlap="true" />
+    <HeroBand />
   </div>
 
   <!-- Constrained content area (16:10 ratio) -->
@@ -42,7 +42,7 @@ const platforms = computed(() => data.sections.find(s => s.type === 'platforms')
 
 // Provide a shared header theme so the hero can request a light header
 // for bright backgrounds (e.g., Brownian Diffusion test background)
-const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'dark';
+const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'light';
 const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
 provide('headerTheme', headerTheme);
 

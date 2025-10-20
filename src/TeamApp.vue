@@ -6,9 +6,9 @@
         <div class="border-t border-white/10"></div>
         <div class="mt-4 flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
           <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
-          <span>Team</span>
+          <span>Who We Are</span>
         </div>
-        <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">Meet the Team</h1>
+        <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">Who We Are</h1>
         <p class="mt-4 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
           Our journey began in Atlanta, and our expertise is rooted in our training at Georgia Tech. With guidance from respected Georgia Tech professors on our advisory board, our team brings technical precision and real-world experience to Deleon.
         </p>

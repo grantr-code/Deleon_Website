@@ -2,7 +2,7 @@ import { ref, watch, computed } from 'vue';
 
 const THEME_KEY = 'site-theme';
 const themeRef = ref(
-  (typeof localStorage !== 'undefined' && localStorage.getItem(THEME_KEY)) || 'dark'
+  (typeof localStorage !== 'undefined' && localStorage.getItem(THEME_KEY)) || 'light'
 );
 
 function applyTheme(val) {

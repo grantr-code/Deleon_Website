@@ -80,10 +80,10 @@
             </a>
           </div>
           <!-- Bottom left caption like the reference mark -->
-          <div class="mt-5 md:mt-8 flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
+          <!-- <div class="mt-5 md:mt-8 flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
             <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
             <span>Our Product</span>
-          </div>
+          </div> -->
         </div>
 
         <!-- Right media collage -->

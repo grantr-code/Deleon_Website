@@ -140,10 +140,10 @@ const props = defineProps({
   enableSwitcher: { type: Boolean, default: false },
 });
 
-// Feature flag sources: prop, env var, or URL query (?bgctl=1)
-const queryFlag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('bgctl');
+// Feature flag sources: prop, env var, or URL path (/background-selector)
 const envFlag = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENABLE_BG_SWITCHER === 'true';
-const showSwitcher = computed(() => props.enableSwitcher || envFlag || queryFlag);
+const pathFlag = typeof window !== 'undefined' && window.location && (window.location.pathname || '').includes('/background-selector');
+const showSwitcher = computed(() => props.enableSwitcher || envFlag || pathFlag);
 
 // Options list shown in the panel
 const options = [

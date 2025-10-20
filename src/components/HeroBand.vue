@@ -2,7 +2,6 @@
   <div
     ref="rootEl"
     class="bg-black text-white relative h-screen min-h-screen h-[100svh] min-h-[100svh] overflow-hidden"
-    :style="{ marginTop: `-${headerOffset}px` }"
   >
     <!-- Background layer: default canvas, effect, or video -->
     <div class="absolute inset-0">
@@ -161,8 +160,9 @@ const rootEl = ref(null);
 const canvasRef = ref(null);
 let raf = 0;
 let isVisible = true;
-const headerOffset = ref(0);
-const selected = ref('default');
+// No header offset; hero occupies full viewport beneath overlay header
+// Default hero background: Flow Field effect
+const selected = ref('test:flow');
 const reloadNeeded = ref(false);
 const collapsed = ref(false);
 const videoRef = ref(null);
@@ -172,9 +172,10 @@ const siteFont = ref('default');
 
 const { theme: siteTheme } = useSiteTheme();
 
-const queryFlag = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('bgctl');
+// Only show the switcher when explicitly enabled via env/prop or URL path
 const envFlag = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENABLE_BG_SWITCHER === 'true';
-const showSwitcher = computed(() => props.enableSwitcher || envFlag || queryFlag);
+const pathFlag = typeof window !== 'undefined' && window.location && (window.location.pathname || '').includes('/background-selector');
+const showSwitcher = computed(() => props.enableSwitcher || envFlag || pathFlag);
 
 const options = [
   { value: 'default', label: 'Default (Page Hero)' },
@@ -405,22 +406,12 @@ onMounted(() => {
     ctx.fill();
   }
 
-  function measureHeader() {
-    const el = document.getElementById('site-header');
-    headerOffset.value = el ? el.offsetHeight : 0;
-  }
-
-  const onResize = () => { resize(); measureHeader(); if (prefersReduced) drawStatic(); };
-  // Observe hero container and header for size changes (font load, mobile UI bars)
-  let ro = null; let ho = null;
+  const onResize = () => { resize(); if (prefersReduced) drawStatic(); };
+  // Observe hero container for size changes (font load, mobile UI bars)
+  let ro = null;
   if (typeof ResizeObserver !== 'undefined') {
     ro = new ResizeObserver(() => { resize(); if (prefersReduced) drawStatic(); });
     if (rootEl.value) ro.observe(rootEl.value);
-    const header = document.getElementById('site-header');
-    if (header) {
-      ho = new ResizeObserver(() => { measureHeader(); });
-      ho.observe(header);
-    }
   }
   const onVis = () => {
     if (document.visibilityState === 'hidden') { isVisible = false; }
@@ -429,7 +420,6 @@ onMounted(() => {
   window.addEventListener('resize', onResize, { passive: true });
   document.addEventListener('visibilitychange', onVis);
   resize();
-  measureHeader();
   if (prefersReduced) drawStatic();
   else if (isDefaultActive.value) raf = requestAnimationFrame(step);
 
@@ -447,7 +437,6 @@ onMounted(() => {
     window.removeEventListener('resize', onResize);
     document.removeEventListener('visibilitychange', onVis);
     if (ro) { try { ro.disconnect(); } catch {} }
-    if (ho) { try { ho.disconnect(); } catch {} }
     if (raf) cancelAnimationFrame(raf);
   });
 });

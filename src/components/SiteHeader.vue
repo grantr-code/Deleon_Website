@@ -1,7 +1,7 @@
 <template>
   <header
     id="site-header"
-    :class="[(isLightHeader ? 'text-black' : 'text-white'), 'relative z-40 pt-8', compact ? 'pb-6 lg:pb-16' : 'pb-12 lg:pb-52']"
+    :class="[(isLightHeader ? 'text-black' : 'text-white'), (overlap ? 'absolute inset-x-0 top-0 z-40 pt-8' : 'relative z-40 pt-8'), overlap ? 'pb-0' : (compact ? 'pb-6 lg:pb-16' : 'pb-12 lg:pb-52')]"
   >
     <div :class="subpage ? 'max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24' : 'max-w-[1280px] mx-auto px-4'">
       <!-- Subpage variant: left-aligned brand + chip-style nav in same row -->
@@ -211,6 +211,7 @@ import { useSiteTheme } from '../composables/useSiteTheme';
 const props = defineProps({
   data: { type: Object, required: true },
   compact: { type: Boolean, default: false },
+  overlap: { type: Boolean, default: false },
   subpage: { type: Boolean, default: false },
 });
 
