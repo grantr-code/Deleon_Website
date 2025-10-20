@@ -28,10 +28,7 @@
         </div>
         <h2 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">Why now</h2>
         <p class="mt-4 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
-          Human performance is governed by chemistry. Reading it in the real world unlocks a step‑change for readiness and health.
-        </p>
-        <p class="mt-3 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
-          A simple daily sample. A universal app. Guidance you can trust.
+          Human performance is governed by chemistry. Reading it in the real world unlocks a step‑change for readiness and health. A simple daily sample. A universal app. Guidance you can trust.
         </p>
       </section>
 
