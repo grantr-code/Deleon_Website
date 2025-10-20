@@ -52,7 +52,6 @@ let observer = null;
 let timeouts = [];
 let wordList = [];
 let wordIndex = 0;
-let suffixTyped = false;
 
 function clearTimers() {
   if (timer) { clearInterval(timer); timer = null; }
@@ -84,7 +83,6 @@ function start() {
   suffixOutput.value = '';
   showCaret.value = true;
   typed = true;
-  suffixTyped = false;
 
   const useSpeedFrom = () => Math.max(10, (props.fromSpeed ?? props.speed));
   const useSpeedTo = () => Math.max(10, (props.toSpeed ?? props.speed));
@@ -109,14 +107,17 @@ function start() {
     clearInterval(timer);
     showCaret.value = true;
     if (!prefixDone) {
-      const target = props.prefix + word;
+      // On first pass, type prefix + word + suffix as one continuous animation
+      const target = props.prefix + word + (props.suffix || '');
       let i = 0;
       timer = setInterval(() => {
         const partial = target.slice(0, i);
-        // Split into prefix/word portions for display
+        // Split into prefix/word/suffix portions for display
         const prefLen = Math.min(props.prefix.length, partial.length);
+        const wordLen = Math.min(word.length, Math.max(0, partial.length - props.prefix.length));
         prefixOutput.value = partial.slice(0, prefLen);
-        wordOutput.value = partial.slice(prefLen);
+        wordOutput.value = partial.slice(prefLen, prefLen + wordLen);
+        suffixOutput.value = partial.slice(prefLen + wordLen);
         i++;
         if (i > target.length) {
           clearInterval(timer);
@@ -153,26 +154,6 @@ function start() {
         cb && cb();
       }
     }, useBackspace());
-  }
-
-  function typeSuffix(cb) {
-    if (suffixTyped || !props.suffix) {
-      cb && cb();
-      return;
-    }
-    clearInterval(timer);
-    showCaret.value = true;
-    let i = 0;
-    timer = setInterval(() => {
-      suffixOutput.value = props.suffix.slice(0, i);
-      i++;
-      if (i > props.suffix.length) {
-        clearInterval(timer);
-        showCaret.value = false;
-        suffixTyped = true;
-        cb && cb();
-      }
-    }, useInitial());
   }
 
   function scheduleSwap() {
@@ -213,19 +194,17 @@ function start() {
     const startFn = () => {
       const firstWord = wordList[0] ?? '';
       typeWord(firstWord, useInitial(), () => {
-        typeSuffix(() => {
-          const firstPause = getPauseForIndex(0);
-          const t = setTimeout(() => {
-            if (props.loop) swap();
-            else if (wordList.length > 1) {
-              backspaceWord(firstWord, () => {
-                const secondWord = wordList[1] ?? '';
-                typeWord(secondWord, useSpeedTo());
-              });
-            }
-          }, firstPause);
-          timeouts.push(t);
-        });
+        const firstPause = getPauseForIndex(0);
+        const t = setTimeout(() => {
+          if (props.loop) swap();
+          else if (wordList.length > 1) {
+            backspaceWord(firstWord, () => {
+              const secondWord = wordList[1] ?? '';
+              typeWord(secondWord, useSpeedTo());
+            });
+          }
+        }, firstPause);
+        timeouts.push(t);
       });
     };
     if (initialDelay) {
