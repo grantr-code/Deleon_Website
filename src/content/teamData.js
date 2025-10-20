@@ -14,7 +14,7 @@ export const teamData = {
         },
         {
           name: 'José Andrade',
-          role: 'COO',
+          role: 'President',
           bio: 'Engineer and data scientist, former medical device consultant.',
           photo: '/jose.jpg',
           linkedin: 'https://www.linkedin.com/in/jose-luis-r-andrade',
