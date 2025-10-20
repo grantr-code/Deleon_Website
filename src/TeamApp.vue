@@ -34,7 +34,7 @@ import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 
 const groups = computed(() => teamData.groups || []);
 
-const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'dark';
+const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'light';
 const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
 provide('headerTheme', headerTheme);
 const { theme: siteTheme } = useSiteTheme();

@@ -7,7 +7,7 @@ function applyTheme(val) {
 }
 
 try {
-  const val = localStorage.getItem(THEME_KEY) || 'dark';
+  const val = localStorage.getItem(THEME_KEY) || 'light';
   applyTheme(val);
 } catch {}
 

@@ -130,7 +130,7 @@ import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 import { useSiteTheme } from './composables/useSiteTheme';
 
 // Keep header colors/logo in sync with the global site theme (light/dark)
-const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'dark';
+const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'light';
 const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
 provide('headerTheme', headerTheme);
 const { theme: siteTheme } = useSiteTheme();
