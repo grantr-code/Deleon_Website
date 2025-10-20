@@ -13,8 +13,8 @@ export const siteData = {
     { type: 'hero' },
     {
       type: 'platforms',
-      headline: 'Turn human biochemistry tested daily into real‑time decisions—for performance, wellness, and operations.',
-      emphasis: 'tested daily',
+      headline: 'Turn human biochemistry into real‑time decisions—for performance, wellness, and operations.',
+      emphasis: 'real‑time decisions',
       items: [
         {
           name: 'Analysis',
@@ -36,7 +36,7 @@ export const siteData = {
           name: 'Command',
           tag: 'Workflow',
           title: 'View your metrics at a glance',
-          description: 'A unified dashboard across performance, wellness, and operations.',
+          description: 'A unified dashboard across performance and wellness.',
           long: 'Track trends, flag risks, and coordinate interventions—bringing biochemistry into the daily rhythm of planning and care.',
           effect: 'radar',
         },

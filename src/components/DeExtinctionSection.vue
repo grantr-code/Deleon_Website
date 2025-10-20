@@ -59,12 +59,12 @@
     <!-- Content wrapper (wide) -->
     <div class="relative z-20 mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-0 md:pt-14 pb-0 md:pb-0 max-w-none mt-6 md:mt-0">
       <!-- Two-column layout: copy left, media right -->
-      <div class="grid grid-cols-12 gap-x-6 md:gap-x-8 items-center md:items-start" :style="isMobile ? {} : { minHeight: videoHeightPx + 'px' }">
+      <div class="grid grid-cols-12 gap-x-6 md:gap-x-8 items-center md:items-start" :style="gridInlineStyle">
         <!-- Left copy block (sticky so it doesn't move while scrolling) -->
         <div class="col-span-12 md:col-span-7 lg:pr-8 xl:pr-12 2xl:pr-16 md:sticky md:top-24 md:max-w-[640px] xl:max-w-[700px] 2xl:max-w-[720px] w-full">
           <p class="text-white text-[clamp(18px,2.2vw,28px)] leading-[1.28] tracking-[-0.005em]">
-            Real‑time biochemistry data can make us superhumans. From a drop of urine to
-            individualized guidance in minutes—optimize your performance, wellness, and training.
+            Real‑time biochemistry data, from a drop of urine to individualized guidance in minutes—optimize your
+            performance, wellness, and training.
           </p>
 
           <!-- CTA pill -->
@@ -161,13 +161,50 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 
 // Video dimensions and dependent positions
 const isMobile = computed(() => vw.value <= 767);
-const videoWidthPx = computed(() => isMobile.value ? vw.value : Math.max(0.70 * vh.value, 0.45 * vw.value));
+
+const containerPaddingPx = computed(() => {
+  if (vw.value >= 1536) return 96;
+  if (vw.value >= 1280) return 64;
+  if (vw.value >= 1024) return 40;
+  if (vw.value >= 640) return 24;
+  return 16;
+});
+
+const textGapPx = computed(() => {
+  if (vw.value >= 1536) return 72;
+  if (vw.value >= 1280) return 56;
+  if (vw.value >= 1024) return 48;
+  return 32;
+});
+
+const videoWidthPx = computed(() => {
+  if (isMobile.value) {
+    const available = Math.max(vw.value - 2 * containerPaddingPx.value, 0);
+    return available;
+  }
+  return Math.max(0.70 * vh.value, 0.45 * vw.value);
+});
+
 const videoHeightPx = computed(() => videoWidthPx.value * 0.60);
 
-const squareStyle = computed(() => ({
-  width: (isMobile.value ? '100%' : videoWidthPx.value + 'px'),
-  height: videoHeightPx.value + 'px',
-}));
+const gridInlineStyle = computed(() => {
+  if (isMobile.value) return {};
+  return {
+    minHeight: videoHeightPx.value + 'px',
+    paddingRight: videoWidthPx.value + textGapPx.value + 'px',
+  };
+});
+
+const squareStyle = computed(() => {
+  const style = {
+    width: (isMobile.value ? '100%' : videoWidthPx.value + 'px'),
+    height: videoHeightPx.value + 'px',
+  };
+  if (!isMobile.value) {
+    style.right = containerPaddingPx.value + 'px';
+  }
+  return style;
+});
 
 // Horizontal divider position at the bottom of the video
 const videoBottomLineStyle = computed(() => ({ top: videoHeightPx.value + 'px' }));
