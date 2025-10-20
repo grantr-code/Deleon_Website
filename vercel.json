@@ -1,5 +1,18 @@
 {
   "cleanUrls": true,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
   "redirects": [
     { "source": "/teams.html", "destination": "/teams", "permanent": true },
     { "source": "/pro-teams", "destination": "/teams", "permanent": true },
