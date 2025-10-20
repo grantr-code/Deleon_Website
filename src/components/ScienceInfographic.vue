@@ -80,14 +80,16 @@ function createSim(w, h) {
 
   // Decide layout mode based on available width
   const rightReserve = 420; // space for network + app
-  const canSideBySide = (w - 2 * pad) > (320 + rightReserve + 20);
+  const minChartWidth = 320;
+  const minGap = 60; // increased minimum gap between chart and network
+  const canSideBySide = (w - 2 * pad) > (minChartWidth + rightReserve + minGap);
   const mode = canSideBySide ? 'side' : 'stack';
 
   // Chart rectangle
   let chartW = 0; let chartX = pad + 10; let chartY = channelTop + resH + 40; const chartH = 150;
   if (mode === 'side') {
-    const max = Math.max(320, Math.min(520, w - 2 * pad - rightReserve));
-    chartW = max;
+    const availableWidth = w - 2 * pad - rightReserve - minGap;
+    chartW = Math.max(minChartWidth, Math.min(520, availableWidth));
   } else {
     chartW = Math.max(320, w - 2 * pad - 80);
   }
@@ -95,7 +97,7 @@ function createSim(w, h) {
 
   // Neural network anchor X
   const mlX = (mode === 'side')
-    ? Math.min(w - pad - 220, chartRect.x + chartRect.w + 260)
+    ? Math.min(w - pad - 220, chartRect.x + chartRect.w + minGap)
     : Math.floor(w / 2);
 
   // Analytes (discs with different mobilities)
@@ -179,8 +181,9 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal){
   const r = sim.chartRect;
   const inputCount = 5; // fixed per request
   const side = sim.mode === 'side';
-  const inputX = side ? Math.round(r.x + r.w) : Math.round(r.x + 24); // left‑aligned when stacked
-  const centerY = side ? Math.round(r.y + r.h / 2) : Math.round(r.y + r.h + 100);
+  const inputX = side ? Math.round(r.x + r.w + 20) : Math.round(r.x + 24); // left‑aligned when stacked, with gap when side-by-side
+  // In stacked mode, ensure neural network doesn't go too far down and get cut off
+  const centerY = side ? Math.round(r.y + r.h / 2) : Math.round(Math.min(r.y + r.h + 80, sim.h - 120));
 
   // connectors from chart to inputs
   ctx.strokeStyle = pal.connector; ctx.lineWidth = 1;
@@ -254,7 +257,8 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal){
     // Put the app immediately to the right of the network in stacked mode
     appX = Math.min(sim.w - sim.pad - appW, lastX + 60);
     appX = Math.max(sim.pad + 10, appX);
-    appY = centerY - appH / 2;
+    // Ensure app card doesn't get cut off at bottom
+    appY = Math.min(centerY - appH / 2, sim.h - appH - 20);
   }
   // arrow from last output node to app
   const outNodeTop = nodes.find(n=>n.li===layers.length-1 && n.i===0);
@@ -360,17 +364,17 @@ function mount(canvasEl){
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const FPS = prefersReduced ? 12 : 60; const FRAME = 1000/FPS;
   function desiredHeightForWidth(w){
-    const pad = 24; const rightReserve = 420; // keep in sync with createSim
-    const canSide = (w - 2*pad) > (320 + rightReserve + 20);
+    const pad = 24; const rightReserve = 420; const minChartWidth = 320; const minGap = 60;
+    const canSide = (w - 2*pad) > (minChartWidth + rightReserve + minGap);
     if (canSide) {
-      if (w < 640) return 420;
-      if (w < 900) return 460;
-      if (w < 1200) return 520;
-      return 560;
+      if (w < 640) return 380;
+      if (w < 900) return 420;
+      if (w < 1200) return 460;
+      return 500;
     } else {
-      // stacked needs more vertical room
-      if (w < 480) return 560;
-      if (w < 720) return 600;
+      // stacked needs more vertical room to prevent cutoff
+      if (w < 480) return 580;
+      if (w < 720) return 620;
       return 660;
     }
   }
