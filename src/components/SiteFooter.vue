@@ -9,7 +9,7 @@
           :key="idx"
           :href="cta.href"
           class="group rounded-xl p-8 md:p-10 flex items-center justify-between border transition-colors"
-          :class="cta.theme === 'dark' ? 'bg-black text-brand-text border-neutral-800 hover:bg-neutral-950' : 'bg-brand-card text-brand-text border-neutral-800 hover:bg-[rgb(28,28,28)]'"
+          :class="cta.theme === 'dark' ? 'bg-black text-white border-neutral-800 hover:bg-neutral-950' : 'bg-brand-card text-white border-neutral-800 hover:bg-[rgb(28,28,28)]'"
           @click.prevent="handleCtaClick(cta)"
         >
           <span class="text-2xl md:text-4xl font-medium tracking-tight">{{ cta.label }}</span>

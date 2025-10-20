@@ -93,9 +93,4 @@ onMounted(() => {
 .theme-light .bg-black\/40 { background-color: rgba(255,255,255,0.40) !important; }
 .theme-light .hover\:bg-white\/10:hover { background-color: rgba(0,0,0,0.06) !important; }
 
-/* Ensure header uses dark text in light mode */
-.theme-light #site-header { color: #0b0b0f; }
-
-/* Footer */
-.theme-light #site-footer { background-color: #ffffff !important; }
 </style>

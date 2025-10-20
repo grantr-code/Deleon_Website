@@ -30,6 +30,28 @@
 /* Footer */
 .theme-light #site-footer { background-color: #ffffff !important; }
 
+/* Footer buttons should maintain dark styling even in light mode */
+.theme-light #site-footer .group {
+  color: white !important;
+}
+
+.theme-light #site-footer .group.bg-black {
+  background-color: #000000 !important;
+}
+
+.theme-light #site-footer .group.bg-brand-card {
+  background-color: #141414 !important;
+}
+
+/* Ensure proper contrast for footer buttons in light mode */
+.theme-light #site-footer .group.border-neutral-800 {
+  border-color: #262626 !important;
+}
+
+.theme-light #site-footer .group:hover {
+  background-color: #0a0a0a !important;
+}
+
 /* Article body (light mode overrides) */
 .theme-light .article-body { color: #0b0b0f !important; }
 .theme-light .article-body :where(h2) { color: #0b0b0f !important; }
@@ -103,4 +125,84 @@
 /* Fix team member names in light mode */
 .theme-light .text-white {
   color: #0b0b0f !important;
+}
+
+/* Contact Popup (Early Access Drawer) Light Mode Overrides */
+.theme-light .fixed.inset-0.z-\[100\] .absolute.inset-0 {
+  background-color: rgba(0,0,0,0.4) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] .absolute.inset-0.bg-brand-dark\/90 {
+  background-color: rgba(255,255,255,0.95) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] .absolute.inset-0.bg-black\/35 {
+  background-color: rgba(0,0,0,0.15) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] .relative.h-full.flex.flex-col {
+  border-left-color: rgba(0,0,0,0.15) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] .flex.items-center.justify-between {
+  background-color: rgba(0,0,0,0.08) !important;
+  border-bottom-color: rgba(0,0,0,0.15) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] h2 {
+  color: #0b0b0f !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] button svg {
+  color: #0b0b0f !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] button:hover {
+  background-color: rgba(0,0,0,0.08) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] p {
+  color: rgba(11,11,15,0.80) !important;
+}
+
+/* Contact Form Light Mode Overrides */
+.theme-light .fixed.inset-0.z-\[100\] label {
+  color: rgba(11,11,15,0.80) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] input,
+.theme-light .fixed.inset-0.z-\[100\] textarea,
+.theme-light .fixed.inset-0.z-\[100\] select {
+  background-color: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.20) !important;
+  color: #0b0b0f !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] input::placeholder,
+.theme-light .fixed.inset-0.z-\[100\] textarea::placeholder {
+  color: rgba(11,11,15,0.50) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] input:focus,
+.theme-light .fixed.inset-0.z-\[100\] textarea:focus,
+.theme-light .fixed.inset-0.z-\[100\] select:focus {
+  border-color: #4cc95b !important;
+  box-shadow: 0 0 0 2px rgba(76, 201, 91, 0.2) !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] button[type="submit"] {
+  background-color: #4cc95b !important;
+  color: white !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] button[type="submit"]:hover {
+  background-color: #3fb854 !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] .text-red-300 {
+  color: #dc2626 !important;
+}
+
+.theme-light .fixed.inset-0.z-\[100\] .text-emerald-300 {
+  color: #059669 !important;
 }
