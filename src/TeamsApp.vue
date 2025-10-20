@@ -18,6 +18,8 @@
         heading="Metabolomics for Elite Performance"
         :overlay-text="'Personalized biochemical data on training load with daily trends in your urine metabolome tied to recovery time and injury risk—powered by space‑grade tech.'"
         :video="video"
+        :enable-switcher="false"
+        :ignore-tester-mode="true"
       />
 
       <!-- Outcomes / value grid -->

@@ -138,12 +138,13 @@ const props = defineProps({
   overlayText: { type: String, required: true },
   video: { type: Object, required: true },
   enableSwitcher: { type: Boolean, default: false },
+  ignoreTesterMode: { type: Boolean, default: false },
 });
 
 // Feature flag sources: prop, env var, or URL path (/background-selector)
 const envFlag = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENABLE_BG_SWITCHER === 'true';
 const pathFlag = typeof window !== 'undefined' && window.location && (window.location.pathname || '').includes('/background-selector');
-const showSwitcher = computed(() => props.enableSwitcher || envFlag || pathFlag);
+const showSwitcher = computed(() => (!props.ignoreTesterMode) && (props.enableSwitcher || envFlag || pathFlag));
 
 // Options list shown in the panel
 const options = [
@@ -209,8 +210,16 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 
 onMounted(() => {
   try {
-    const saved = localStorage.getItem('heroBgMode');
-    if (saved) selected.value = saved;
+    if (props.ignoreTesterMode) {
+      selected.value = 'default';
+    } else {
+      const saved = localStorage.getItem('heroBgMode');
+      if (saved) {
+        selected.value = saved;
+      } else {
+        selected.value = 'default';
+      }
+    }
   } catch {}
   // Restore tester font
   try {
@@ -223,6 +232,7 @@ onMounted(() => {
 });
 
 function persistSelection() {
+  if (props.ignoreTesterMode) return;
   try {
     const prev = localStorage.getItem('heroBgMode');
     localStorage.setItem('heroBgMode', selected.value);

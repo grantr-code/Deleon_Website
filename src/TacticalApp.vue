@@ -16,8 +16,10 @@
 
       <VideoOverlay
         heading="Operational Metabolomics"
-        :overlay-text="'A 2‑minute test translates into readiness, hydration, and recovery guidance—plus anomaly detection that can flag emerging risks across units.'"
+        :overlay-text="'A 2‑minute test translates into readiness and recovery guidance—plus anomaly detection that can flag emerging risks across units.'"
         :video="video"
+        :enable-switcher="false"
+        :ignore-tester-mode="true"
       />
 
       <!-- Analysis / Insights / Command (military copy) -->
@@ -69,7 +71,7 @@ const video = {
 
 // Military-focused copy mirroring the home page layout
 const milPlatforms = {
-  headline: 'Bring field biochemistry into daily operations for readiness, hydration, and early warning.',
+  headline: 'Bring field biochemistry into daily operations for readiness and early warning.',
   emphasis: 'daily operations',
   items: [
     {
@@ -86,8 +88,8 @@ const milPlatforms = {
       chip: 'AI Guidance',
       tag: 'Unit + Individual',
       title: 'Turn biomarkers into operational guidance',
-      description: 'Actionable guidance on hydration, heat risk, and recovery.',
-      long: 'Models translate analytes into guidance for medics, leaders, and service members—readiness, fatigue, hydration and early illness signals—tuned to mission tempo.',
+      description: 'Actionable guidance on heat risk and recovery.',
+      long: 'Models translate analytes into guidance for medics, leaders, and service members—readiness, fatigue, and early illness signals—tuned to mission tempo.',
       effect: 'orbits',
     },
     {
@@ -104,7 +106,7 @@ const milPlatforms = {
 
 const capabilityItems = [
   { title: 'Readiness & Load', text: 'Identify under‑recovery and elevated strain; align tasking and training in near‑real time.' },
-  { title: 'Hydration & Heat Risk', text: 'Guide fluids and electrolytes to reduce heat‑related incidents during high‑tempo ops.' },
+  { title: 'Heat Risk', text: 'Reduce heat‑related incidents during high‑tempo ops with targeted guidance.' },
   { title: 'Illness Early Warning', text: 'Flag biochemical patterns indicative of infection for earlier isolation and care.' },
   { title: 'Sleep & Fatigue', text: 'Spot cumulative fatigue; schedule rest windows without compromising mission tempo.' },
   { title: 'Nutrition Under Load', text: 'Optimize fueling under rations to sustain output across days in field conditions.' },
