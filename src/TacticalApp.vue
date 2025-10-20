@@ -76,7 +76,6 @@ const milPlatforms = {
   items: [
     {
       name: 'Detection',
-      chip: 'Edge Testing',
       tag: 'Portable Device',
       title: 'Field‑ready biochemical analysis in minutes',
       description: 'Portable analyzer runs metabolomics at point of need.',
@@ -85,7 +84,6 @@ const milPlatforms = {
     },
     {
       name: 'Guidance',
-      chip: 'AI Guidance',
       tag: 'Unit + Individual',
       title: 'Turn biomarkers into operational guidance',
       description: 'Actionable guidance on heat risk and recovery.',
@@ -94,7 +92,6 @@ const milPlatforms = {
     },
     {
       name: 'Operations',
-      chip: 'Ops Center',
       tag: 'Workflow',
       title: 'A common operating picture for force wellness',
       description: 'Trends, risk flags, and anomaly detection across units.',

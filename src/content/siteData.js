@@ -18,7 +18,6 @@ export const siteData = {
       items: [
         {
           name: 'Analysis',
-          chip: 'Edge Testing',
           tag: 'Portable Device',
           title: 'Measure key metabolites in minutes',
           description: 'Portable, on‑site biochemical testing with results in minutes.',
@@ -27,7 +26,6 @@ export const siteData = {
         },
         {
           name: 'Insights',
-          chip: 'AI Recommendations',
           tag: 'AI Models',
           title: 'Translate biomarkers into individualized action',
           description: 'Personalized guidance on readiness, recovery, and nutrition.',
@@ -36,7 +34,6 @@ export const siteData = {
         },
         {
           name: 'Command',
-          chip: 'Operations Dashboard',
           tag: 'Workflow',
           title: 'View your metrics at a glance',
           description: 'A unified dashboard across performance, wellness, and operations.',

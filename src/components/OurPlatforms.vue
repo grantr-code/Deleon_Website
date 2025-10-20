@@ -39,7 +39,7 @@
                 <div :key="idx" class="absolute inset-0">
                   <component :is="canvasFor(items[idx])" v-if="canvasFor(items[idx])" />
                   <div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/60"></div>
-                  <div class="relative z-10 h-full flex flex-col justify-center gap-4 p-5 sm:p-6 text-white" :style="{ paddingTop: mobileChipsPad }">
+                  <div class="relative z-10 h-full flex flex-col justify-center gap-4 p-5 sm:p-6 text-white">
                     <div>
                       <h3 class="text-[clamp(20px,5.0vw,30px)] leading-[1.1] mb-2">{{ items[idx].title }}</h3>
                       <p class="text-brand-muted text-sm max-w-[60ch]">{{ items[idx].long }}</p>
@@ -47,14 +47,6 @@
                   </div>
                 </div>
               </transition>
-            </div>
-
-            <!-- Top chips -->
-            <div ref="chipsMobileRef" class="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5 z-20">
-              <button v-for="(p, i) in items" :key="'m-chip-' + i" @click="set(i)" class="px-3 py-1.5 rounded-md text-xs border transition"
-                :class="i === idx ? 'bg-brand-green/10 border-brand-green/40 text-white' : 'bg-white/5 border-white/10 text-brand-muted hover:text-white'">
-                {{ p.chip || p.name }}
-              </button>
             </div>
 
             <!-- Prev/Next -->
@@ -122,7 +114,7 @@
                   <div :key="idx" class="absolute inset-0">
                     <component :is="canvasFor(items[idx])" v-if="canvasFor(items[idx])" />
                     <div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/60"></div>
-                    <div class="relative z-10 h-full flex flex-col justify-center gap-4 md:gap-6 p-5 sm:p-6 md:p-8 text-white" :style="{ paddingTop: desktopChipsPad }">
+                    <div class="relative z-10 h-full flex flex-col justify-center gap-4 md:gap-6 p-5 sm:p-6 md:p-8 text-white">
                       <div>
                         <h3 class="text-[clamp(24px,4.2vw,46px)] leading-[1.05] mb-3">{{ items[idx].title }}</h3>
                         <p class="text-brand-muted text-sm md:text-base max-w-[60ch]">{{ items[idx].long }}</p>
@@ -130,14 +122,6 @@
                     </div>
                   </div>
                 </transition>
-              </div>
-
-              <!-- Top chips -->
-              <div ref="chipsDesktopRef" class="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5 z-20">
-                <button v-for="(p, i) in items" :key="'chip-' + i" @click="set(i)" class="px-3 py-1.5 rounded-md text-xs border transition"
-                  :class="i === idx ? 'bg-brand-green/10 border-brand-green/40 text-white' : 'bg-white/5 border-white/10 text-brand-muted hover:text-white'">
-                  {{ p.chip || p.name }}
-                </button>
               </div>
 
               <!-- Prev/Next -->
@@ -256,14 +240,6 @@ const canvasFor = (p) => {
 // Desktop-wide hover index to lazily render preview canvases
 const hoverIndex = ref(-1);
 
-// Measure chip bars to avoid overlap with main text inside slides
-const chipsDesktopRef = ref(null);
-const chipsMobileRef = ref(null);
-const chipsHDesktop = ref(0);
-const chipsHMobile = ref(0);
-const desktopChipsPad = computed(() => `${(chipsHDesktop.value || 0) + 8}px`);
-const mobileChipsPad = computed(() => `${(chipsHMobile.value || 0) + 8}px`);
-
 function handleKey(e) {
   if (e.key === 'ArrowRight') next();
   else if (e.key === 'ArrowLeft') prev();
@@ -325,7 +301,6 @@ function computeMode() {
 }
 
 let ro;
-let roChipsDesk; let roChipsMob;
 onMounted(() => {
   computeMode();
   window.addEventListener('resize', computeMode, { passive: true });
@@ -333,23 +308,10 @@ onMounted(() => {
     ro = new ResizeObserver(() => computeMode());
     if (containerRef.value) ro.observe(containerRef.value);
   }
-  // Observe chips heights
-  const measure = () => {
-    chipsHDesktop.value = chipsDesktopRef.value ? chipsDesktopRef.value.offsetHeight : 0;
-    chipsHMobile.value = chipsMobileRef.value ? chipsMobileRef.value.offsetHeight : 0;
-  };
-  measure();
-  window.addEventListener('resize', measure, { passive: true });
-  if ('ResizeObserver' in window) {
-    if (chipsDesktopRef.value) { roChipsDesk = new ResizeObserver(measure); roChipsDesk.observe(chipsDesktopRef.value); }
-    if (chipsMobileRef.value) { roChipsMob = new ResizeObserver(measure); roChipsMob.observe(chipsMobileRef.value); }
-  }
 });
 onBeforeUnmount(() => {
   window.removeEventListener('resize', computeMode);
   if (ro) ro.disconnect();
-  if (roChipsDesk) roChipsDesk.disconnect();
-  if (roChipsMob) roChipsMob.disconnect();
 });
 </script>
 
