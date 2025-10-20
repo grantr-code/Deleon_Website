@@ -99,3 +99,8 @@
   filter: none !important;
   -webkit-filter: none !important;
 }
+
+/* Fix team member names in light mode */
+.theme-light .text-white {
+  color: #0b0b0f !important;
+}
