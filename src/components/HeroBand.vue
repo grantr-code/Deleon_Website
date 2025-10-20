@@ -518,7 +518,7 @@ function ensureFontLink(key) {
 function applySiteFont() {
   if (typeof document === 'undefined') return;
   const stacks = {
-    default: '"Space Grotesk", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
+    default: '"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
     inter: 'Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
     plex: '"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
     source: '"Source Sans 3", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial',
@@ -527,9 +527,8 @@ function applySiteFont() {
   if (key !== 'default') ensureFontLink(key);
   const stack = stacks[key] || stacks.default;
   try { localStorage.setItem('testerSiteFont', key); } catch {}
-  // Inline style on body overrides the Tailwind body font, but
-  // elements with class `font-logo` keep their explicit Eurostile face.
-  document.body.style.fontFamily = stack;
+  // Set the global site font variable instead of inlining on body
+  document.documentElement.style.setProperty('--font-site', stack);
 }
 
 // Promote canvas to its own layer on mobile to avoid first-paint flicker

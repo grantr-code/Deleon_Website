@@ -1,5 +1,15 @@
 @import './theme.css';
 
+/* Global site font (default = IBM Plex Sans) */
+:root {
+  --font-site: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Ensure body uses the global declaration */
+body {
+  font-family: var(--font-site);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

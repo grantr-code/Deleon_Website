@@ -16,8 +16,8 @@ export default {
         },
       },
       fontFamily: {
-        // Restore sitewide font to Space Grotesk
-        brand: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
+        // Site-wide brand font follows the global CSS variable
+        brand: ['var(--font-site)', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
         // Use Eurostile only for the wordmark text
         logo: ['"Eurostile Round Extended"', '"Eurostile Round"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
       },
