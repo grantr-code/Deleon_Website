@@ -38,7 +38,7 @@ export const siteData = {
           name: 'Command',
           chip: 'Operations Dashboard',
           tag: 'Workflow',
-          title: 'Operate with a common operating picture',
+          title: 'View your metrics at a glance',
           description: 'A unified dashboard across performance, wellness, and operations.',
           long: 'Track trends, flag risks, and coordinate interventions—bringing biochemistry into the daily rhythm of planning and care.',
           effect: 'radar',
