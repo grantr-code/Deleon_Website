@@ -14,6 +14,6 @@ We’re excited to share that Deleon has been selected as a Second Round Winner 
 
 According to the organizers, eleven outstanding startups and research teams will advance to the Virtual Pitch Event the week of October 24. Themes span microgravity research, AI‑powered health monitoring, advanced biomedicine, and more.
 
-Deleon’s technology is inherently capable of operating in spaceflight environments. We’re applying that rigor to a palm‑size analyzer that translates a single drop of urine into a simple daily health report—bringing real‑time biochemistry out of the lab and into everyday decisions.
+Deleon's technology is inherently capable of operating in spaceflight environments. We're applying that rigor to a palm‑size analyzer that translates a single drop of urine into a simple daily wellness report—bringing real‑time biochemistry out of the lab and into everyday decisions.
 
 Thank you to the Humans In Space Challenge team and community for the recognition, and congratulations to the fellow winners.

@@ -29,7 +29,7 @@ export const teamData = {
         {
           name: 'Antonio Varagnolo',
           role: 'Machine Learning Researcher',
-          bio: 'Expert in applied math and computational science at LANL.',
+          bio: 'Expert in applied math and computational science doing his PhD at Tech.',
           photo: '/antonio.jpg',
           linkedin: 'https://www.linkedin.com/in/antonio-varagnolo-431287207',
           x: '',

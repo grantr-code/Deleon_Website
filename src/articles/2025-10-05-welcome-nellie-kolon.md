@@ -10,10 +10,10 @@ image: /nellie.png
 linkedin: https://www.linkedin.com/in/nellie-kolon-8b4b3613a
 ---
 
-We’re excited to share that as of last week, Nellie Kolon joined Deleon as one of our first team members.
+We're excited to share that as of last week, Nellie Kolon joined Deleon as one of our first team members. A biomedical engineer and formerly at Eli Lilly, she brings world class lab skills and will contribute in countless ways as we reach our next milestones.
 
-At Deleon, we’re building personal metabolomics technology to make daily insights into wellness accessible and actionable. Nellie will support work across assay development and system validation as we translate a single drop of urine into a clear daily health report.
+At Deleon, we're building personal metabolomics technology to make daily insights into wellness accessible and actionable. Nellie will support work across assay development and system validation as we translate a single drop of urine into a clear daily wellness report.
 
-Thank you to Chad Pozarycki, PhD and José Luis R. Andrade for helping welcome Nellie to the team — more updates soon as we keep building.
+Welcome Nellie to the team! More updates soon as we keep building.
 
-If you’re interested in partnering or joining, contact [chad@deleon-omics.com](mailto:chad@deleon-omics.com).
+If you're interested in partnering or hearing updates, connect with the contact us link!

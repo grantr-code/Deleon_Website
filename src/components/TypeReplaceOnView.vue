@@ -3,9 +3,9 @@
     <span>{{ prefixOutput }}</span>
     <component :is="wordTag" :class="wordClass">{{ wordOutput }}</component>
     <span v-if="showCaret" class="caret" aria-hidden="true">▌</span>
-    <span>{{ suffix }}</span>
+    <span>{{ suffixOutput }}</span>
   </component>
-  
+
 </template>
 
 <script setup>
@@ -44,6 +44,7 @@ const props = defineProps({
 const root = ref(null);
 const prefixOutput = ref('');
 const wordOutput = ref('');
+const suffixOutput = ref('');
 const showCaret = ref(false);
 let typed = false;
 let timer = null;
@@ -51,6 +52,7 @@ let observer = null;
 let timeouts = [];
 let wordList = [];
 let wordIndex = 0;
+let suffixTyped = false;
 
 function clearTimers() {
   if (timer) { clearInterval(timer); timer = null; }
@@ -71,6 +73,7 @@ function start() {
   if (prefersReduced) {
     prefixOutput.value = props.prefix;
     wordOutput.value = wordList[wordIndex] || '';
+    suffixOutput.value = props.suffix;
     showCaret.value = false;
     typed = true;
     return;
@@ -78,8 +81,10 @@ function start() {
 
   prefixOutput.value = '';
   wordOutput.value = '';
+  suffixOutput.value = '';
   showCaret.value = true;
   typed = true;
+  suffixTyped = false;
 
   const useSpeedFrom = () => Math.max(10, (props.fromSpeed ?? props.speed));
   const useSpeedTo = () => Math.max(10, (props.toSpeed ?? props.speed));
@@ -150,6 +155,26 @@ function start() {
     }, useBackspace());
   }
 
+  function typeSuffix(cb) {
+    if (suffixTyped || !props.suffix) {
+      cb && cb();
+      return;
+    }
+    clearInterval(timer);
+    showCaret.value = true;
+    let i = 0;
+    timer = setInterval(() => {
+      suffixOutput.value = props.suffix.slice(0, i);
+      i++;
+      if (i > props.suffix.length) {
+        clearInterval(timer);
+        showCaret.value = false;
+        suffixTyped = true;
+        cb && cb();
+      }
+    }, useInitial());
+  }
+
   function scheduleSwap() {
     const t = setTimeout(() => swap(), getPauseForIndex(wordIndex));
     timeouts.push(t);
@@ -188,17 +213,19 @@ function start() {
     const startFn = () => {
       const firstWord = wordList[0] ?? '';
       typeWord(firstWord, useInitial(), () => {
-        const firstPause = getPauseForIndex(0);
-        const t = setTimeout(() => {
-          if (props.loop) swap();
-          else if (wordList.length > 1) {
-            backspaceWord(firstWord, () => {
-              const secondWord = wordList[1] ?? '';
-              typeWord(secondWord, useSpeedTo());
-            });
-          }
-        }, firstPause);
-        timeouts.push(t);
+        typeSuffix(() => {
+          const firstPause = getPauseForIndex(0);
+          const t = setTimeout(() => {
+            if (props.loop) swap();
+            else if (wordList.length > 1) {
+              backspaceWord(firstWord, () => {
+                const secondWord = wordList[1] ?? '';
+                typeWord(secondWord, useSpeedTo());
+              });
+            }
+          }, firstPause);
+          timeouts.push(t);
+        });
       });
     };
     if (initialDelay) {
