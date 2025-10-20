@@ -128,8 +128,9 @@
 }
 
 /* Contact Popup (Early Access Drawer) Light Mode Overrides */
-.theme-light .fixed.inset-0.z-\[100\] .absolute.inset-0 {
-  background-color: rgba(0,0,0,0.4) !important;
+/* Only tint the backdrop overlay (direct child), not inner panel layers */
+.theme-light .fixed.inset-0.z-\[100\] > .absolute.inset-0 {
+  background-color: rgba(0,0,0,0.40) !important;
 }
 
 .theme-light .fixed.inset-0.z-\[100\] .absolute.inset-0.bg-brand-dark\/90 {
@@ -145,8 +146,8 @@
 }
 
 .theme-light .fixed.inset-0.z-\[100\] .flex.items-center.justify-between {
-  background-color: rgba(0,0,0,0.08) !important;
-  border-bottom-color: rgba(0,0,0,0.15) !important;
+  background-color: rgba(255,255,255) !important;
+  border-bottom-color: rgba(255,255,255) !important;
 }
 
 .theme-light .fixed.inset-0.z-\[100\] h2 {
@@ -205,4 +206,14 @@
 
 .theme-light .fixed.inset-0.z-\[100\] .text-emerald-300 {
   color: #059669 !important;
+}
+
+/* Early Access Drawer: make the contact form surface solid white in light mode */
+.theme-light .ea-form-surface {
+  background-color: #ffffff !important;
+}
+
+/* Ensure helper text is readable on white in light mode */
+.theme-light .ea-help-text {
+  color: #4b5563 !important; /* Tailwind gray-600 */
 }
