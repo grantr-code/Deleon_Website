@@ -10,6 +10,9 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 
 const canvas = ref(null);
+// Preload Deleon light logo for app card
+const logoLight = new Image();
+logoLight.src = '/BrandAssets/Deleon_Logo_light.svg';
 
 // Utility
 function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
@@ -136,20 +139,7 @@ function drawDiagram(ctx, sim, pal){
   ctx.fillStyle = fluid; ctx.fillRect(channelL, channelTop, channelR - channelL, channelH);
   ctx.strokeStyle = stroke; ctx.strokeRect(channelL, channelTop, channelR - channelL, channelH);
 
-  // Labels: Cathode/Anode/Title
-  ctx.font = labelFont;
-  ctx.fillStyle = pal.label;
-  ctx.textBaseline = 'alphabetic';
-  ctx.textAlign = 'left';
-  // Title sits inside the left reservoir, a bit below its top edge
-  const titleY = channelTop - 40 + 16;
-  ctx.fillText('Electrophoresis', leftX + 8, titleY);
-  // Align Cathode/Anode baselines
-  ctx.fillText('Cathode —', leftX + 8, channelTop + resH + 22);
-  ctx.fillText('Buffer', rightX + 10, channelTop + 12);
-  ctx.textAlign = 'right';
-  ctx.fillText('Anode +', rightX + resW - 6, channelTop + resH + 20);
-  ctx.textAlign = 'left';
+  // Text labels removed per request; keep diagram visuals only
 
   // Light source + detection window
   const lx = sim.detectorX; const ly = channelTop - 22;
@@ -158,12 +148,7 @@ function drawDiagram(ctx, sim, pal){
   // bulb
   ctx.fillStyle = pal.bulb; ctx.beginPath(); ctx.arc(lx, ly-10, 6, 0, Math.PI*2); ctx.fill();
   ctx.strokeStyle = pal.beam; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(lx, channelTop-10); ctx.lineTo(lx, channelTop+channelH+10); ctx.stroke();
-  ctx.fillStyle = pal.sublabel;
-  ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-  ctx.font = labelFont;
-  const pLabelW = ctx.measureText('Detector').width;
-  const pLabelX = Math.min(lx + 6, rightX + resW - 6 - pLabelW);
-  ctx.fillText('Detector', pLabelX, channelTop + channelH + 26);
+  // Detector label removed
 }
 
 function drawChart(ctx, sim, signal, pal){
@@ -173,12 +158,7 @@ function drawChart(ctx, sim, signal, pal){
   // axes
   ctx.strokeStyle = pal.axis; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(r.x + 28, r.y + 10); ctx.lineTo(r.x + 28, r.y + r.h - 20); ctx.lineTo(r.x + r.w - 10, r.y + r.h - 20); ctx.stroke();
-  ctx.font = '11px Space Grotesk, system-ui, -apple-system, sans-serif';
-  ctx.fillStyle = pal.chartText;
-  ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-  ctx.save(); ctx.translate(r.x + 12, r.y + r.h/2); ctx.rotate(-Math.PI/2); ctx.fillText('Abs (a.u.)', 0, 0); ctx.restore();
-  ctx.textAlign = 'right'; ctx.fillText('Time (s)', r.x + r.w - 14, r.y + r.h - 6);
-  ctx.textAlign = 'left'; ctx.fillText('Chart Recorder', r.x + 36, r.y + 16);
+  // All axis/legend text removed
 
   // signal
   const maxVal = Math.max(0.15, Math.max(...signal));
@@ -191,11 +171,7 @@ function drawChart(ctx, sim, signal, pal){
   }
   ctx.strokeStyle = 'rgba(76,201,91,0.95)'; ctx.lineWidth = 2; ctx.stroke();
 
-  // Data In label centered above the chart
-  ctx.fillStyle = pal.dataIn;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-  ctx.fillText('Data In', r.x + r.w / 2, r.y - 10);
-  ctx.textAlign = 'left';
+  // Remove "Data In" label
 }
 
 function drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal){
@@ -245,13 +221,7 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal){
   // nodes
   for(const n of nodes){ ctx.fillStyle = pal.node; ctx.beginPath(); ctx.arc(n.x, n.y, 3, 0, Math.PI*2); ctx.fill(); }
 
-  // Neural Network label above top-most nodes to avoid overlap
-  const netLeft = layerX[0];
-  const netRight = layerX[layerX.length - 1];
-  const topMostY = centerY - (Math.max(...layers) - 1) / 2 * 24;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = pal.nnLabel; ctx.font = '12px Space Grotesk, system-ui, -apple-system, sans-serif';
-  ctx.fillText('Neural Network', (netLeft + netRight) / 2, topMostY - 10);
+  // Remove Neural Network label
   // animated pulses across first two layers using global time t
   const t = draw.state?.t || 0;
   if (pulsesActive) {
@@ -272,10 +242,9 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal){
   let appH = 50;
   const textFont1 = '12px Space Grotesk, system-ui, -apple-system, sans-serif';
   const textFont2 = '11px Space Grotesk, system-ui, -apple-system, sans-serif';
-  ctx.font = textFont1; const w1 = ctx.measureText('Deleon App').width;
-  ctx.font = textFont2; const w2 = ctx.measureText('Personal guidance').width;
+  ctx.font = textFont1; const w1 = ctx.measureText('DELEON APP').width;
   const iconSize = 30, sidePad = 12, gap = 10;
-  let appW = Math.ceil(sidePad + iconSize + gap + Math.max(w1, w2) + sidePad);
+  let appW = Math.ceil(sidePad + iconSize + gap + w1 + sidePad);
   appW = Math.max(140, appW);
   let appX, appY;
   if (side) {
@@ -296,19 +265,26 @@ function drawNormalizerAndNN(ctx, sim, feats, pulsesActive, pal){
   // app card with icon
   ctx.save();
   roundRect(ctx, appX, appY, appW, appH, 8);
-  ctx.fillStyle = 'rgba(76,201,91,0.10)'; ctx.fill();
+  // Black card background with subtle green border
+  ctx.fillStyle = 'rgba(0,0,0,0.85)'; ctx.fill();
   ctx.strokeStyle = 'rgba(76,201,91,0.55)'; ctx.lineWidth = 1; ctx.stroke();
-  // icon: simple rounded square with letter D
+  // logo area
   const ix = appX + sidePad, iy = appY + 10, isz = iconSize;
-  roundRect(ctx, ix, iy, isz, isz, 6); ctx.fillStyle = 'rgba(76,201,91,0.85)'; ctx.fill();
-  ctx.fillStyle = 'black'; ctx.font = 'bold 16px Space Grotesk, system-ui, -apple-system, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('D', ix + isz/2, iy + isz/2 + 1);
+  // Draw the light logo, scaled to fit height
+  if (logoLight.complete) {
+    const targetH = isz;
+    const ratio = 138/252; // approximate from asset viewBox
+    const targetW = Math.max(18, Math.floor(targetH*ratio));
+    const cx = ix + (isz - targetW)/2; const cy = iy;
+    try { ctx.drawImage(logoLight, cx, cy, targetW, targetH); } catch {}
+  } else {
+    // Fallback: small green dot if image not ready yet
+    ctx.fillStyle = 'rgba(76,201,91,0.85)'; ctx.beginPath(); ctx.arc(ix+isz/2, iy+isz/2, 6, 0, Math.PI*2); ctx.fill();
+  }
   // label
   ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = pal.label; ctx.font = textFont1;
-  ctx.fillText('Deleon App', ix + isz + gap, iy + 20);
-  ctx.fillStyle = pal.sublabel; ctx.font = textFont2;
-  ctx.fillText('Personal guidance', ix + isz + gap, iy + 36);
+  ctx.fillStyle = '#ffffff'; ctx.font = textFont1;
+  ctx.fillText('DELEON APP', ix + isz + gap, iy + 22);
   ctx.restore();
 }
 
@@ -356,8 +332,7 @@ function draw(ctx, sim, dt){
     const cy = sim.channelTop + sim.channelH/2;
     if (a.x >= sim.channelL - 40 && a.x <= sim.channelR + 40){
       ctx.fillStyle = a.color; ctx.beginPath(); ctx.arc(cx, cy, a.r, 0, Math.PI*2); ctx.fill();
-      // tiny sign mark
-      ctx.fillStyle = pal.signMark; ctx.font = '11px Space Grotesk, system-ui, -apple-system'; ctx.textAlign='center'; ctx.fillText('•', cx, cy+3);
+      // sign mark removed
     }
     // simple detector response
     const resp = a.amp * gaussian(a.x, sim.detectorX, 22);
