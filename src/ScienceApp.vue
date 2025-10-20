@@ -53,7 +53,7 @@
         </div>
         <h2 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">From signals to a foundation model</h2>
         <p class="mt-4 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
-          A learning system that understands human recovery, hydration, and readiness—improving with every sample.
+          A learning system that understands human recovery and readiness—improving with every sample.
         </p>
       </section>
     </main>
