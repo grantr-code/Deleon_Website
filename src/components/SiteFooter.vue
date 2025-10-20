@@ -75,7 +75,7 @@
                 />
               </a>
               <p class="text-sm text-brand-text/80 text-center sm:text-left">
-                We partner with Pravida for clinical services.
+                We partner with Pravida Health.
               </p>
             </div>
             <p class="mt-2 sm:mt-3 text-[12px] leading-relaxed text-brand-muted text-center sm:text-left">
