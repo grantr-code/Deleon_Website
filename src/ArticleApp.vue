@@ -87,13 +87,13 @@ onMounted(() => { if (typeof window !== 'undefined' && window.location.hash === 
 
 <style scoped>
 /* NYT-inspired, readable article defaults without Tailwind Typography */
-.article-body { color: #e8e8e8; font-size: clamp(16px, 1.05vw, 18px); line-height: 1.85; }
+.article-body { color: hsl(var(--foreground)); font-size: clamp(16px, 1.05vw, 18px); line-height: 1.85; }
 .article-body :where(p) { margin: 1rem 0; }
-.article-body :where(h2) { margin: 2rem 0 0.75rem; font-size: clamp(22px,1.6vw,26px); line-height: 1.25; color: #fff; }
-.article-body :where(h3) { margin: 1.5rem 0 0.5rem; font-size: clamp(18px,1.3vw,22px); line-height: 1.3; color: #fff; }
+.article-body :where(h2) { margin: 2rem 0 0.75rem; font-size: clamp(22px,1.6vw,26px); line-height: 1.25; color: hsl(var(--foreground)); }
+.article-body :where(h3) { margin: 1.5rem 0 0.5rem; font-size: clamp(18px,1.3vw,22px); line-height: 1.3; color: hsl(var(--foreground)); }
 .article-body :where(ul,ol) { margin: 1rem 0; padding-left: 1.25rem; }
 .article-body :where(li) { margin: 0.35rem 0; }
-.article-body :where(a) { color: #4CC95B; text-decoration: none; }
-.article-body :where(blockquote) { margin: 1.25rem 0; padding-left: 1rem; border-left: 3px solid rgba(255,255,255,0.18); color: #cfcfcf; font-style: italic; }
+.article-body :where(a) { color: hsl(var(--accent)); text-decoration: none; }
+.article-body :where(blockquote) { margin: 1.25rem 0; padding-left: 1rem; border-left: 3px solid hsl(var(--border)); color: hsl(var(--muted-foreground)); font-style: italic; }
 .article-body :where(img) { max-width: 100%; height: auto; display: block; margin: 1.25rem auto; border-radius: 6px; }
 </style>
