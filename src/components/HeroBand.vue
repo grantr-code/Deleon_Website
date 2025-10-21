@@ -1,7 +1,7 @@
 <template>
   <div
     ref="rootEl"
-    class="bg-black text-white relative h-screen min-h-screen h-[100svh] min-h-[100svh] overflow-hidden"
+    class="bg-white dark:bg-black text-black dark:text-white relative h-screen min-h-screen h-[100svh] min-h-[100svh] overflow-hidden"
   >
     <!-- Background layer: default canvas, effect, or video -->
     <div class="absolute inset-0">
@@ -40,9 +40,9 @@
             @canplay="onVideoCanPlay"
             @playing="onVideoPlaying"
           >
-            <!-- Prefer MOV first; MP4 as fallback -->
-            <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
+            <!-- Prefer MP4 first for better browser compatibility; MOV as fallback -->
             <source v-if="active.srcMp4" :src="active.srcMp4" type="video/mp4" />
+            <source v-if="active.srcMov" :src="active.srcMov" type="video/quicktime" />
             <source v-if="active.src" :src="active.src" />
             Your browser does not support the video tag.
           </video>
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Hero content overlay -->
-    <div class="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-28" :class="preferDarkText ? 'text-black' : 'text-white'">
+    <div class="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-28" :class="preferDarkText ? 'text-black' : 'text-black dark:text-white'">
       <div class="text-center max-w-[1100px] w-full mx-auto">
         <TypeReplaceOnView
           tag="h1"
@@ -74,10 +74,10 @@
 
     <!-- Small demo control (feature-flagged) -->
     <div v-if="showSwitcher" class="fixed z-30 bottom-3 right-3">
-      <div v-if="!collapsed" class="rounded-md border border-white/15 bg-black/50 backdrop-blur-sm shadow-sm p-3 text-[12px]">
+      <div v-if="!collapsed" class="rounded-md border border-border bg-card/50 backdrop-blur-sm shadow-sm p-3 text-[12px]">
         <div class="flex items-center justify-between gap-3">
-          <span class="uppercase tracking-wider text-white/80">BACKGROUND TESTER (NON-RELEASE)</span>
-          <button type="button" class="px-2 py-1 rounded bg-white/10 hover:bg-white/15 text-white/80" @click="collapsed = true" title="Minimize">Hide</button>
+          <span class="uppercase tracking-wider text-muted-foreground">BACKGROUND TESTER (NON-RELEASE)</span>
+          <button type="button" class="px-2 py-1 rounded bg-muted/20 hover:bg-muted/30 text-muted-foreground" @click="collapsed = true" title="Minimize">Hide</button>
         </div>
         <p
           v-if="reloadNeeded"
@@ -87,10 +87,10 @@
           RELOAD REQUIRED
         </p>
         <div class="mt-2">
-          <label class="block text-white/70 mb-1">Mode</label>
+          <label class="block text-muted-foreground mb-1">Mode</label>
           <select
             v-model="selected"
-            class="w-[240px] bg-black/40 border border-white/15 rounded px-2 py-1 text-white/90"
+            class="w-[240px] bg-muted/40 border border-border rounded px-2 py-1 text-foreground"
             @change="persistSelection"
           >
             <option v-for="opt in options" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
@@ -99,10 +99,10 @@
 
         <!-- Site-wide theme BETA -->
         <div class="mt-3">
-          <label class="block text-white/70 mb-1">Site theme (BETA)</label>
+          <label class="block text-muted-foreground mb-1">Site theme (BETA)</label>
           <select
             v-model="siteTheme"
-            class="w-[240px] bg-black/40 border border-white/15 rounded px-2 py-1 text-white/90"
+            class="w-[240px] bg-muted/40 border border-border rounded px-2 py-1 text-foreground"
             title="Switch site-wide theme"
           >
             <option value="dark">Dark (Default)</option>
@@ -112,10 +112,10 @@
 
         <!-- Font tester (non-release) -->
         <div class="mt-3">
-          <label class="block text-white/70 mb-1">Font (TEST)</label>
+          <label class="block text-muted-foreground mb-1">Font (TEST)</label>
           <select
             v-model="siteFont"
-            class="w-[240px] bg-black/40 border border-white/15 rounded px-2 py-1 text-white/90"
+            class="w-[240px] bg-muted/40 border border-border rounded px-2 py-1 text-foreground"
             title="Temporarily switch site font (logo unaffected)"
             @change="applySiteFont"
           >
@@ -126,13 +126,13 @@
           </select>
         </div>
       </div>
-      <button v-else type="button" class="rounded-md border border-white/15 bg-black/50 backdrop-blur-sm shadow-sm px-2 py-1 text-[12px] text-white/90 hover:bg-white/10" @click="collapsed = false" title="Show background switcher">BG</button>
+      <button v-else type="button" class="rounded-md border border-border bg-card/50 backdrop-blur-sm shadow-sm px-2 py-1 text-[12px] text-foreground hover:bg-muted/20" @click="collapsed = false" title="Show background switcher">BG</button>
     </div>
 
     <!-- Scroll cue (arrow) -->
     <div class="absolute left-1/2 -translate-x-1/2 bottom-6 z-20 flex flex-col items-center gap-2">
       <a href="#our-platforms" aria-label="Scroll to Our Platform" class="pointer-events-auto">
-        <span class="block h-10 w-10 rounded-full border border-white/30 text-white/80 hover:text-white hover:border-white/60 flex items-center justify-center transition-colors animate-bounce">
+        <span class="block h-10 w-10 rounded-full border border-black/30 dark:border-white/30 text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white hover:border-black/60 dark:hover:border-white/60 flex items-center justify-center transition-colors animate-bounce">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
             <path fill-rule="evenodd" d="M12 16a.75.75 0 0 1-.53-.22l-5-5a.75.75 0 1 1 1.06-1.06L12 14.19l4.47-4.47a.75.75 0 1 1 1.06 1.06l-5 5A.75.75 0 0 1 12 16z" clip-rule="evenodd" />
           </svg>
@@ -225,7 +225,7 @@ const videoPosterStyle = computed(() => ({
 
 const isDefaultActive = computed(() => active.value.kind === 'default');
 const preferDarkText = computed(() => selected.value === 'test:diffuse');
-const headingClass = computed(() => `text-center ${preferDarkText.value ? 'text-black' : 'text-white'} text-[clamp(30px,4.8vw,62px)] leading-tight`);
+const headingClass = computed(() => `text-center ${preferDarkText.value ? 'text-black' : 'text-black dark:text-white'} text-[clamp(30px,4.8vw,62px)] leading-tight`);
 
 // Inform the header to switch logo/text to dark-on-light when Brownian is active
 const headerTheme = inject('headerTheme', null);

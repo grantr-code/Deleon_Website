@@ -1,27 +1,21 @@
 <template>
   <section
     ref="sectionRef"
-    class="relative w-full overflow-hidden bg-brand-dark text-brand-text mt-6 md:mt-8"
+    class="relative w-full overflow-hidden bg-background text-foreground mt-6 md:mt-8"
     :style="sectionStyle"
   >
     <!-- Top hairline full-bleed to match bottom line -->
-    <div class="border-t border-white/10"></div>
+    <div class="border-t border-border"></div>
 
-    <!-- Full‑width subtle grid guide lines -->
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute inset-0 opacity-30 z-0 hidden md:block"
-      :style="gridLinesStyle"
-    ></div>
+    <!-- Grid lines removed per user request -->
 
     <!-- Video positioned to right edge, flush with top -->
     <div class="hidden md:block absolute top-0 right-0 z-10 w-[45%] lg:w-[48%] xl:w-[50%]">
       <div
-        class="relative w-full bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)] overflow-hidden"
+        class="relative w-full bg-card dark:shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)] overflow-hidden"
         :style="videoHeightStyle"
       >
-        <!-- Thematic left accent to match cards elsewhere -->
-        <div class="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-brand-green" aria-hidden="true"></div>
+        <!-- Left accent removed per user request -->
         <!-- First-frame canvas backdrop -->
         <canvas
           ref="posterCanvas"
@@ -40,9 +34,9 @@
           @canplay="onCanPlay"
           @playing="onPlaying"
         >
-          <!-- Prefer MOV first; MP4 as fallback -->
-          <source :src="'/BrandAssets/Video.mov'" type="video/quicktime" />
+          <!-- Prefer MP4 first for better browser compatibility; MOV as fallback -->
           <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
+          <source :src="'/BrandAssets/Video.mov'" type="video/quicktime" />
         </video>
       </div>
     </div>
@@ -51,21 +45,17 @@
     <div class="relative z-30 mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-6 md:py-14 max-w-none">
       <!-- Text content -->
       <div ref="textContentRef" class="md:max-w-[48%] lg:max-w-[45%] xl:max-w-[42%]">
-        <p class="text-white text-[clamp(18px,2.2vw,28px)] leading-[1.28] tracking-[-0.005em]">
+        <p class="text-foreground text-[clamp(18px,2.2vw,28px)] leading-[1.28] tracking-[-0.005em]">
           From a drop of urine to individualized guidance in minutes—optimize your performance, wellness, and training.
         </p>
 
         <!-- CTA pill -->
         <div class="mt-6 md:mt-10">
-          <a href="mailto:chad@deleon-omics.com,jose@deleon-omics.com" class="group inline-flex md:inline-flex w-full md:w-auto items-center justify-between md:justify-start gap-4 md:gap-6 rounded-full border border-white/20 px-5 sm:px-7 py-4 sm:py-5 bg-white/[.02] hover:bg-white/[.05] hover:border-brand-green/60 transition-colors">
-            <span class="text-left">
-              <span class="block text-sm text-brand-muted">See Deleon in action</span>
-              <span class="block text-[clamp(16px,1.3vw,18px)] text-white">Request a demo</span>
-            </span>
-            <span class="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 text-white group-hover:border-brand-green/60">
-              +
-            </span>
-          </a>
+          <CTAButton
+            href="mailto:chad@deleon-omics.com,jose@deleon-omics.com"
+            label="See Deleon in action"
+            action="Request a demo"
+          />
         </div>
       </div>
     </div>
@@ -73,11 +63,10 @@
     <!-- Mobile: Full-width video stacked on top -->
     <div class="md:hidden px-4 pb-6">
       <div
-        class="relative w-full bg-black/80 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)] overflow-hidden"
+        class="relative w-full bg-card dark:shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)] overflow-hidden"
         style="aspect-ratio: 5/3;"
       >
-        <!-- Thematic left accent to match cards elsewhere -->
-        <div class="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-brand-green" aria-hidden="true"></div>
+        <!-- Left accent removed per user request -->
         <!-- First-frame canvas backdrop (mobile uses same refs) -->
         <canvas
           class="absolute inset-0 block w-full h-full pointer-events-none"
@@ -91,9 +80,9 @@
           preload="metadata"
           :style="{ opacity: isPlaying ? 1 : 0, transition: 'opacity 300ms ease' }"
         >
-          <!-- Prefer MOV first; MP4 as fallback -->
-          <source :src="'/BrandAssets/Video.mov'" type="video/quicktime" />
+          <!-- Prefer MP4 first for better browser compatibility; MOV as fallback -->
           <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
+          <source :src="'/BrandAssets/Video.mov'" type="video/quicktime" />
         </video>
       </div>
     </div>
@@ -106,11 +95,12 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import NewsSection from './NewsSection.vue';
+import CTAButton from './CTAButton.vue';
 
 // Create subtle vertical column guides using CSS gradients
 const gridLinesStyle = computed(() => ({
   backgroundImage:
-    'linear-gradient(to right, rgba(255,255,255,0.12) 1px, rgba(0,0,0,0) 1px)',
+    'linear-gradient(to right, hsl(var(--foreground) / 0.12) 1px, transparent 1px)',
   backgroundSize: '33.333% 100%',
   backgroundRepeat: 'repeat-x',
 }));
@@ -118,8 +108,8 @@ const gridLinesStyle = computed(() => ({
 // Lightweight contour-line pattern using multiple repeating gradients
 const topoStyle = computed(() => ({
   backgroundImage: [
-    'repeating-radial-gradient(circle at 60% 20%, rgba(255,255,255,0.08) 0, rgba(255,255,255,0.08) 2px, transparent 3px, transparent 12px)',
-    'repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 12px)'
+    'repeating-radial-gradient(circle at 60% 20%, hsl(var(--foreground) / 0.08) 0, hsl(var(--foreground) / 0.08) 2px, transparent 3px, transparent 12px)',
+    'repeating-linear-gradient(135deg, hsl(var(--foreground) / 0.05) 0, hsl(var(--foreground) / 0.05) 1px, transparent 1px, transparent 12px)'
   ].join(','),
   backgroundBlendMode: 'screen',
 }));

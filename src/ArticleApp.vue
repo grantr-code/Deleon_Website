@@ -1,26 +1,21 @@
 <template>
-  <div class="aspect-guard with-rails">
-    <SiteHeader :data="data.header" compact subpage />
-    <main id="main-content" tabindex="-1" class="relative bg-brand-dark text-brand-text">
-      <section class="relative w-full">
-        <div class="mx-auto max-w-none px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 md:py-14">
-          <!-- Top util row -->
-          <div class="flex items-center justify-between gap-6 border-b border-white/10 pb-4">
-            <div class="text-[11px] uppercase tracking-[0.18em] text-brand-muted">{{ article?.tag || 'News' }}</div>
-            <a href="/news.html" class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/20 text-white/80 hover:text-brand-green hover:border-brand-green/60 transition-colors" aria-label="Back to news">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6l-6 6 6 6"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16"/>
-              </svg>
-            </a>
-          </div>
+  <BasePageLayout compact subpage>
+    <section class="relative w-full">
+      <div class="mx-auto max-w-none px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 md:py-14">
+        <!-- Top util row -->
+        <div class="flex items-center justify-between gap-6 border-b border-border pb-4">
+          <div class="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">{{ article?.tag || 'News' }}</div>
+          <IconButton href="/news.html" aria-label="Back to news" size="sm">
+            <IconBackArrow />
+          </IconButton>
+        </div>
 
           <template v-if="article">
             <!-- Headline centered -->
-            <h1 class="mt-6 mx-auto max-w-[760px] text-center text-white text-[clamp(30px,3.4vw,44px)] leading-[1.15] tracking-[-0.01em]">{{ article.longTitle }}</h1>
+            <h1 class="mt-6 mx-auto max-w-[760px] text-center text-foreground text-[clamp(30px,3.4vw,44px)] leading-[1.15] tracking-[-0.01em]">{{ article.longTitle }}</h1>
 
             <!-- Byline centered -->
-            <div class="mx-auto max-w-[760px] mt-4 text-center text-[12px] uppercase tracking-[0.18em] text-brand-muted">
+            <div class="mx-auto max-w-[760px] mt-4 text-center text-[12px] uppercase tracking-[0.18em] text-muted-foreground">
               <span v-if="article.author">By {{ article.author }}</span>
               <span v-if="article.author && article.dateDisplay" class="mx-2">•</span>
               <span v-if="article.dateDisplay">{{ article.dateDisplay }}</span>
@@ -28,46 +23,47 @@
 
             <!-- Hero image within article column -->
             <figure v-if="article.image" class="mx-auto max-w-[760px] mt-8">
-              <img :src="article.image" :alt="article.shortTitle" class="w-full rounded-md border border-white/10 shadow-[0_20px_60px_-18px_rgba(0,0,0,0.6)]" loading="lazy" decoding="async" />
+              <MediaCard
+                :src="article.image"
+                :alt="article.shortTitle"
+                rounded="md"
+                :show-accent-bar="false"
+                image-class="w-full"
+              />
             </figure>
 
             <!-- Article body -->
             <article class="article-body mx-auto max-w-[760px] mt-8" v-html="article.content"></article>
 
             <!-- Article footer: LinkedIn button (optional) + source -->
-            <div class="mx-auto max-w-[760px] mt-10 pt-8 border-t border-white/10 text-center">
+            <div class="mx-auto max-w-[760px] mt-10 pt-8 border-t border-border text-center">
               <div v-if="article.linkedin" class="mb-6">
                 <a :href="article.linkedin" target="_blank" rel="noopener"
-                  class="inline-flex items-center justify-center rounded-full border border-neutral-700 px-5 py-3 text-[12px] uppercase tracking-[0.18em] text-brand-text hover:bg-black/40">
+                  class="inline-flex items-center justify-center rounded-full border border-neutral-700 px-5 py-3 text-[12px] uppercase tracking-[0.18em] text-foreground hover:bg-black/40">
                   View on LinkedIn
                   <span class="ml-2">→</span>
                 </a>
               </div>
-              <div class="text-[12px] uppercase tracking-[0.18em] text-brand-muted">Source: {{ article.source || 'Deleon Newsroom' }}</div>
+              <div class="text-[12px] uppercase tracking-[0.18em] text-muted-foreground">Source: {{ article.source || 'Deleon Newsroom' }}</div>
             </div>
           </template>
 
-          <template v-else>
-            <h1 class="mt-6 text-white text-[clamp(28px,3.2vw,40px)] leading-[1.15] tracking-[-0.01em] max-w-4xl">Article not found</h1>
-            <p class="mt-6 text-brand-muted">The article you’re looking for could not be found. Return to the <a href="/news.html" class="text-brand-green hover:underline">News</a> page.</p>
-          </template>
-        </div>
-      </section>
-    </main>
-    <SiteFooter :data="data.footer" />
-  </div>
-  <EarlyAccessDrawer />
+        <template v-else>
+          <h1 class="mt-6 text-foreground text-[clamp(28px,3.2vw,40px)] leading-[1.15] tracking-[-0.01em] max-w-4xl">Article not found</h1>
+          <p class="mt-6 text-muted-foreground">The article you're looking for could not be found. Return to the <a href="/news.html" class="text-accent hover:underline">News</a> page.</p>
+        </template>
+      </div>
+    </section>
+  </BasePageLayout>
 </template>
 
 <script setup>
-import { computed, ref, provide, watch, onMounted } from 'vue';
-import { siteData as data } from './content/siteData';
-import SiteHeader from './components/SiteHeader.vue';
-import SiteFooter from './components/SiteFooter.vue';
+import { computed } from 'vue';
+import BasePageLayout from './components/BasePageLayout.vue';
+import IconButton from './components/IconButton.vue';
+import IconBackArrow from './components/icons/IconBackArrow.vue';
+import MediaCard from './components/MediaCard.vue';
 import { getAllArticles, getArticleBySlug } from './lib/articles';
-import { useSiteTheme } from './composables/useSiteTheme';
-import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
-import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 
 function getSlug() {
   const params = new URLSearchParams(window.location.search);
@@ -83,12 +79,6 @@ if (!initial) {
 }
 
 const article = computed(() => initial);
-
-const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'light';
-const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
-provide('headerTheme', headerTheme);
-const { theme: siteTheme } = useSiteTheme();
-watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 
 const { open: openEarly } = useEarlyAccessPanel();
 onMounted(() => { if (typeof window !== 'undefined' && window.location.hash === '#updates') openEarly(); });

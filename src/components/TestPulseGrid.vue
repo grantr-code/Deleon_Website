@@ -13,6 +13,9 @@ onMounted(() => {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  // Read accent color from CSS variable (brand green)
+  const accentRgb = '76,201,91'; // Brand green RGB
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0, height = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   let raf = 0;
@@ -42,8 +45,8 @@ onMounted(() => {
         const cy = (y + 0.5) * cellH;
         const r = Math.min(cellW, cellH) * 0.18;
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        g.addColorStop(0, 'rgba(76,201,91,0.25)');
-        g.addColorStop(1, 'rgba(76,201,91,0.00)');
+        g.addColorStop(0, `rgba(${accentRgb},0.25)`);
+        g.addColorStop(1, `rgba(${accentRgb},0.00)`);
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -70,8 +73,8 @@ onMounted(() => {
         const pulse = 0.5 + 0.5 * Math.sin(t * 2.0 + phase);
         const r = Math.min(cellW, cellH) * (0.08 + 0.22 * pulse);
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        g.addColorStop(0, `rgba(76,201,91,${0.45 * (0.6 + 0.4 * pulse)})`);
-        g.addColorStop(1, 'rgba(76,201,91,0.00)');
+        g.addColorStop(0, `rgba(${accentRgb},${0.45 * (0.6 + 0.4 * pulse)})`);
+        g.addColorStop(1, `rgba(${accentRgb},0.00)`);
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);

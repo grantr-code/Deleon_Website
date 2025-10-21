@@ -4,15 +4,38 @@ export default {
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
   ],
+  // Enable Tailwind's built-in dark mode with class strategy
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        // Semantic color tokens using CSS variables
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        border: {
+          DEFAULT: 'hsl(var(--border))',
+          subtle: 'hsl(var(--border-subtle))',
+        },
+        // Legacy brand colors (for backwards compatibility during transition)
+        // TODO: Remove these once all components are migrated
         brand: {
-          green: '#4CC95B',
-          dark: '#0b0b0b',
-          card: '#141414',
-          text: '#e8e8e8',
-          muted: '#b8b8b8',
+          green: '#4CC95B',  // Use 'accent' instead
+          dark: '#0b0b0b',   // Use 'background' instead
+          card: '#141414',   // Use 'card' instead
+          text: '#e8e8e8',   // Use 'foreground' instead
+          muted: '#b8b8b8',  // Use 'muted-foreground' instead
         },
       },
       fontFamily: {
@@ -20,6 +43,14 @@ export default {
         brand: ['var(--font-site)', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
         // Use Eurostile only for the wordmark text
         logo: ['"Eurostile Round Extended"', '"Eurostile Round"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial'],
+      },
+      // Named opacity levels for consistent theming
+      opacity: {
+        'subtle': 'var(--opacity-subtle)',
+        'soft': 'var(--opacity-soft)',
+        'medium': 'var(--opacity-medium)',
+        'strong': 'var(--opacity-strong)',
+        'emphasis': 'var(--opacity-emphasis)',
       },
     },
   },

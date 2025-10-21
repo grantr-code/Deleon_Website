@@ -1,67 +1,51 @@
 <template>
-  <div class="aspect-guard with-rails">
-    <SiteHeader :data="data.header" compact subpage />
-    <main id="main-content" tabindex="-1" class="relative bg-brand-dark text-brand-text">
-      <section class="max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-4 pb-6">
-        <div class="border-t border-white/10"></div>
-        <div class="mt-4 flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
-          <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
-          <span>Defense</span>
-        </div>
-        <h1 class="mt-3 md:mt-4 text-[clamp(28px,4.4vw,54px)] leading-tight text-white">For Military Wellness Operations</h1>
-        <p class="mt-4 text-brand-muted text-[clamp(16px,1.6vw,18px)] leading-relaxed max-w-4xl">
-          Understand force wellness in real time. Surface metabolic strain and emerging risks before they degrade readiness.
-        </p>
-      </section>
+  <BasePageLayout compact subpage>
+    <SectionHeader
+      label="Defense"
+      title="For Military Wellness Operations"
+      description="Understand force wellness in real time. Surface metabolic strain and emerging risks before they degrade readiness."
+      padding-bottom="pb-6"
+    />
 
-      <VideoOverlay
-        heading="Operational Metabolomics"
-        :overlay-text="'A 2‑minute test translates into readiness and recovery guidance—plus anomaly detection that can flag emerging risks across units.'"
-        :video="video"
-        :enable-switcher="false"
-        :ignore-tester-mode="true"
+    <VideoOverlay
+      heading="Operational Metabolomics"
+      :overlay-text="'A 2‑minute test translates into readiness and recovery guidance—plus anomaly detection that can flag emerging risks across units.'"
+      :video="video"
+      :enable-switcher="false"
+      :ignore-tester-mode="true"
+    />
+
+    <!-- Analysis / Insights / Command (military copy) -->
+    <section class="bg-white/[.02] border-y border-border">
+      <OurPlatforms
+        :headline="milPlatforms.headline"
+        :emphasis="milPlatforms.emphasis"
+        :items="milPlatforms.items"
+        hide-header
       />
+    </section>
 
-      <!-- Analysis / Insights / Command (military copy) -->
-      <section class="bg-white/[.02] border-y border-white/10">
-        <OurPlatforms
-          :headline="milPlatforms.headline"
-          :emphasis="milPlatforms.emphasis"
-          :items="milPlatforms.items"
-          hide-header
-        />
-      </section>
-
-      <!-- Operational capabilities: simplified list to match site language -->
-      <section class="max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-8 pb-10">
-        <div class="border-t border-white/10 mb-4"></div>
-        <div class="flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-brand-muted">
-          <span class="inline-block h-2 w-2 rounded-full bg-brand-green"></span>
-          <span>Capabilities</span>
-        </div>
-        <h2 class="mt-3 text-white text-[clamp(22px,2.8vw,32px)] leading-tight">What it enables in the field</h2>
-
-        <div class="mt-4">
-          <CapabilitiesList :items="capabilityItems" />
-        </div>
-      </section>
-    </main>
-    <SiteFooter :data="data.footer" />
-  </div>
-  <EarlyAccessDrawer />
+    <!-- Operational capabilities -->
+    <section class="max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-8 pb-10">
+      <div class="border-t border-border mb-4"></div>
+      <div class="flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-muted-foreground">
+        <span class="inline-block h-2 w-2 rounded-full bg-accent"></span>
+        <span>Capabilities</span>
+      </div>
+      <h2 class="mt-3 text-foreground text-[clamp(22px,2.8vw,32px)] leading-tight">What it enables in the field</h2>
+      <div class="mt-4">
+        <CapabilitiesList :items="capabilityItems" />
+      </div>
+    </section>
+  </BasePageLayout>
 </template>
 
 <script setup>
-import { siteData as data } from './content/siteData';
-import SiteHeader from './components/SiteHeader.vue';
-import SiteFooter from './components/SiteFooter.vue';
+import BasePageLayout from './components/BasePageLayout.vue';
+import SectionHeader from './components/SectionHeader.vue';
 import VideoOverlay from './components/VideoOverlay.vue';
 import OurPlatforms from './components/OurPlatforms.vue';
 import CapabilitiesList from './components/CapabilitiesList.vue';
-import { ref, provide, watch, onMounted } from 'vue';
-import { useSiteTheme } from './composables/useSiteTheme';
-import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
-import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 
 const video = {
   srcMp4: '/BrandAssets/Video_Military.mp4',
@@ -109,12 +93,6 @@ const capabilityItems = [
   { title: 'Nutrition Under Load', text: 'Optimize fueling under rations to sustain output across days in field conditions.' },
   { title: 'Anomaly Detection', text: 'Surface unusual signatures that may signal environmental or novel threats across units.' },
 ];
-
-const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'light';
-const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
-provide('headerTheme', headerTheme);
-const { theme: siteTheme } = useSiteTheme();
-watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 
 const { open: openEarly } = useEarlyAccessPanel();
 onMounted(() => { if (typeof window !== 'undefined' && window.location.hash === '#updates') openEarly(); });

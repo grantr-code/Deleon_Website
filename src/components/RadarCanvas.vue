@@ -12,6 +12,10 @@ onMounted(() => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
+
+  // Read accent color from CSS variable (brand green)
+  const accentRgb = '76,201,91'; // Brand green RGB
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0, height = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   let raf = 0;
@@ -43,14 +47,14 @@ onMounted(() => {
     ctx.translate(cx, cy);
     // rings
     for (let i = 1; i <= 6; i++) {
-      ctx.strokeStyle = 'rgba(76,201,91,0.10)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.10)`;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(0, 0, (R / 6) * i, 0, Math.PI * 2);
       ctx.stroke();
     }
     // crosshairs
-    ctx.strokeStyle = 'rgba(76,201,91,0.08)';
+    ctx.strokeStyle = `rgba(${accentRgb},0.08)`;
     ctx.beginPath();
     ctx.moveTo(-R, 0); ctx.lineTo(R, 0);
     ctx.moveTo(0, -R); ctx.lineTo(0, R);
@@ -70,13 +74,13 @@ onMounted(() => {
 
     // subtle background grid
     for (let i = 1; i <= 7; i++) {
-      ctx.strokeStyle = 'rgba(76,201,91,0.08)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.08)`;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(0, 0, (R / 7) * i, 0, Math.PI * 2);
       ctx.stroke();
     }
-    ctx.strokeStyle = 'rgba(76,201,91,0.06)';
+    ctx.strokeStyle = `rgba(${accentRgb},0.06)`;
     ctx.beginPath();
     ctx.moveTo(-R, 0); ctx.lineTo(R, 0);
     ctx.moveTo(0, -R); ctx.lineTo(0, R);
@@ -86,8 +90,8 @@ onMounted(() => {
     const sweep = (t * 0.8) % (Math.PI * 2);
     const sweepWidth = Math.PI / 10;
     const grad = ctx.createRadialGradient(0, 0, R * 0.05, 0, 0, R);
-    grad.addColorStop(0, 'rgba(76,201,91,0.20)');
-    grad.addColorStop(1, 'rgba(76,201,91,0.00)');
+    grad.addColorStop(0, `rgba(${accentRgb},0.20)`);
+    grad.addColorStop(1, `rgba(${accentRgb},0.00)`);
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.moveTo(0, 0);
@@ -105,7 +109,7 @@ onMounted(() => {
       const near = diff < sweepWidth * 1.4;
 
       // base point
-      ctx.fillStyle = 'rgba(76,201,91,0.18)';
+      ctx.fillStyle = `rgba(${accentRgb},0.18)`;
       ctx.beginPath();
       ctx.arc(px, py, 2.2, 0, Math.PI * 2);
       ctx.fill();
@@ -118,8 +122,8 @@ onMounted(() => {
       }
       if (d.r > 0.5) {
         const g = ctx.createRadialGradient(px, py, 0, px, py, d.r);
-        g.addColorStop(0, 'rgba(76,201,91,0.55)');
-        g.addColorStop(1, 'rgba(76,201,91,0.00)');
+        g.addColorStop(0, `rgba(${accentRgb},0.55)`);
+        g.addColorStop(1, `rgba(${accentRgb},0.00)`);
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(px, py, d.r, 0, Math.PI * 2);
@@ -132,14 +136,14 @@ onMounted(() => {
     const cueA = t * 0.5;
     const cx2 = Math.cos(cueA) * cueR;
     const cy2 = Math.sin(cueA) * cueR;
-    ctx.strokeStyle = 'rgba(76,201,91,0.25)';
+    ctx.strokeStyle = `rgba(${accentRgb},0.25)`;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(0, 0, cueR, 0, Math.PI * 2);
     ctx.stroke();
     const glow = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, 12);
-    glow.addColorStop(0, 'rgba(76,201,91,0.65)');
-    glow.addColorStop(1, 'rgba(76,201,91,0.00)');
+    glow.addColorStop(0, `rgba(${accentRgb},0.65)`);
+    glow.addColorStop(1, `rgba(${accentRgb},0.00)`);
     ctx.fillStyle = glow;
     ctx.beginPath();
     ctx.arc(cx2, cy2, 12, 0, Math.PI * 2);

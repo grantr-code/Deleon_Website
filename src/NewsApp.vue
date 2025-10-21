@@ -1,74 +1,60 @@
 <template>
-  <div class="aspect-guard with-rails">
-    <SiteHeader :data="data.header" compact subpage />
-    <main id="main-content" tabindex="-1" class="relative bg-brand-dark text-brand-text">
-      <section class="relative w-full">
-        <div class="mx-auto max-w-none px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 md:py-14">
-          <!-- Meta/top -->
-          <div class="flex items-center justify-between gap-6 border-b border-white/10 pb-4">
-            <div class="flex items-center gap-6 text-[11px] uppercase tracking-[0.18em] text-brand-muted">
-              <span>News</span>
-            </div>
-            <a href="/" class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/20 text-white/80 hover:text-brand-green hover:border-brand-green/60 transition-colors" aria-label="Back to home">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6l-6 6 6 6"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16"/>
-              </svg>
-            </a>
+  <BasePageLayout compact subpage>
+    <section class="relative w-full">
+      <div class="mx-auto max-w-none px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 md:py-14">
+        <!-- Meta/top -->
+        <div class="flex items-center justify-between gap-6 border-b border-border pb-4">
+          <div class="flex items-center gap-6 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span>News</span>
           </div>
+          <IconButton href="/" aria-label="Back to home" size="sm">
+            <IconBackArrow />
+          </IconButton>
+        </div>
 
           <!-- Title -->
-          <h1 class="mt-6 text-white text-[clamp(28px,3.0vw,38px)] leading-[1.15] tracking-[-0.01em]">Latest Updates</h1>
+          <h1 class="mt-6 text-foreground text-[clamp(28px,3.0vw,38px)] leading-[1.15] tracking-[-0.01em]">Latest Updates</h1>
 
           <!-- Grid of articles -->
           <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
             <article v-for="post in pagedPosts" :key="post.slug" class="group">
-              <div class="flex items-center justify-between border-b border-white/10 pb-3">
-                <div class="flex items-center gap-6 text-[11px] uppercase tracking-[0.18em] text-brand-muted">
+              <div class="flex items-center justify-between border-b border-border pb-3">
+                <div class="flex items-center gap-6 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                   <span>{{ post.dateDisplay }}</span>
                   <span>{{ post.tag }}</span>
                 </div>
-                <a :href="post.href" class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/20 text-white/80 hover:text-brand-green hover:border-brand-green/60 transition-colors" aria-label="Open article">+</a>
+                <a :href="post.href" class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-border text-foreground/80 hover:text-accent hover:border-accent/60 transition-colors" aria-label="Open article">+</a>
               </div>
-              <h3 class="mt-4 text-white text-[clamp(18px,1.6vw,24px)] leading-[1.15]">{{ post.shortTitle }}</h3>
+              <h3 class="mt-4 text-foreground text-[clamp(18px,1.6vw,24px)] leading-[1.15]">{{ post.shortTitle }}</h3>
               <a :href="post.href" class="block mt-5">
-                <div class="relative overflow-hidden bg-brand-card border border-white/10 shadow-[0_20px_60px_-18px_rgba(0,0,0,0.6)]">
-                  <div class="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-brand-green"></div>
-                  <div class="relative pt-[56%]">
-                    <img :src="post.image" :alt="post.shortTitle" class="absolute inset-0 h-full w-full object-cover opacity-95 group-hover:opacity-100 transition-opacity" loading="lazy" decoding="async" />
-                    <div v-if="post.source" class="absolute bottom-2 right-3 text-[11px] uppercase tracking-[0.18em] text-brand-muted">{{ post.source }}</div>
+                <MediaCard :src="post.image" :alt="post.shortTitle">
+                  <div v-if="post.source" class="absolute bottom-2 right-3 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                    {{ post.source }}
                   </div>
-                </div>
+                </MediaCard>
               </a>
-              <div class="mt-3 text-xs text-brand-muted">{{ post.author }}</div>
+              <div class="mt-3 text-xs text-muted-foreground">{{ post.author }}</div>
             </article>
           </div>
 
-          <!-- Pagination controls -->
-          <div class="mt-10 flex items-center justify-between">
-            <button @click="prevPage" :disabled="page === 1" class="px-3 py-2 rounded-md border border-white/20 text-white/80 hover:text-white hover:border-white/30 disabled:opacity-40 disabled:cursor-not-allowed">Previous</button>
-            <div class="text-sm text-brand-muted">Page {{ page }} of {{ totalPages }}</div>
-            <button @click="nextPage" :disabled="page >= totalPages" class="px-3 py-2 rounded-md border border-white/20 text-white/80 hover:text-white hover:border-white/30 disabled:opacity-40 disabled:cursor-not-allowed">Next</button>
-          </div>
+        <!-- Pagination controls -->
+        <div class="mt-10 flex items-center justify-between">
+          <button @click="prevPage" :disabled="page === 1" class="px-3 py-2 rounded-md border border-border text-foreground/80 hover:text-foreground hover:border-border disabled:opacity-40 disabled:cursor-not-allowed">Previous</button>
+          <div class="text-sm text-muted-foreground">Page {{ page }} of {{ totalPages }}</div>
+          <button @click="nextPage" :disabled="page >= totalPages" class="px-3 py-2 rounded-md border border-border text-foreground/80 hover:text-foreground hover:border-border disabled:opacity-40 disabled:cursor-not-allowed">Next</button>
         </div>
-      </section>
-    </main>
-    <SiteFooter :data="data.footer" />
-  </div>
-  <!-- Global Early Access Drawer -->
-  <EarlyAccessDrawer />
-  
+      </div>
+    </section>
+  </BasePageLayout>
 </template>
 
 <script setup>
-import { computed, ref, watchEffect, provide, watch, onMounted } from 'vue';
-import { siteData as data } from './content/siteData';
-import SiteHeader from './components/SiteHeader.vue';
-import SiteFooter from './components/SiteFooter.vue';
+import { computed, ref, watchEffect } from 'vue';
+import BasePageLayout from './components/BasePageLayout.vue';
+import IconButton from './components/IconButton.vue';
+import IconBackArrow from './components/icons/IconBackArrow.vue';
+import MediaCard from './components/MediaCard.vue';
 import { getAllArticles } from './lib/articles';
-import { useSiteTheme } from './composables/useSiteTheme';
-import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
-import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 
 const all = getAllArticles();
 
@@ -99,12 +85,6 @@ const pagedPosts = computed(() => {
 
 function nextPage() { if (page.value < totalPages.value) page.value += 1; }
 function prevPage() { if (page.value > 1) page.value -= 1; }
-
-const initialTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('site-theme')) || 'light';
-const headerTheme = ref(initialTheme === 'light' ? 'light' : 'dark');
-provide('headerTheme', headerTheme);
-const { theme: siteTheme } = useSiteTheme();
-watch(siteTheme, (val) => { headerTheme.value = val === 'light' ? 'light' : 'dark'; }, { immediate: true });
 
 // Support deep link to #updates
 const { open: openEarly } = useEarlyAccessPanel();

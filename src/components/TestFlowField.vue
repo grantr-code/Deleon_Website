@@ -13,6 +13,9 @@ onMounted(() => {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  // Read accent color from CSS variable (brand green)
+  const accentRgb = '76,201,91'; // Brand green RGB
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0, height = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   let raf = 0;
@@ -54,7 +57,7 @@ onMounted(() => {
     for (const s of seeds) {
       let x = s.x * width;
       let y = s.y * height;
-      ctx.strokeStyle = 'rgba(76,201,91,0.15)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.15)`;
       ctx.beginPath();
       ctx.moveTo(x, y);
       for (let i = 0; i < len; i++) {
@@ -78,7 +81,7 @@ onMounted(() => {
     for (const s of seeds) {
       let x = s.x * width;
       let y = s.y * height;
-      ctx.strokeStyle = 'rgba(76,201,91,0.20)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.20)`;
       ctx.lineWidth = 1.0;
       ctx.beginPath();
       ctx.moveTo(x, y);

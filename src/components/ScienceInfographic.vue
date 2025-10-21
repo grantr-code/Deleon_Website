@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-[1280px] mx-auto px-4">
-    <div class="relative rounded-xl border border-white/10 bg-white/5 p-3 md:p-4">
+    <div class="relative rounded-xl border border-border bg-card/40 p-3 md:p-4">
       <canvas ref="canvas" class="w-full h-[460px] sm:h-[520px] md:h-[560px] block" role="img" aria-label="Capillary electrophoresis with chart and neural network"></canvas>
     </div>
   </div>
@@ -20,7 +20,8 @@ function gaussian(x, mu, sigma) { const d = (x - mu) / sigma; return Math.exp(-0
 
 function isLightTheme() {
   try {
-    return typeof document !== 'undefined' && document.documentElement.classList.contains('theme-light');
+    // Theme system uses 'dark' class - light mode is when dark class is absent
+    return typeof document !== 'undefined' && !document.documentElement.classList.contains('dark');
   } catch { return false; }
 }
 

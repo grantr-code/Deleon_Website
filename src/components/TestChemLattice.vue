@@ -13,6 +13,9 @@ onMounted(() => {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  // Read accent color from CSS variable (brand green)
+  const accentRgb = '76,201,91'; // Brand green RGB
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0, height = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   let raf = 0;
@@ -69,15 +72,15 @@ onMounted(() => {
       const p = points[i];
       // nodes
       const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 8);
-      g.addColorStop(0, 'rgba(76,201,91,0.35)');
-      g.addColorStop(1, 'rgba(76,201,91,0.00)');
+      g.addColorStop(0, `rgba(${accentRgb},0.35)`);
+      g.addColorStop(1, `rgba(${accentRgb},0.00)`);
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
       ctx.fill();
       // bonds (subset)
       const nbrs = neighbors(i);
-      ctx.strokeStyle = 'rgba(76,201,91,0.12)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.12)`;
       ctx.lineWidth = 1;
       for (const j of nbrs) {
         const q = points[j];
@@ -104,7 +107,7 @@ onMounted(() => {
         const dist = Math.hypot(dx, dy);
         const phase = Math.sin(t + (p.x + p.y + dist) * 0.01) * 0.5 + 0.5; // traveling pulse
         const a = 0.08 + 0.28 * phase;
-        ctx.strokeStyle = `rgba(76,201,91,${a})`;
+        ctx.strokeStyle = `rgba(${accentRgb},${a})`;
         ctx.lineWidth = 1.1;
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
@@ -114,8 +117,8 @@ onMounted(() => {
       const pul = (Math.sin(t * 1.6 + (p.x + p.y) * 0.02) * 0.5 + 0.5);
       const r = 5 + 10 * pul;
       const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-      g.addColorStop(0, `rgba(76,201,91,${0.55 * (0.6 + 0.4 * pul)})`);
-      g.addColorStop(1, 'rgba(76,201,91,0.00)');
+      g.addColorStop(0, `rgba(${accentRgb},${0.55 * (0.6 + 0.4 * pul)})`);
+      g.addColorStop(1, `rgba(${accentRgb},0.00)`);
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r, 0, Math.PI * 2);

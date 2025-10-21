@@ -2,38 +2,38 @@
   <div v-if="isOpen" class="fixed inset-0 z-[100]">
     <!-- Backdrop -->
     <Transition name="fade">
-      <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" @click="close" aria-hidden="true"></div>
+      <div class="absolute inset-0 bg-black/55 dark:bg-black/55 backdrop-blur-sm" @click="close" aria-hidden="true"></div>
     </Transition>
 
     <!-- Panel -->
     <Transition name="ea-slide">
       <div
-        class="absolute right-0 top-0 h-full w-full sm:w-[520px] bg-transparent text-brand-text shadow-xl"
+        class="absolute right-0 top-0 h-full w-full sm:w-[520px] bg-transparent text-foreground shadow-xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="ea-title"
       >
         <!-- Background animation layer -->
         <div class="absolute inset-0">
-          <div class="absolute inset-0 bg-brand-dark/90"></div>
+          <div class="absolute inset-0 bg-background/90"></div>
           <div class="absolute inset-0">
             <TestFlowField />
           </div>
-          <div class="absolute inset-0 bg-black/35"></div>
+          <div class="absolute inset-0 bg-white/35 dark:bg-black/35"></div>
         </div>
 
         <!-- Foreground content -->
-        <div class="relative h-full flex flex-col border-l border-white/10">
-          <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-black/20">
+        <div class="relative h-full flex flex-col border-l border-border">
+          <div class="flex items-center justify-between px-5 py-4 border-b border-border bg-muted/20">
             <h2 id="ea-title" class="text-lg font-semibold">Contact Deleon</h2>
-            <button type="button" class="p-2 rounded-md hover:bg-white/10" @click="close" aria-label="Close panel">
+            <button type="button" class="p-2 rounded-md hover:bg-muted/20" @click="close" aria-label="Close panel">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
                 <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06z" clip-rule="evenodd" />
               </svg>
             </button>
           </div>
           <div class="px-5 py-6 overflow-y-auto grow">
-            <p class="text-sm text-white/80 mb-4">Tell us a bit about you. We’ll follow up soon.</p>
+            <p class="text-sm text-foreground/80 mb-4">Tell us a bit about you. We’ll follow up soon.</p>
             <ContactForm />
           </div>
         </div>

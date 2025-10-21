@@ -1,8 +1,65 @@
-@import './theme.css';
+/* =============================================================================
+   Design Token System - Semantic Color Variables
+   Based on Shadcn/UI naming conventions
+   Light mode (default) and Dark mode (.dark class on html element)
+   ============================================================================= */
 
 /* Global site font (default = IBM Plex Sans) */
 :root {
   --font-site: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* ===== LIGHT MODE (DEFAULT) ===== */
+  /* Primary surfaces */
+  --background: 0 0% 97%;           /* #f7f8fa - Main page background */
+  --foreground: 220 13% 5%;         /* #0b0b0f - Primary text */
+
+  /* Elevated surfaces (cards, panels) */
+  --card: 220 9% 95%;               /* #f3f4f6 - Card backgrounds */
+  --card-foreground: 220 13% 5%;    /* #0b0b0f - Text on cards */
+
+  /* Secondary/muted elements */
+  --muted: 220 13% 91%;             /* #e5e7eb - Muted backgrounds */
+  --muted-foreground: 215 16% 47%;  /* #627182 - Muted text */
+
+  /* Brand accent (preserved across themes) */
+  --accent: 127 55% 56%;            /* #4CC95B - Brand green */
+  --accent-foreground: 0 0% 100%;   /* White text on accent */
+
+  /* Borders */
+  --border: 220 13% 85%;            /* #d1d5db - Standard borders */
+  --border-subtle: 220 13% 91%;     /* #e5e7eb - Subtle borders (5% opacity equivalent) */
+
+  /* Named opacity levels for consistent use */
+  --opacity-subtle: 0.05;           /* 5% */
+  --opacity-soft: 0.10;             /* 10% */
+  --opacity-medium: 0.20;           /* 20% */
+  --opacity-strong: 0.40;           /* 40% */
+  --opacity-emphasis: 0.60;         /* 60% */
+}
+
+/* Dark mode overrides */
+.dark {
+  /* Primary surfaces */
+  --background: 0 0% 4%;            /* #0b0b0b - Main page background */
+  --foreground: 0 0% 91%;           /* #e8e8e8 - Primary text */
+
+  /* Elevated surfaces (cards, panels) */
+  --card: 0 0% 8%;                  /* #141414 - Card backgrounds */
+  --card-foreground: 0 0% 91%;      /* #e8e8e8 - Text on cards */
+
+  /* Secondary/muted elements */
+  --muted: 0 0% 12%;                /* #1f1f1f - Muted backgrounds */
+  --muted-foreground: 0 0% 72%;     /* #b8b8b8 - Muted text */
+
+  /* Brand accent (same as light mode) */
+  --accent: 127 55% 56%;            /* #4CC95B - Brand green */
+  --accent-foreground: 0 0% 100%;   /* White text on accent */
+
+  /* Borders */
+  --border: 0 0% 20%;               /* #333333 - Standard borders */
+  --border-subtle: 0 0% 15%;        /* #262626 - Subtle borders */
+
+  /* Opacity levels remain the same */
 }
 
 /* Ensure body uses the global declaration */
@@ -34,6 +91,29 @@ body {
   body { @apply font-brand; }
 }
 
+/* Reusable component-level utilities */
+@layer components {
+  /* Section container with responsive padding (used across 14+ files) */
+  .section-container {
+    @apply max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24;
+  }
+
+  /* Content container with max width (used in grid layouts) */
+  .content-container {
+    @apply max-w-[1280px] mx-auto px-4;
+  }
+
+  /* Standard video/image card shadow (dark mode only, used 7+ times) */
+  .card-shadow-deep {
+    @apply dark:shadow-[0_20px_60px_-18px_rgba(0,0,0,0.6)];
+  }
+
+  /* Accent gradient bar (left edge of media cards, used 5+ times) */
+  .accent-bar-left {
+    @apply absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-accent;
+  }
+}
+
 /* Utility: constrain overall site width by max aspect ratio 16:10 */
 @layer utilities {
   /* Center a container whose width never exceeds 1.6 × viewport height */
@@ -57,5 +137,3 @@ body {
   .with-rails::before { left: 0; }
   .with-rails::after { right: 0; }
 }
-
-/* Light Mode BETA import moved to top to satisfy PostCSS */

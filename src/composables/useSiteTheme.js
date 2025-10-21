@@ -8,8 +8,9 @@ const themeRef = ref(
 function applyTheme(val) {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
-  if (val === 'light') root.classList.add('theme-light');
-  else root.classList.remove('theme-light');
+  // Apply Tailwind's dark mode class strategy
+  if (val === 'dark') root.classList.add('dark');
+  else root.classList.remove('dark');
 }
 
 // Apply current theme immediately

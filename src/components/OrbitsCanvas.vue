@@ -12,6 +12,10 @@ onMounted(() => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
+
+  // Read accent color from CSS variable (brand green)
+  const accentRgb = '76,201,91'; // Brand green RGB
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0, height = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   let raf = 0;
@@ -43,7 +47,7 @@ onMounted(() => {
     ctx.translate(cx, cy);
     for (const r of rings) {
       const R = r.baseR + r.wobble;
-      ctx.strokeStyle = 'rgba(76,201,91,0.16)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.16)`;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.arc(0, 0, R, 0, Math.PI * 2);
@@ -66,7 +70,7 @@ onMounted(() => {
       const R = r.baseR + Math.sin(t * 0.8 + r.phase) * r.wobble;
 
       // faint full ring
-      ctx.strokeStyle = 'rgba(76,201,91,0.08)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.08)`;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(0, 0, R, 0, Math.PI * 2);
@@ -75,7 +79,7 @@ onMounted(() => {
       // moving bright arc
       const start = (t * r.speed + r.phase) % (Math.PI * 2);
       const len = Math.PI * r.gap;
-      ctx.strokeStyle = 'rgba(76,201,91,0.45)';
+      ctx.strokeStyle = `rgba(${accentRgb},0.45)`;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.arc(0, 0, R, start, start + len);
@@ -86,15 +90,15 @@ onMounted(() => {
       const x = Math.cos(angle) * R;
       const y = Math.sin(angle) * R;
       const grd = ctx.createRadialGradient(x, y, 0, x, y, 10);
-      grd.addColorStop(0, 'rgba(76,201,91,0.65)');
-      grd.addColorStop(1, 'rgba(76,201,91,0.00)');
+      grd.addColorStop(0, `rgba(${accentRgb},0.65)`);
+      grd.addColorStop(1, `rgba(${accentRgb},0.00)`);
       ctx.fillStyle = grd;
       ctx.beginPath();
       ctx.arc(x, y, 10, 0, Math.PI * 2);
       ctx.fill();
     }
     // crosshair lines (very subtle)
-    ctx.strokeStyle = 'rgba(76,201,91,0.08)';
+    ctx.strokeStyle = `rgba(${accentRgb},0.08)`;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(-cx, 0); ctx.lineTo(cx, 0);

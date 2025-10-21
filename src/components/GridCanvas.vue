@@ -12,6 +12,12 @@ onMounted(() => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
+
+  // Read accent color from CSS variable
+  const accentHsl = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  // Convert HSL to RGB for canvas (accent is "127 55% 56%" which is #4CC95B)
+  const accentRgb = '76,201,91'; // Brand green RGB
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0, height = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   let raf = 0;
@@ -49,7 +55,7 @@ onMounted(() => {
     ctx.globalCompositeOperation = 'lighter';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(76,201,91,0.3)';
+    ctx.shadowColor = `rgba(${accentRgb},0.3)`;
     ctx.shadowBlur = 6;
 
     const t = time * 0.001;
@@ -77,7 +83,7 @@ onMounted(() => {
         let a = 1 - Math.min(1, Math.abs(s) / thresh);
         a = Math.pow(Math.max(0, a), 1.4);
         if (prev && a > 0.02) {
-          ctx.strokeStyle = `rgba(76,201,91,${0.4 * a})`;
+          ctx.strokeStyle = `rgba(${accentRgb},${0.4 * a})`;
           ctx.lineWidth = 1.2;
           ctx.beginPath();
           ctx.moveTo(prev.x, prev.y);
@@ -98,7 +104,7 @@ onMounted(() => {
         let a = 1 - Math.min(1, Math.abs(s) / thresh);
         a = Math.pow(Math.max(0, a), 1.4);
         if (prev && a > 0.02) {
-          ctx.strokeStyle = `rgba(76,201,91,${0.35 * a})`;
+          ctx.strokeStyle = `rgba(${accentRgb},${0.35 * a})`;
           ctx.lineWidth = 1.0;
           ctx.beginPath();
           ctx.moveTo(prev.x, prev.y);

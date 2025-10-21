@@ -13,6 +13,9 @@ onMounted(() => {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  // Read accent color from CSS variable (brand green)
+  const accentRgb = '76,201,91'; // Brand green RGB
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0, height = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   let raf = 0;
@@ -48,8 +51,8 @@ onMounted(() => {
     ctx.clearRect(0, 0, width, height);
     for (const d of dots) {
       const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r);
-      g.addColorStop(0, 'rgba(76,201,91,0.25)');
-      g.addColorStop(1, 'rgba(76,201,91,0.00)');
+      g.addColorStop(0, `rgba(${accentRgb},0.25)`);
+      g.addColorStop(1, `rgba(${accentRgb},0.00)`);
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
@@ -77,8 +80,8 @@ onMounted(() => {
       if (d.y < -20) d.y = height + 20; if (d.y > height + 20) d.y = -20;
 
       const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r);
-      g.addColorStop(0, 'rgba(76,201,91,0.50)');
-      g.addColorStop(1, 'rgba(76,201,91,0.00)');
+      g.addColorStop(0, `rgba(${accentRgb},0.50)`);
+      g.addColorStop(1, `rgba(${accentRgb},0.00)`);
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
@@ -94,7 +97,7 @@ onMounted(() => {
         const dist = Math.hypot(dx, dy);
         if (dist < 140) {
           const alpha = 0.12 * (1 - dist / 140);
-          ctx.strokeStyle = `rgba(76,201,91,${alpha})`;
+          ctx.strokeStyle = `rgba(${accentRgb},${alpha})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);

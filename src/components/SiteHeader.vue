@@ -1,7 +1,7 @@
 <template>
   <header
     id="site-header"
-    :class="[(isLightHeader ? 'text-black' : 'text-white'), (overlap ? 'absolute inset-x-0 top-0 z-40 pt-8' : 'relative z-40 pt-8'), overlap ? 'pb-0' : (compact ? 'pb-6 lg:pb-16' : 'pb-12 lg:pb-52')]"
+    :class="['text-foreground', (overlap ? 'absolute inset-x-0 top-0 z-40 pt-8' : 'relative z-40 pt-8'), overlap ? 'pb-0' : (compact ? 'pb-6 lg:pb-16' : 'pb-12 lg:pb-52')]"
   >
     <div :class="subpage ? 'max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24' : 'max-w-[1280px] mx-auto px-4'">
       <!-- Subpage variant: left-aligned brand + chip-style nav in same row -->
@@ -36,12 +36,8 @@
                     :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
                     title="Toggle theme"
                   >
-                    <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                      <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
-                    </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                      <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
-                    </svg>
+                    <IconSun v-if="isLight" />
+                    <IconMoon v-else />
                   </button>
                 </li>
               </ul>
@@ -53,29 +49,21 @@
               :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
               title="Toggle theme"
             >
-              <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
-              </svg>
+              <IconSun v-if="isLight" />
+              <IconMoon v-else />
             </button>
             <!-- Mobile menu toggle -->
             <button
               type="button"
-              :class="[(isLightHeader ? 'p-2.5 rounded-full border border-black/20 hover:bg-black/5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white' : 'p-2.5 rounded-full border border-white/20 hover:bg-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
+              :class="['p-2.5 rounded-full border border-border hover:bg-muted transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2', isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
               :aria-expanded="isOpen ? 'true' : 'false'"
               aria-controls="primary-nav"
               aria-label="Toggle navigation"
               @click="isOpen = !isOpen"
             >
               <span class="sr-only">Toggle navigation</span>
-              <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <IconHamburger v-if="!isOpen" />
+              <IconClose v-else />
             </button>
           </div>
         </div>
@@ -134,12 +122,8 @@
                     :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
                     title="Toggle theme"
                   >
-                    <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                      <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
-                    </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                      <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
-                    </svg>
+                    <IconSun v-if="isLight" />
+                    <IconMoon v-else />
                   </button>
                 </li>
               </ul>
@@ -151,29 +135,21 @@
               :aria-label="isLight ? 'Switch to dark mode' : 'Switch to light mode'"
               title="Toggle theme"
             >
-              <svg v-if="isLight" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"/><path d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm0 17.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM3 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm15.75 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75ZM5.47 5.47a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.47 6.53a.75.75 0 0 1 0-1.06Zm10.94 10.94a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.47 18.53a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1 1.06 1.06L7.59 19.59a.75.75 0 0 1-1.06-1.06Zm10.94-10.94a.75.75 0 0 1 1.06 0l1.06-1.06a.75.75 0 1 1-1.06-1.06l-1.06 1.06a.75.75 0 0 1 0 1.06Z"/>
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
-                <path d="M21.752 15.002A9.718 9.718 0 0 1 12 21.75 9.75 9.75 0 0 1 9.442 2.374a.75.75 0 0 1 .942.935 8.25 8.25 0 0 0 10.337 10.337.75.75 0 0 1 1.03.356Z"/>
-              </svg>
+              <IconSun v-if="isLight" />
+              <IconMoon v-else />
             </button>
             <!-- Mobile menu toggle -->
             <button
               type="button"
-              :class="[(isLightHeader ? 'p-2.5 rounded-full border border-black/20 hover:bg-black/5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white lg:hidden' : 'p-2.5 rounded-full border border-white/20 hover:bg-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:hidden'), isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
+              :class="['p-2.5 rounded-full border border-border hover:bg-muted transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 lg:hidden', isLg ? (shouldCollapse ? 'block' : 'hidden') : 'block']"
               :aria-expanded="isOpen ? 'true' : 'false'"
               aria-controls="primary-nav"
               aria-label="Toggle navigation"
               @click="isOpen = !isOpen"
             >
               <span class="sr-only">Toggle navigation</span>
-              <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <IconHamburger v-if="!isOpen" />
+              <IconClose v-else />
             </button>
           </div>
         </div>
@@ -204,9 +180,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick, computed, inject } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick, computed } from 'vue';
 import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
 import { useSiteTheme } from '../composables/useSiteTheme';
+import IconSun from './icons/IconSun.vue';
+import IconMoon from './icons/IconMoon.vue';
+import IconHamburger from './icons/IconHamburger.vue';
+import IconClose from './icons/IconClose.vue';
 
 const props = defineProps({
   data: { type: Object, required: true },
@@ -215,18 +195,18 @@ const props = defineProps({
   subpage: { type: Boolean, default: false },
 });
 
-// Theme injection for header colors/logo
-const injectedTheme = inject('headerTheme', ref('dark'));
-const isLightHeader = computed(() => injectedTheme?.value === 'light');
+// Theme toggle support (moved up for use in logo/classes)
+const { theme: siteTheme, toggleTheme } = useSiteTheme();
+const isLight = computed(() => siteTheme.value === 'light');
 
-// NOTE: file naming: "Deleon_Logo_light.svg" is the WHITE logo for DARK headers.
+// NOTE: file naming: "Deleon_Logo_light.svg" is the WHITE logo for DARK mode.
 // In Light mode we use the normal (black) SVG.
 const themedLogoSrc = computed(() =>
-  isLightHeader.value ? '/BrandAssets/Deleon_Logo.svg' : props.data.logoSrc
+  isLight.value ? '/BrandAssets/Deleon_Logo.svg' : props.data.logoSrc
 );
-const chipClass = computed(() => isLightHeader.value
-  ? 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-black hover:bg-brand-green/15 hover:border-brand-green/60'
-  : 'px-3 py-1.5 rounded-md text-xs border transition bg-brand-green/10 border-brand-green/40 text-white hover:bg-brand-green/15 hover:border-brand-green/60');
+
+// Simplified chip class using semantic tokens
+const chipClass = 'px-3 py-1.5 rounded-md text-xs border transition bg-accent/10 border-accent/40 text-foreground hover:bg-accent/15 hover:border-accent/60';
 
 const isOpen = ref(false);
 const { open: openEarlyAccess } = useEarlyAccessPanel();
@@ -244,20 +224,12 @@ function handleNavClick(item, fromMobile = false) {
   if (typeof window !== 'undefined') window.location.href = href;
 }
 
-// Mobile dropdown styling
-const mobilePanelClass = computed(() => isLightHeader.value
-  ? 'w-full rounded-lg border border-black/10 bg-black/5 backdrop-blur-sm p-2 shadow-sm'
-  : 'w-full rounded-lg border border-white/10 bg-white/8 backdrop-blur-sm p-2 shadow-sm');
-const mobileLinkClass = computed(() => isLightHeader.value
-  ? 'block w-full text-base px-3 py-2 rounded-md text-black hover:bg-black/10 transition'
-  : 'block w-full text-base px-3 py-2 rounded-md text-white hover:bg-white/10 transition');
+// Mobile dropdown styling using semantic tokens
+const mobilePanelClass = 'w-full rounded-lg border border-border backdrop-blur-sm p-2 shadow-sm bg-muted/50';
+const mobileLinkClass = 'block w-full text-base px-3 py-2 rounded-md text-foreground hover:bg-muted transition';
 
-// Theme toggle support (sun/moon button)
-const { theme: siteTheme, toggleTheme } = useSiteTheme();
-const isLight = computed(() => siteTheme.value === 'light');
-const themeBtnClass = computed(() => isLightHeader.value
-  ? 'inline-flex items-center justify-center h-8 w-8 md:h-9 md:w-9 rounded-full border bg-brand-green/10 border-brand-green/40 text-black hover:bg-brand-green/15 hover:border-brand-green/60 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white'
-  : 'inline-flex items-center justify-center h-8 w-8 md:h-9 md:w-9 rounded-full border bg-white/10 border-white/20 text-white hover:bg-white/15 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black');
+// Theme toggle button styling
+const themeBtnClass = 'inline-flex items-center justify-center h-8 w-8 md:h-9 md:w-9 rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 bg-muted border-border text-foreground hover:bg-muted/80';
 
 // Auto-collapse chips into hamburger when they overflow available width (on lg+)
 const chipsUl = ref(null);
@@ -387,10 +359,15 @@ onBeforeUnmount(() => {
     top: 0;
     /* Extend well past the last item so background fully covers */
     bottom: -22px;
-    background: rgba(255, 255, 255, 0.06);
+    background: hsl(var(--muted) / 0.15);
     border-radius: 8px;
     pointer-events: none;
     z-index: -1;
+  }
+
+  /* Dark mode variant */
+  :global(.dark) .grid #primary-nav::before {
+    background: hsl(var(--muted) / 0.06);
   }
 }
 </style>

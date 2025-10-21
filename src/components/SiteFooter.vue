@@ -1,5 +1,5 @@
 <template>
-  <footer id="site-footer" class="relative z-10 bg-brand-dark text-brand-text mt-12 lg:mt-24">
+  <footer id="site-footer" class="relative z-10 bg-background text-foreground mt-12 lg:mt-24">
     <div class="max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24">
       <!-- Removed top hairline above CTAs per request -->
       <!-- Top CTAs -->
@@ -9,7 +9,7 @@
           :key="idx"
           :href="cta.href"
           class="group rounded-xl p-8 md:p-10 flex items-center justify-between border transition-colors"
-          :class="cta.theme === 'dark' ? 'bg-black text-white border-neutral-800 hover:bg-neutral-950' : 'bg-brand-card text-white border-neutral-800 hover:bg-[rgb(28,28,28)]'"
+          :class="cta.theme === 'dark' ? 'bg-card text-foreground border-border hover:bg-muted/20' : 'bg-muted/10 text-foreground border-border hover:bg-muted/20'"
           @click.prevent="handleCtaClick(cta)"
         >
           <span class="text-2xl md:text-4xl font-medium tracking-tight">{{ cta.label }}</span>
@@ -17,7 +17,7 @@
         </a>
       </div>
 
-      <hr class="my-10 border-neutral-800" />
+      <hr class="my-10 border-border" />
 
       <!-- Lower grid -->
       <!-- Stack on small screens; split 3/9 on large -->
@@ -25,13 +25,13 @@
         <!-- Left column: meta + locale + social -->
         <div class="lg:col-span-3">
           <div class="w-full">
-            <p class="text-sm text-brand-muted">{{ data.copyright }}</p>
-            <hr class="my-6 border-neutral-800" />
+            <p class="text-sm text-muted-foreground">{{ data.copyright }}</p>
+            <hr class="my-6 border-border" />
 
             <div class="flex flex-wrap gap-3 text-sm">
-              <span v-for="(r, i) in data.regions" :key="i" class="tracking-wide text-brand-muted">{{ r }}</span>
+              <span v-for="(r, i) in data.regions" :key="i" class="tracking-wide text-muted-foreground">{{ r }}</span>
             </div>
-            <hr class="my-6 border-neutral-800" />
+            <hr class="my-6 border-border" />
             <!-- Keep the divider above and below regions; remove only the one below social -->
             <div class="flex flex-col gap-3">
               <a
@@ -40,7 +40,7 @@
                 :href="s.href"
                 target="_blank"
                 rel="noopener"
-                class="inline-flex items-center justify-center rounded-full border border-neutral-700 px-4 py-2 text-[11px] uppercase tracking-wide text-brand-text hover:bg-black/40"
+                class="inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-[11px] uppercase tracking-wide text-foreground hover:bg-muted"
               >
                 {{ s.label }}
               </a>
@@ -52,33 +52,33 @@
         <div class="lg:col-span-9 min-w-0">
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             <div v-for="col in filteredColumns" :key="col.title">
-              <div class="text-[11px] uppercase tracking-wider text-brand-muted font-semibold mb-2 sm:mb-3">{{ col.title }}</div>
+              <div class="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold mb-2 sm:mb-3">{{ col.title }}</div>
               <ul class="space-y-2 sm:space-y-3">
                 <li v-for="item in col.links" :key="item.label">
-                  <a :href="item.href" class="break-words text-sm text-brand-text/80 hover:text-brand-text">{{ item.label }}</a>
+                  <a :href="item.href" class="break-words text-sm text-muted-foreground hover:text-foreground">{{ item.label }}</a>
                 </li>
               </ul>
             </div>
           </div>
 
           <!-- Partnerships / Disclaimer: placed inside right column to sit directly under site map -->
-          <div class="mt-3 sm:mt-4 border-t border-neutral-800 pt-4">
+          <div class="mt-3 sm:mt-4 border-t border-border pt-4">
             <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
               <a href="https://www.pravida.com/" target="_blank" rel="noopener" class="inline-flex">
                 <img
                   src="/Pravida.png"
                   alt="Pravida logo"
-                  class="h-8 sm:h-10 w-auto object-contain opacity-95 hover:opacity-100 transition-opacity"
+                  :class="['h-8 sm:h-10 w-auto object-contain opacity-95 hover:opacity-100 transition-opacity', isLight ? 'invert' : '']"
                   loading="lazy"
                   decoding="async"
                   fetchpriority="low"
                 />
               </a>
-              <p class="text-sm text-brand-text/80 text-center sm:text-left">
+              <p class="text-sm text-muted-foreground text-center sm:text-left">
                 We partner with Pravida Health.
               </p>
             </div>
-            <p class="mt-2 sm:mt-3 text-[12px] leading-relaxed text-brand-muted text-center sm:text-left">
+            <p class="mt-2 sm:mt-3 text-[12px] leading-relaxed text-muted-foreground text-center sm:text-left">
               Wellness information only. Data for research use only.
             </p>
           </div>
@@ -89,11 +89,17 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
+import { useSiteTheme } from '../composables/useSiteTheme';
 
 const props = defineProps({
   data: { type: Object, required: true },
 });
+
+// Theme support for Pravida logo inversion in light mode
+const { theme } = useSiteTheme();
+const isLight = computed(() => theme.value === 'light');
 
 // Remove empty/dead links (href '#') and drop empty columns
 const filteredColumns = (props.data.columns || [])
