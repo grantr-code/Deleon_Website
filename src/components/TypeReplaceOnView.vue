@@ -105,6 +105,7 @@ function start() {
 
   function typeWord(word, speed, cb) {
     clearInterval(timer);
+    // Show cursor during typing (both initial and subsequent words)
     showCaret.value = true;
     if (!prefixDone) {
       // On first pass, type prefix + word + suffix as one continuous animation
@@ -122,11 +123,13 @@ function start() {
         if (i > target.length) {
           clearInterval(timer);
           prefixDone = true;
+          // Hide cursor after initial typing completes
           showCaret.value = false;
           cb && cb();
         }
       }, Math.max(10, speed));
     } else {
+      // Subsequent words: keep cursor visible throughout
       let k = 0;
       timer = setInterval(() => {
         prefixOutput.value = props.prefix;
@@ -134,6 +137,7 @@ function start() {
         k++;
         if (k > word.length) {
           clearInterval(timer);
+          // Hide cursor after word completes
           showCaret.value = false;
           cb && cb();
         }
@@ -143,6 +147,7 @@ function start() {
 
   function backspaceWord(word, cb) {
     clearInterval(timer);
+    // Show cursor when backspacing (retyping keywords)
     showCaret.value = true;
     let j = word.length;
     timer = setInterval(() => {
@@ -151,6 +156,7 @@ function start() {
       j--;
       if (j < 0) {
         clearInterval(timer);
+        // Keep cursor visible for next word typing
         cb && cb();
       }
     }, useBackspace());

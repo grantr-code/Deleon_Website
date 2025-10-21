@@ -49,12 +49,13 @@
 </template>
 
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect, onMounted } from 'vue';
 import BasePageLayout from './components/BasePageLayout.vue';
 import IconButton from './components/IconButton.vue';
 import IconBackArrow from './components/icons/IconBackArrow.vue';
 import MediaCard from './components/MediaCard.vue';
 import { getAllArticles } from './lib/articles';
+import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
 
 const all = getAllArticles();
 
