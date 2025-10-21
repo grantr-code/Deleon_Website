@@ -52,9 +52,9 @@
         <!-- CTA pill -->
         <div class="mt-6 md:mt-10">
           <CTAButton
-            href="mailto:chad@deleon-omics.com,jose@deleon-omics.com"
             label="See Deleon in action"
             action="Request a demo"
+            :clickHandler="openContactDrawer"
           />
         </div>
       </div>
@@ -96,6 +96,9 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import NewsSection from './NewsSection.vue';
 import CTAButton from './CTAButton.vue';
+import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
+
+const { open: openContactDrawer } = useEarlyAccessPanel();
 
 // Create subtle vertical column guides using CSS gradients
 const gridLinesStyle = computed(() => ({
