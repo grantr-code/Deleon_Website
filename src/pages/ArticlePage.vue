@@ -59,12 +59,12 @@
 
 <script setup>
 import { computed, onMounted } from 'vue';
-import BasePageLayout from './components/BasePageLayout.vue';
-import IconButton from './components/IconButton.vue';
-import IconBackArrow from './components/icons/IconBackArrow.vue';
-import MediaCard from './components/MediaCard.vue';
-import { getAllArticles, getArticleBySlug } from './lib/articles';
-import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
+import BasePageLayout from '../components/BasePageLayout.vue';
+import IconButton from '../components/IconButton.vue';
+import IconBackArrow from '../components/icons/IconBackArrow.vue';
+import MediaCard from '../components/MediaCard.vue';
+import { getAllArticles, getArticleBySlug } from '../lib/articles';
+import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
 
 function getSlug() {
   const params = new URLSearchParams(window.location.search);

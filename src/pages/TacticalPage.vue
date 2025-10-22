@@ -42,12 +42,12 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import BasePageLayout from './components/BasePageLayout.vue';
-import SectionHeader from './components/SectionHeader.vue';
-import VideoOverlay from './components/VideoOverlay.vue';
-import OurPlatforms from './components/OurPlatforms.vue';
-import CapabilitiesList from './components/CapabilitiesList.vue';
-import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
+import BasePageLayout from '../components/BasePageLayout.vue';
+import SectionHeader from '../components/SectionHeader.vue';
+import VideoOverlay from '../components/VideoOverlay.vue';
+import OurPlatforms from '../components/OurPlatforms.vue';
+import CapabilitiesList from '../components/CapabilitiesList.vue';
+import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
 
 const video = {
   srcMp4: '/BrandAssets/Video_Military.mp4',

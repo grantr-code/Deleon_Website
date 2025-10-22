@@ -7,11 +7,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
-        team: 'team.html',
-        teams: 'teams.html',
+        aboutUs: 'about-us.html',
+        forAthletes: 'for-athletes.html',
         tactical: 'tactical.html',
         science: 'science.html',
-        press: 'press.html',
         news: 'news.html',
         article: 'article.html',
       },

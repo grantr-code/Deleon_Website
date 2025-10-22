@@ -139,10 +139,10 @@ import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
 import GridCanvas from './GridCanvas.vue';
 import OrbitsCanvas from './OrbitsCanvas.vue';
 import RadarCanvas from './RadarCanvas.vue';
-import TestFlowField from './TestFlowField.vue';
-import TestPulseGrid from './TestPulseGrid.vue';
-import TestChemLattice from './TestChemLattice.vue';
-import TestBrownian from './TestBrownian.vue';
+import FlowFieldEffect from './effects/FlowFieldEffect.vue';
+import PulseGridEffect from './effects/PulseGridEffect.vue';
+import ChemLatticeEffect from './effects/ChemLatticeEffect.vue';
+import BrownianEffect from './effects/BrownianEffect.vue';
 
 const props = defineProps({
   heading: { type: String, default: 'Featured Video' },
@@ -353,13 +353,13 @@ const active = computed(() => {
     case 'effect:radar':
       return { kind: 'effect', component: RadarCanvas };
     case 'test:flow':
-      return { kind: 'effect', component: TestFlowField };
+      return { kind: 'effect', component: FlowFieldEffect };
     case 'test:pulse':
-      return { kind: 'effect', component: TestPulseGrid };
+      return { kind: 'effect', component: PulseGridEffect };
     case 'test:chem':
-      return { kind: 'effect', component: TestChemLattice };
+      return { kind: 'effect', component: ChemLatticeEffect };
     case 'test:diffuse':
-      return { kind: 'effect', component: TestBrownian };
+      return { kind: 'effect', component: BrownianEffect };
     case 'default':
     default:
       return vDefault;

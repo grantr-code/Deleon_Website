@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
-import NewsApp from './NewsApp.vue';
+import NewsPage from './pages/NewsPage.vue';
 import './themeBoot';
 import './styles/tailwind.css';
 
-createApp(NewsApp).mount('#app');
+createApp(NewsPage).mount('#app');

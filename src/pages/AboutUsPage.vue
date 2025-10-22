@@ -12,10 +12,10 @@
 
 <script setup>
 import { computed } from 'vue';
-import { teamData } from './content/teamData';
-import BasePageLayout from './components/BasePageLayout.vue';
-import SectionHeader from './components/SectionHeader.vue';
-import TeamGrid from './components/TeamGrid.vue';
+import { teamData } from '../content/teamData';
+import BasePageLayout from '../components/BasePageLayout.vue';
+import SectionHeader from '../components/SectionHeader.vue';
+import TeamGrid from '../components/TeamGrid.vue';
 
 const groups = computed(() => teamData.groups || []);
 </script>

@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
-import TacticalApp from './TacticalApp.vue';
+import TacticalPage from './pages/TacticalPage.vue';
 import './themeBoot';
 import './styles/tailwind.css';
 
-createApp(TacticalApp).mount('#app');
+createApp(TacticalPage).mount('#app');

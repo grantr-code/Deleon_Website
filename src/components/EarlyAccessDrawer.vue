@@ -17,7 +17,7 @@
         <div class="absolute inset-0">
           <div class="absolute inset-0 bg-background/90"></div>
           <div class="absolute inset-0">
-            <TestFlowField />
+            <FlowFieldEffect />
           </div>
           <div class="absolute inset-0 bg-white/35 dark:bg-black/35"></div>
         </div>
@@ -45,7 +45,7 @@
 <script setup>
 import { onMounted, onBeforeUnmount, watch } from 'vue';
 import ContactForm from './ContactForm.vue';
-import TestFlowField from './TestFlowField.vue';
+import FlowFieldEffect from './effects/FlowFieldEffect.vue';
 import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
 
 const { isOpen, close } = useEarlyAccessPanel();

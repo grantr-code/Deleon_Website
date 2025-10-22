@@ -14,12 +14,15 @@
     }
   ],
   "redirects": [
-    { "source": "/teams.html", "destination": "/teams", "permanent": true },
-    { "source": "/pro-teams", "destination": "/teams", "permanent": true },
-    { "source": "/collegiate", "destination": "/teams", "permanent": true },
-    { "source": "/olympic-teams", "destination": "/teams", "permanent": true },
-    { "source": "/pro", "destination": "/teams", "permanent": true },
-    { "source": "/olympic", "destination": "/teams", "permanent": true },
+    { "source": "/team.html", "destination": "/about-us", "permanent": true },
+    { "source": "/team", "destination": "/about-us", "permanent": true },
+    { "source": "/teams.html", "destination": "/for-athletes", "permanent": true },
+    { "source": "/teams", "destination": "/for-athletes", "permanent": true },
+    { "source": "/pro-teams", "destination": "/for-athletes", "permanent": true },
+    { "source": "/collegiate", "destination": "/for-athletes", "permanent": true },
+    { "source": "/olympic-teams", "destination": "/for-athletes", "permanent": true },
+    { "source": "/pro", "destination": "/for-athletes", "permanent": true },
+    { "source": "/olympic", "destination": "/for-athletes", "permanent": true },
     { "source": "/tactical.html", "destination": "/tactical", "permanent": true },
     { "source": "/military", "destination": "/tactical", "permanent": true },
     { "source": "/defense", "destination": "/tactical", "permanent": true }

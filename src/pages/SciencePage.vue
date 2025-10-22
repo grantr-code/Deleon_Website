@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import BasePageLayout from './components/BasePageLayout.vue';
-import SectionHeader from './components/SectionHeader.vue';
-import ScienceInfographic from './components/ScienceInfographic.vue';
+import BasePageLayout from '../components/BasePageLayout.vue';
+import SectionHeader from '../components/SectionHeader.vue';
+import ScienceInfographic from '../components/ScienceInfographic.vue';
 </script>

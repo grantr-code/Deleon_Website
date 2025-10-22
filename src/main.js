@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+import HomePage from './pages/HomePage.vue';
 import './themeBoot';
 import './styles/tailwind.css';
 
-createApp(App).mount('#app');
+createApp(HomePage).mount('#app');

@@ -76,10 +76,10 @@
 </template>
 
 <script setup>
-import BasePageLayout from './components/BasePageLayout.vue';
-import SectionHeader from './components/SectionHeader.vue';
-import FeatureCard from './components/FeatureCard.vue';
-import VideoOverlay from './components/VideoOverlay.vue';
+import BasePageLayout from '../components/BasePageLayout.vue';
+import SectionHeader from '../components/SectionHeader.vue';
+import FeatureCard from '../components/FeatureCard.vue';
+import VideoOverlay from '../components/VideoOverlay.vue';
 
 const video = {
   srcMp4: '/BrandAssets/Video.mp4',

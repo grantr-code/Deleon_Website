@@ -1,6 +1,6 @@
 import './themeBoot';
 import './styles/tailwind.css';
 import { createApp } from 'vue';
-import ArticleApp from './ArticleApp.vue';
+import ArticlePage from './pages/ArticlePage.vue';
 
-createApp(ArticleApp).mount('#app');
+createApp(ArticlePage).mount('#app');

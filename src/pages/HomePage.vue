@@ -28,15 +28,15 @@
 
 <script setup>
 import { computed, provide, onMounted } from 'vue';
-import { siteData as data } from './content/siteData';
-import SiteHeader from './components/SiteHeader.vue';
-import SiteFooter from './components/SiteFooter.vue';
-import HeroBand from './components/HeroBand.vue';
-import OurPlatforms from './components/OurPlatforms.vue';
-import DeExtinctionSection from './components/DeExtinctionSection.vue';
-import { useSiteTheme } from './composables/useSiteTheme';
-import EarlyAccessDrawer from './components/EarlyAccessDrawer.vue';
-import { useEarlyAccessPanel } from './composables/useEarlyAccessPanel';
+import { siteData as data } from '../content/siteData';
+import SiteHeader from '../components/SiteHeader.vue';
+import SiteFooter from '../components/SiteFooter.vue';
+import HeroBand from '../components/HeroBand.vue';
+import OurPlatforms from '../components/OurPlatforms.vue';
+import DeExtinctionSection from '../components/DeExtinctionSection.vue';
+import { useSiteTheme } from '../composables/useSiteTheme';
+import EarlyAccessDrawer from '../components/EarlyAccessDrawer.vue';
+import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
 
 const platforms = computed(() => data.sections.find(s => s.type === 'platforms'));
 

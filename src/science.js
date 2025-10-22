@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
-import ScienceApp from './ScienceApp.vue';
+import SciencePage from './pages/SciencePage.vue';
 import './themeBoot';
 import './styles/tailwind.css';
 
-createApp(ScienceApp).mount('#app');
+createApp(SciencePage).mount('#app');
