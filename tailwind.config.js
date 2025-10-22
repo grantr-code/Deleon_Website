@@ -28,15 +28,6 @@ export default {
           DEFAULT: 'hsl(var(--border))',
           subtle: 'hsl(var(--border-subtle))',
         },
-        // Legacy brand colors (for backwards compatibility during transition)
-        // TODO: Remove these once all components are migrated
-        brand: {
-          green: '#4CC95B',  // Use 'accent' instead
-          dark: '#0b0b0b',   // Use 'background' instead
-          card: '#141414',   // Use 'card' instead
-          text: '#e8e8e8',   // Use 'foreground' instead
-          muted: '#b8b8b8',  // Use 'muted-foreground' instead
-        },
       },
       fontFamily: {
         // Site-wide brand font follows the global CSS variable

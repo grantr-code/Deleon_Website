@@ -3,7 +3,7 @@
     id="site-header"
     :class="['text-foreground', (overlap ? 'absolute inset-x-0 top-0 z-40 pt-8' : 'relative z-40 pt-8'), overlap ? 'pb-0' : (compact ? 'pb-6 lg:pb-16' : 'pb-12 lg:pb-52')]"
   >
-    <div :class="subpage ? 'max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24' : 'max-w-[1280px] mx-auto px-4'">
+    <div :class="subpage ? 'section-container' : 'max-w-[1280px] mx-auto px-4'">
       <!-- Subpage variant: left-aligned brand + chip-style nav in same row -->
       <div v-if="subpage">
         <div class="flex items-center justify-between gap-4">

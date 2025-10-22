@@ -1,6 +1,6 @@
 <template>
   <section class="relative w-full bg-background text-foreground">
-    <div class="relative z-10 mx-auto max-w-none px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pb-16">
+    <div class="relative z-10 section-container pb-16">
       <div v-for="(group, gi) in groups" :key="gi" class="mt-2 md:mt-4">
         <div class="border-t border-border"></div>
         <div class="flex items-center justify-between mt-6">

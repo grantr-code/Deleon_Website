@@ -1,7 +1,7 @@
 <template>
   <BasePageLayout compact subpage>
     <section class="relative w-full">
-      <div class="mx-auto max-w-none px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-10 md:py-14">
+      <div class="section-container py-10 md:py-14">
         <!-- Meta/top -->
         <div class="flex items-center justify-between gap-6 border-b border-border pb-4">
           <div class="flex items-center gap-6 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">

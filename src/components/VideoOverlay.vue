@@ -1,6 +1,6 @@
 <template>
   <section aria-labelledby="video-hero-heading">
-    <div class="max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-8">
+    <div class="section-container py-8">
       <div class="overflow-hidden relative z-10 text-foreground">
         <h1 id="video-hero-heading" class="sr-only">{{ heading }}</h1>
 

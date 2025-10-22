@@ -93,22 +93,17 @@ body {
 
 /* Reusable component-level utilities */
 @layer components {
-  /* Section container with responsive padding (used across 14+ files) */
+  /* Section container with responsive padding */
   .section-container {
     @apply max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24;
   }
 
-  /* Content container with max width (used in grid layouts) */
-  .content-container {
-    @apply max-w-[1280px] mx-auto px-4;
-  }
-
-  /* Standard video/image card shadow (dark mode only, used 7+ times) */
+  /* Standard video/image card shadow (dark mode only) */
   .card-shadow-deep {
     @apply dark:shadow-[0_20px_60px_-18px_rgba(0,0,0,0.6)];
   }
 
-  /* Accent gradient bar (left edge of media cards, used 5+ times) */
+  /* Accent gradient bar (left edge of media cards) */
   .accent-bar-left {
     @apply absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-emerald-400 to-accent;
   }
@@ -122,18 +117,4 @@ body {
     margin-left: auto;
     margin-right: auto;
   }
-  /* Add subtle vertical rails at container edges */
-  .with-rails { position: relative; }
-  .with-rails::before,
-  .with-rails::after {
-    content: none; /* disable vertical rails */
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 0;
-    background: transparent;
-    pointer-events: none;
-    z-index: 5;
-  }
-  .with-rails::before { left: 0; }
-  .with-rails::after { right: 0; }
 }

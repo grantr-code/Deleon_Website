@@ -4,7 +4,7 @@
       id="our-platforms"
       ref="containerRef"
       :class="[
-        'relative max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24',
+        'relative section-container',
         hideHeader ? 'pt-2 md:pt-3' : 'pt-8',
         'pb-12 md:pb-16'
       ]"

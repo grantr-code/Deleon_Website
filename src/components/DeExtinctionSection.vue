@@ -42,7 +42,7 @@
     </div>
 
     <!-- Content wrapper with text on left -->
-    <div class="relative z-30 mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 py-6 md:py-14 max-w-none">
+    <div class="relative z-30 section-container py-6 md:py-14">
       <!-- Text content -->
       <div ref="textContentRef" class="md:max-w-[48%] lg:max-w-[45%] xl:max-w-[42%]">
         <p class="text-foreground text-[clamp(18px,2.2vw,28px)] leading-[1.28] tracking-[-0.005em]">

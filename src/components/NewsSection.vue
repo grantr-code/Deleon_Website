@@ -1,6 +1,6 @@
 <template>
   <section class="relative w-full bg-background text-foreground">
-    <div class="relative z-10 mx-auto max-w-none px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-6 pb-14 md:pb-20">
+    <div class="relative z-10 section-container pt-6 pb-14 md:pb-20">
       <!-- Section heading -->
       <div>
         <h2 class="text-foreground tracking-[0.18em] uppercase text-[clamp(18px,2.0vw,26px)] font-mono">Latest From Deleon</h2>

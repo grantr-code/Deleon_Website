@@ -1,5 +1,5 @@
 <template>
-  <div :class="['aspect-guard', withRails ? 'with-rails' : '']">
+  <div class="aspect-guard">
     <SiteHeader
       :data="headerData"
       :compact="compact"
@@ -23,11 +23,6 @@ import EarlyAccessDrawer from './EarlyAccessDrawer.vue';
 import { useEarlyAccessPanel } from '../composables/useEarlyAccessPanel';
 
 const props = defineProps({
-  // Whether to add the with-rails class
-  withRails: {
-    type: Boolean,
-    default: true
-  },
   // Whether header should be compact
   compact: {
     type: Boolean,

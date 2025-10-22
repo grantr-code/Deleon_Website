@@ -26,7 +26,7 @@
     </section>
 
     <!-- Operational capabilities -->
-    <section class="max-w-none mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pt-8 pb-10">
+    <section class="section-container pt-8 pb-10">
       <div class="border-t border-border mb-4"></div>
       <div class="flex items-center gap-3 text-[12px] tracking-[0.18em] uppercase text-muted-foreground">
         <span class="inline-block h-2 w-2 rounded-full bg-accent"></span>
