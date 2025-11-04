@@ -5,7 +5,7 @@ export const siteData = {
     nav: [
       { label: 'Home', href: '/' },
       { label: 'Who We Are', href: '/about-us.html' },
-      { label: "Why We're Different", href: '/science.html' },
+      // { label: "Why We're Different", href: '/science.html' },
       { label: 'Contact/Updates', href: '/#updates' },
     ],
   },
@@ -63,7 +63,7 @@ export const siteData = {
         title: 'Resources',
         links: [
           { label: 'News', href: '/news.html' },
-          { label: 'Science', href: '/science.html' },
+          // { label: 'Science', href: '/science.html' },
         ],
       },
       {
