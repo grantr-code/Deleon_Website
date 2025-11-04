@@ -28,11 +28,13 @@
           muted
           loop
           playsinline
-          preload="metadata"
+          autoplay
+          preload="auto"
           :style="{ opacity: isPlaying ? 1 : 0, transition: 'opacity 300ms ease' }"
           @loadeddata="onLoadedData"
           @canplay="onCanPlay"
           @playing="onPlaying"
+          @error="onVideoError"
         >
           <!-- Prefer MP4 first for better browser compatibility; MOV as fallback -->
           <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
@@ -69,16 +71,23 @@
         <!-- Left accent removed per user request -->
         <!-- First-frame canvas backdrop (mobile uses same refs) -->
         <canvas
+          ref="posterCanvasMobile"
           class="absolute inset-0 block w-full h-full pointer-events-none"
           :style="{ opacity: isPlaying ? 0 : 1, transition: 'opacity 200ms ease' }"
         ></canvas>
         <video
+          ref="videoRefMobile"
           class="absolute inset-0 h-full w-full object-cover"
           muted
           loop
           playsinline
-          preload="metadata"
+          autoplay
+          preload="auto"
           :style="{ opacity: isPlaying ? 1 : 0, transition: 'opacity 300ms ease' }"
+          @loadeddata="onLoadedDataMobile"
+          @canplay="onCanPlayMobile"
+          @playing="onPlaying"
+          @error="onVideoError"
         >
           <!-- Prefer MP4 first for better browser compatibility; MOV as fallback -->
           <source :src="'/BrandAssets/Video.mp4'" type="video/mp4" />
@@ -119,7 +128,9 @@ const topoStyle = computed(() => ({
 
 const sectionRef = ref(null);
 const videoRef = ref(null);
+const videoRefMobile = ref(null);
 const posterCanvas = ref(null);
+const posterCanvasMobile = ref(null);
 const textContentRef = ref(null);
 const isPlaying = ref(false);
 
@@ -183,28 +194,42 @@ onMounted(() => {
     resizeObserver.observe(textContentRef.value);
   }
 
-  // Play/pause the video only when visible to save CPU/bandwidth
-  const el = videoRef.value;
-  if (el && typeof IntersectionObserver !== 'undefined') {
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting && e.intersectionRatio > 0.3) {
-          el.play().catch(() => {});
-        } else {
-          el.pause();
+  // Autoplay control for desktop and mobile videos
+  const videos = [videoRef.value, videoRefMobile.value].filter(Boolean);
+  const ios = [];
+  const tryPlay = (el) => {
+    if (!el) return;
+    el.muted = true;
+    const p = el.play();
+    if (p && typeof p.then === 'function') p.catch(() => {});
+  };
+
+  if (typeof IntersectionObserver !== 'undefined') {
+    for (const el of videos) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && e.intersectionRatio > 0.15) {
+            tryPlay(el);
+          } else {
+            el.pause();
+          }
         }
-      }
-    }, { threshold: [0, 0.3, 0.6, 1] });
-    io.observe(el);
+      }, { threshold: [0, 0.15, 0.5, 1] });
+      io.observe(el);
+      ios.push(io);
+    }
 
     const vis = () => {
-      if (document.visibilityState === 'hidden') el.pause();
+      if (document.visibilityState === 'hidden') {
+        for (const el of videos) el.pause();
+      } else {
+        for (const el of videos) tryPlay(el);
+      }
     };
     document.addEventListener('visibilitychange', vis);
 
-    // Cleanup
     onBeforeUnmount(() => {
-      io.disconnect();
+      for (const io of ios) io.disconnect();
       document.removeEventListener('visibilitychange', vis);
       window.removeEventListener('resize', onResize);
       if (resizeObserver) resizeObserver.disconnect();
@@ -216,26 +241,18 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', onResize);
 });
 
-function drawFirstFrame() {
-  const vid = videoRef.value;
-  const cvs = posterCanvas.value;
+function drawFrame(vid, cvs) {
   if (!vid || !cvs) return;
-
-  // Get actual rendered dimensions from the video container
   const container = vid.parentElement;
   if (!container) return;
-
   const w = Math.floor(container.clientWidth);
   const h = Math.floor(container.clientHeight);
   if (!w || !h || !vid.videoWidth || !vid.videoHeight) return;
-
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   cvs.width = Math.floor(w * dpr);
   cvs.height = Math.floor(h * dpr);
-
   const ctx = cvs.getContext('2d');
   if (!ctx) return;
-
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const vw = vid.videoWidth, vh = vid.videoHeight;
   const scale = Math.max(w / vw, h / vh);
@@ -243,7 +260,6 @@ function drawFirstFrame() {
   const sh = h / scale;
   const sx = (vw - sw) / 2;
   const sy = (vh - sh) / 2;
-
   try {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, w, h);
@@ -251,9 +267,15 @@ function drawFirstFrame() {
   } catch {}
 }
 
-function onLoadedData() { drawFirstFrame(); }
-function onCanPlay() { drawFirstFrame(); }
+function onLoadedData() { drawFrame(videoRef.value, posterCanvas.value); }
+function onCanPlay() { drawFrame(videoRef.value, posterCanvas.value); }
+function onLoadedDataMobile() { drawFrame(videoRefMobile.value, posterCanvasMobile.value); }
+function onCanPlayMobile() {
+  drawFrame(videoRefMobile.value, posterCanvasMobile.value);
+  isPlaying.value = true;
+}
 function onPlaying() { isPlaying.value = true; }
+function onVideoError() { /* no-op: ignore autoplay errors */ }
 </script>
 
 <style scoped>
