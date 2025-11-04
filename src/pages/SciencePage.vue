@@ -32,6 +32,7 @@
       :show-border="false"
       padding-top="pt-8"
       padding-bottom="pb-12"
+      v-if="false"
     />
 
     <SectionHeader
